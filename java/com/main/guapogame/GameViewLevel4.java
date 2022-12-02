@@ -404,10 +404,11 @@ public class GameViewLevel4 extends MainView implements Runnable{
                 R.drawable.misty_withsnorkel_hit_bitmap_cropped,
                 CharacterIds.MISTY);
 
-        misty.x = random.nextInt(screen_width - misty.get_character_image().getWidth() / 2) + 23 * screen_width;
+        misty.x = 23 * screen_width;
         misty.pop_up_at_x = random.nextInt(((screen_width * 3) / 4 - screen_width / 4) + 1) + screen_width / 4;
         misty.y_vel = (2 * background_speed) / 4;
         misty.y = screen_height;
+        misty.is_top = false;
 
         misty_top = new Misty(getResources(),
                 (int) screen_factor_x,
@@ -417,9 +418,10 @@ public class GameViewLevel4 extends MainView implements Runnable{
                 CharacterIds.MISTY_TOP);
 
         misty_top.x = misty.x;
-        misty_top.pop_up_at_x = random.nextInt(((screen_width * 3) / 4 - screen_width / 4) + 1) + screen_width / 4;
+        misty_top.pop_up_at_x = misty.pop_up_at_x;
         misty_top.y_vel = (2 * background_speed) / 4;
         misty_top.y = -misty_top.get_misty().getHeight();
+        misty_top.is_top = true;
 
         update_misty_pos();
     }

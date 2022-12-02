@@ -1,7 +1,7 @@
 package com.main.guapogame;
 public class Parameters {
     // Level Parameters
-    public int num_wine_glasses = 2; //Initial number of wine glasses - 2
+    public int num_eagles = 2; //Initial number of wine glasses - 2
     public int max_num_wine_glasses = 20;
     public int difficulty_level = 0;
     public int points_beggin_strip = 5;

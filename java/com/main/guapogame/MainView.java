@@ -27,7 +27,7 @@ public class MainView extends SurfaceView {
     public boolean is_playing;
     public int score = 0;
     public Paint paint;
-    public WineGlass[] wine_glasses;
+    public Eagle[] eagles;
     public Seagulls[] seagulls;
     public SharedPreferences prefs;
     public Random random;
@@ -72,7 +72,7 @@ public class MainView extends SurfaceView {
     public Misty misty_top;
     public Sunpopup sun_popup;
     public Parameters parameters;
-    public boolean hit_wine_glass = false;
+    public boolean hit_bird = false;
     public boolean sun_popped_up = false;
     public boolean misty_comes_from_top = false;
     public boolean game_paused = false;
@@ -256,11 +256,11 @@ public class MainView extends SurfaceView {
     }
 
     public void init_wine_glasses() {
-        wine_glasses = new WineGlass[parameters.max_num_wine_glasses];
+        eagles = new Eagle[parameters.max_num_wine_glasses];
         for (int i = 0;i < parameters.max_num_wine_glasses;i++) {
 
-            WineGlass wine_glass = new WineGlass(getResources(), (int) screen_factor_x, (int) screen_factor_y);
-            wine_glasses[i] = wine_glass;
+            Eagle wine_glass = new Eagle(getResources(), (int) screen_factor_x, (int) screen_factor_y);
+            eagles[i] = wine_glass;
 
         }
     }
@@ -718,20 +718,23 @@ public class MainView extends SurfaceView {
             misty.appeared = true;
         }
 
+        // Update Misty position
         if(misty.x < screen_width && (misty.x + misty.width >= 0) && !misty.is_top) {
             misty.y -= misty.y_vel;
         }
         if(misty.x < screen_width && (misty.x + misty.width >= 0) && misty.is_top) {
             misty.y += misty.y_vel;
         }
+
+        // Update Misty velocity
         if(misty.y < screen_height - misty.get_misty().getHeight() && !misty.is_top) {
             misty.y_vel = misty.y_vel * -1;
         }
-
         if(misty.y > 0 && misty.is_top) {
             misty.y_vel = misty.y_vel * -1;
         }
 
+        // Check if Misty and Guapo intersect
         float misty_width = (float) misty.get_misty().getWidth();
         float misty_height = (float) misty.get_misty().getHeight();
 
@@ -760,56 +763,57 @@ public class MainView extends SurfaceView {
         update_misty_fcn(misty_top);
     }
 
-    public void update_glass(Bird wine_glass) {
-        wine_glass.x -= wine_glass.speed;
+    public void update_bird(Bird bird) {
+        bird.x -= bird.speed;
 
-        if (wine_glass.x + wine_glass.width < 0) {
+        if (bird.x + bird.width < 0) {
 
             int bound = 3 * background_speed;
-            wine_glass.speed = random.nextInt(bound);
+            bird.speed = random.nextInt(bound);
 
-            if (wine_glass.speed < (bound/2)) {
-                wine_glass.speed = bound / 2;
+            if (bird.speed < (bound/2)) {
+                bird.speed = bound / 2;
             }
 
-            wine_glass.x = screen_width;
-            wine_glass.y = random.nextInt(screen_height - wine_glass.height);
+            bird.x = screen_width;
+            bird.y = random.nextInt(screen_height - bird.height);
 
         }
 
-        float wine_glass_width = (float) wine_glass.get_wine_glass().getWidth();
-        float wine_glass_height = (float) wine_glass.get_wine_glass().getHeight();
+        float bird_width = (float) bird.get_wine_glass().getWidth();
+        float bird_height = (float) bird.get_wine_glass().getHeight();
 
         Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + image.getWidth(), guapo_loc_y + image.getHeight());
-        Rect rect_2 = new Rect(wine_glass.x + (int) ((wine_glass_width * 35) / 100),
-                wine_glass.y + (int) ((wine_glass_height * 35) / 100),
-                wine_glass.x + (int) ((wine_glass_width * 65) / 100),
-                wine_glass.y + (int) ((wine_glass_height * 65) / 100));
+        Rect rect_2 = new Rect(bird.x + (int) ((bird_width * 35) / 100),
+                bird.y + (int) ((bird_height * 35) / 100),
+                bird.x + (int) ((bird_width * 65) / 100),
+                bird.y + (int) ((bird_height * 65) / 100));
 
         if (Rect.intersects(rect_1, rect_2)) {
-            hit_wine_glass = true;
-            if(wine_glass.play_sound_allowed) {
+            hit_bird = true;
+            if(bird.play_sound_allowed) {
                 play_sound_bark_hit();
-                wine_glass.play_sound_allowed = false;
+                bird.play_sound_allowed = false;
             }
         }
         else {
-            wine_glass.play_sound_allowed = true;
+            bird.play_sound_allowed = true;
         }
     }
-    public void update_wine_glasses() {
+
+    public void update_birds() {
 
         int score_interval_for_diff_level = 35;
         if((score >= (parameters.difficulty_level* score_interval_for_diff_level)) &&
                 (score <= ((parameters.difficulty_level + 1) * score_interval_for_diff_level)) &&
-                (parameters.num_wine_glasses <= parameters.max_num_wine_glasses)) {
+                (parameters.num_eagles <= parameters.max_num_wine_glasses)) {
             int num_wine_glass_increase = 1;
-            parameters.num_wine_glasses = parameters.num_wine_glasses + num_wine_glass_increase;
+            parameters.num_eagles = parameters.num_eagles + num_wine_glass_increase;
             parameters.difficulty_level++;
         }
 
-        for (int i = 0;i < parameters.num_wine_glasses;i++) {
-            update_glass(wine_glasses[i]);
+        for (int i = 0; i < parameters.num_eagles; i++) {
+            update_bird(eagles[i]);
         }
     }
 
@@ -818,14 +822,14 @@ public class MainView extends SurfaceView {
         int score_interval_for_diff_level = 35;
         if((score >= (parameters.difficulty_level * score_interval_for_diff_level)) &&
                 (score <= ((parameters.difficulty_level + 1) * score_interval_for_diff_level)) &&
-                (parameters.num_wine_glasses <= parameters.max_num_wine_glasses)) {
+                (parameters.num_eagles <= parameters.max_num_wine_glasses)) {
             int num_wine_glass_increase = 1;
-            parameters.num_wine_glasses = parameters.num_wine_glasses + num_wine_glass_increase;
+            parameters.num_eagles = parameters.num_eagles + num_wine_glass_increase;
             parameters.difficulty_level++;
         }
 
-        for (int i = 0;i < parameters.num_wine_glasses;i++) {
-            update_glass(seagulls[i]);
+        for (int i = 0; i < parameters.num_eagles; i++) {
+            update_bird(seagulls[i]);
         }
     }
 
@@ -896,15 +900,15 @@ public class MainView extends SurfaceView {
         }
     }
 
-    public void draw_wine_glasses(Canvas canvas) {
-        for (int i = 0;i < parameters.num_wine_glasses;i++) {
-            WineGlass wine_glass = wine_glasses[i];
-            canvas.drawBitmap(wine_glass.get_wine_glass(), wine_glass.x, wine_glass.y, null);
+    public void draw_birds(Canvas canvas) {
+        for (int i = 0; i < parameters.num_eagles; i++) {
+            Eagle bird = eagles[i];
+            canvas.drawBitmap(bird.get_wine_glass(), bird.x, bird.y, null);
         }
     }
 
     public void draw_seagulls(Canvas canvas) {
-        for (int i = 0;i < parameters.num_wine_glasses;i++) {
+        for (int i = 0; i < parameters.num_eagles; i++) {
             Seagulls seagull = seagulls[i];
             canvas.drawBitmap(seagull.get_wine_glass(), seagull.x, seagull.y, null);
         }
@@ -927,7 +931,7 @@ public class MainView extends SurfaceView {
         int y2_body = yh_body - guapo_body.getHeight() / 2;
         canvas.drawBitmap(cape_image, guapo_loc_x - (cape_image.getWidth() - (float) (11 * cape_image.getWidth()) / 20), y2, null);
         canvas.drawBitmap(guapo_body, guapo_loc_x - (guapo_body.getWidth() - (float) (guapo_body.getWidth() * 3) / 5), y2_body, null);
-        if(!hit_wine_glass) {
+        if(!hit_bird) {
             canvas.drawBitmap(image, guapo_loc_x, guapo_loc_y, null);
         }
     }

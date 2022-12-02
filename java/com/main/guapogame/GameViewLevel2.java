@@ -102,7 +102,7 @@ public class GameViewLevel2 extends MainView implements Runnable {
             draw_guapo(canvas);
 
             // Case Guapo hit a bird. Draw hit Guapo and stop game.
-            if(hit_wine_glass) {
+            if(hit_bird) {
                 // Set playing bit to false
                 is_playing = false;
 

@@ -93,7 +93,7 @@ public class GameViewLevel3 extends MainView implements Runnable {
             draw_all(canvas);
 
             // Draw birds
-            draw_wine_glasses(canvas);
+            draw_birds(canvas);
 
             // Draw sun popup
             draw_sun_popup(canvas, "high_score_level3");
@@ -102,7 +102,7 @@ public class GameViewLevel3 extends MainView implements Runnable {
             draw_guapo(canvas);
 
             // Case Guapo hit a bird. Draw hit Guapo and stop game.
-            if(hit_wine_glass) {
+            if(hit_bird) {
                 // Set playing bit to false
                 is_playing = false;
 
@@ -146,7 +146,7 @@ public class GameViewLevel3 extends MainView implements Runnable {
 
         update_background();
 
-        update_wine_glasses();
+        update_birds();
 
         update_all();
     }
