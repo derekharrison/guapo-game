@@ -458,6 +458,25 @@ public class MainView extends SurfaceView {
             }
             x_velocity_o = x_velocity;
             y_velocity_o = y_velocity;
+
+            int maxSpeed = 100;
+            if(y_velocity_o * y_velocity_o + x_velocity_o * x_velocity_o > maxSpeed * maxSpeed) {
+                float ratio = ((float) y_velocity_o) / ((float) x_velocity_o + 1e-5f);
+                int xVelocityMax = (int) sqrt(maxSpeed * maxSpeed / (1 + ratio * ratio));
+                int yVelocityMax = (int) abs(ratio * xVelocityMax);
+                if(x_velocity_o < 0) {
+                    x_velocity_o = -xVelocityMax;
+                }
+                else {
+                    x_velocity_o = xVelocityMax;
+                }
+                if(y_velocity_o < 0) {
+                    y_velocity_o = -yVelocityMax;
+                }
+                else {
+                    y_velocity_o = yVelocityMax;
+                }
+            }
         }
 
         else if((action == MotionEvent.ACTION_DOWN) && !game_paused) {
@@ -487,24 +506,6 @@ public class MainView extends SurfaceView {
             }
             if(guapo_loc_y < 0) {
                 guapo_loc_y = 0;
-            }
-        }
-
-        int maxSpeed = 1500;
-        if(y_velocity_o * y_velocity_o + x_velocity_o * x_velocity_o > maxSpeed * maxSpeed) {
-            int xVelocityMax = maxSpeed / (int) sqrt(1 + ((float) y_velocity_o * y_velocity_o) / (x_velocity_o * x_velocity_o + 1));
-            int yVelocityMax = abs(y_velocity_o / (abs(x_velocity_o) + 1)) * xVelocityMax;
-            if(x_velocity_o < 0) {
-                x_velocity_o = -xVelocityMax;
-            }
-            else {
-                x_velocity_o = xVelocityMax;
-            }
-            if(y_velocity_o < 0) {
-                y_velocity_o = -yVelocityMax;
-            }
-            else {
-                y_velocity_o = yVelocityMax;
             }
         }
 
@@ -884,41 +885,50 @@ public class MainView extends SurfaceView {
     }
 
     public void save_all_game_state(Backgrounds backgrounds, Bird[] birds, String level) {
-        save_game_state(parameters.GAME_STATE_STR + level, true);
 
-        save_backgrounds(backgrounds, parameters.BACKGROUNDS_STR + level);
+        class MyThread extends Thread {
 
-        save_birds(birds, parameters.BIRDS_STR + level);
+            public void run() {
+                save_game_state(parameters.GAME_STATE_STR + level, true);
 
-        save_character(frito, parameters.FRITO_STR + level);
+                save_backgrounds(backgrounds, parameters.BACKGROUNDS_STR + level);
 
-        save_character(misty, parameters.MISTY_STR + level);
+                save_birds(birds, parameters.BIRDS_STR + level);
 
-        save_character(misty_top, parameters.MISTY_TOP_STR + level);
+                save_character(frito, parameters.FRITO_STR + level);
 
-        save_character(brownie, parameters.BROWNIE_STR + level);
+                save_character(misty, parameters.MISTY_STR + level);
 
-        save_snacks(broccoli, parameters.BROCCOLI_STR + level);
+                save_character(misty_top, parameters.MISTY_TOP_STR + level);
 
-        save_snacks(cheesy_bites, parameters.CHEESY_BITES_STR + level);
+                save_character(brownie, parameters.BROWNIE_STR + level);
 
-        save_snacks(paprika, parameters.PAPRIKA_STR + level);
+                save_snacks(broccoli, parameters.BROCCOLI_STR + level);
 
-        save_snacks(cucumbers, parameters.CUCUMBERS_STR + level);
+                save_snacks(cheesy_bites, parameters.CHEESY_BITES_STR + level);
 
-        save_loc(beggin_strip.x, beggin_strip.y, parameters.BEGGIN_STR + level);
+                save_snacks(paprika, parameters.PAPRIKA_STR + level);
 
-        save_loc(guapo_loc_x, guapo_loc_y, parameters.GUAPO_LOC_STR + level);
+                save_snacks(cucumbers, parameters.CUCUMBERS_STR + level);
 
-        save_num_lives(parameters.NUM_LIVES_STR + level);
+                save_loc(beggin_strip.x, beggin_strip.y, parameters.BEGGIN_STR + level);
 
-        save_score(parameters.SCORE_STR + level);
+                save_loc(guapo_loc_x, guapo_loc_y, parameters.GUAPO_LOC_STR + level);
 
-        save_difficulty_level(parameters.DIFFICULTY_LEVEL_STR + level);
+                save_num_lives(parameters.NUM_LIVES_STR + level);
 
-        save_num_birds(parameters.NUM_BIRDS_STR + level);
+                save_score(parameters.SCORE_STR + level);
 
-        save_check_point(parameters.CHECKPOINT_STR + level);
+                save_difficulty_level(parameters.DIFFICULTY_LEVEL_STR + level);
+
+                save_num_birds(parameters.NUM_BIRDS_STR + level);
+
+                save_check_point(parameters.CHECKPOINT_STR + level);
+            }
+        }
+
+        MyThread myThread = new MyThread();
+        myThread.start();
     }
 
     private void save_background_fish() {

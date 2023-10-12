@@ -61,7 +61,6 @@ public class GameViewLevel2 extends MainView implements Runnable {
             try{
                 Thread.sleep(wait_time);
             }catch(Exception e){
-                System.out.println("did not sleep");
             }
         }
     }
@@ -122,7 +121,7 @@ public class GameViewLevel2 extends MainView implements Runnable {
 
     public void draw_backgrounds(Canvas canvas) {
         for(int i = 0; i < backgrounds_level2.num_backgrounds; ++i) {
-            if(backgrounds_level2.backgrounds[i].x < screen_width) {
+            if(backgrounds_level2.backgrounds[i].x < screen_width && backgrounds_level2.backgrounds[i].x + backgrounds_level2.backgrounds[i].background.getWidth() >= 0) {
                 canvas.drawBitmap(backgrounds_level2.backgrounds[i].background,
                         backgrounds_level2.backgrounds[i].x,
                         backgrounds_level2.backgrounds[i].y, null);
@@ -270,16 +269,17 @@ public class GameViewLevel2 extends MainView implements Runnable {
     }
 
     public void update_background() {
-        for(int i = 0; i < backgrounds_level2.num_backgrounds; ++i) {
+        int n = backgrounds_level2.num_backgrounds;
+        for(int i = 0; i < n; ++i) {
             backgrounds_level2.backgrounds[i].x -= background_speed;
 
-            if(backgrounds_level2.backgrounds[i].x + backgrounds_level2.backgrounds[i].background.getWidth() < 0) {
-                if(i == 0) {
-                    backgrounds_level2.backgrounds[0].x = backgrounds_level2.backgrounds[backgrounds_level2.num_backgrounds - 1].x +
-                            backgrounds_level2.backgrounds[backgrounds_level2.num_backgrounds - 1].background.getWidth() - 10;
+            if(backgrounds_level2.backgrounds[i].x < 0) {
+                if(i == n - 1) {
+                    backgrounds_level2.backgrounds[0].x = backgrounds_level2.backgrounds[n - 1].x +
+                            backgrounds_level2.backgrounds[n - 1].background.getWidth() - 10;
                 }
-                if(i > 0) {
-                    backgrounds_level2.backgrounds[i].x = backgrounds_level2.backgrounds[i - 1].x + backgrounds_level2.backgrounds[i - 1].background.getWidth() - 10;
+                if(i < n - 1) {
+                    backgrounds_level2.backgrounds[i + 1].x = backgrounds_level2.backgrounds[i].x + backgrounds_level2.backgrounds[i].background.getWidth() - 10;
                 }
             }
         }
@@ -386,6 +386,8 @@ public class GameViewLevel2 extends MainView implements Runnable {
                         continue_restart_pressed = true;
                         draw_back_continue_pressed(left_continue, top_continue, left_restart, top_restart);
                         save_lives(parameters.LEVEL2_STR);
+                        save_high_score("high_score_level2");
+                        save_high_score("high_score_level2");
                         restart_game();
                     }
                     else if(local_x >= left_restart && local_x <= right_restart && local_y >= top_restart && local_y <= bottom_restart) {
