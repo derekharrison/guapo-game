@@ -1157,7 +1157,7 @@ public class MainView extends SurfaceView {
     }
 
     public void get_check_point(String store_id) {
-        checkpoint_num = prefs.getInt(store_id, 1) + 1;
+        checkpoint_num = prefs.getInt(store_id, 1);
     }
 
     public void get_snacks(Snack [] snacks, String store_id) {
@@ -1377,19 +1377,13 @@ public class MainView extends SurfaceView {
 
     public void draw_flag_popup(Canvas canvas, Backgrounds backgrounds, Bird[] birds, String level) {
 
-        if(checkpoint_num == 0) {
-
-            save_all_game_state(backgrounds, birds, level);
-            checkpoint_num++;
-        }
-
         if(score >= (checkpoint_num * parameters.CHECK_POINT_INTERVAL)) {
 
             if(!saved_state) {
                 saved_state = true;
                 save_all_game_state(backgrounds, birds, level);
             }
-            if(flag_checkpoint.popup_counter < parameters.NUM_FRAMES_POPUP) {
+            if(flag_checkpoint.popup_counter < parameters.NUM_FRAMES_POPUP && checkpoint_num > 0) {
                 canvas.drawBitmap(flag_checkpoint.get_image(), (float) screen_width - (float) screen_width / 4, (float) screen_height / 35, null);
                 if (!flag_checkpoint.popped_up) {
                     play_sound_sun_popup();
@@ -1408,19 +1402,13 @@ public class MainView extends SurfaceView {
 
     public void draw_flag_popup_water(Canvas canvas, Backgrounds backgrounds, Jellyfish[] jellyfish, String level) {
 
-        if(checkpoint_num == 0) {
-
-            save_all_game_state_water(backgrounds, jellyfish, level);
-            checkpoint_num++;
-        }
-
         if(score >= (checkpoint_num * parameters.CHECK_POINT_INTERVAL)) {
 
             if(!saved_state) {
                 saved_state = true;
                 save_all_game_state_water(backgrounds, jellyfish, level);
             }
-            if(flag_checkpoint.popup_counter < parameters.NUM_FRAMES_POPUP) {
+            if(flag_checkpoint.popup_counter < parameters.NUM_FRAMES_POPUP && checkpoint_num > 0) {
                 canvas.drawBitmap(flag_checkpoint.get_image(), (float) screen_width - (float) screen_width / 4, (float) screen_height / 35, null);
                 if (!flag_checkpoint.popped_up) {
                     play_sound_sun_popup();
