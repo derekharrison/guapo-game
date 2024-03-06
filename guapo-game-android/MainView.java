@@ -248,6 +248,7 @@ public class MainView extends SurfaceView {
         init_lives();
     }
 
+    @SuppressWarnings("deprecation")
     public void init_sound_pool() {
 
         int num_sounds_eating = 3;
