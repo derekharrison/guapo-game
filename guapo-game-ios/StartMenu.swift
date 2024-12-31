@@ -71,7 +71,7 @@ class StartMenu: SKScene {
     
     func place_button(fac : CGFloat, button_np : SKSpriteNode, button_p : SKSpriteNode) {
         
-        let width_button = self.size.width / 5
+        let width_button = self.size.width / 4
         let height_button = self.size.height / 16
         
         button_np.size = CGSize(width: width_button, height: height_button)

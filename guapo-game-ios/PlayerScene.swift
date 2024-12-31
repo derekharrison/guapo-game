@@ -10,8 +10,8 @@ import SpriteKit
 
 class PlayerScene: SKScene {
     
-    let level_menu_np = SKSpriteNode(imageNamed: LEVEL_MENU_NOTPRESSED)
-    let level_menu_p = SKSpriteNode(imageNamed: LEVEL_MENU_PRESSED)
+    let level_menu_np = SKSpriteNode(imageNamed: CONTINUE_NOTPRESSED)
+    let level_menu_p = SKSpriteNode(imageNamed: CONTINUE_PRESSED)
     let start_menu_np = SKSpriteNode(imageNamed: START_MENU_NOTPRESSED)
     let start_menu_p = SKSpriteNode(imageNamed: START_MENU_PRESSED)
     
@@ -49,8 +49,8 @@ class PlayerScene: SKScene {
         place_button(fac: 0.8, button_np: guapo_button_np, button_p: guapo_button_p)
         place_button(fac: 0.66, button_np: tutti_button_np, button_p: tutti_button_p)
         
-        place_button(fac: 0.5, button_np: start_menu_np, button_p: start_menu_p)
-        place_button(fac: 0.36, button_np: level_menu_np, button_p: level_menu_p)
+        place_button2(fac: 0.3, button_np: level_menu_np, button_p: level_menu_p)
+        place_button2(fac: 0.16, button_np: start_menu_np, button_p: start_menu_p)
     }
     
     //Force the mute button to change by running update()
@@ -71,8 +71,8 @@ class PlayerScene: SKScene {
             
             touched_button(pointOfTouch: pointOfTouch, level_np : start_menu_np, level_p : start_menu_p, touched : &start_menu)
             touched_button(pointOfTouch: pointOfTouch, level_np : level_menu_np, level_p : level_menu_p, touched : &level_menu)
-            touched_button(pointOfTouch: pointOfTouch, level_np : guapo_button_np, level_p : guapo_button_p, touched : &dummy1)
-            touched_button(pointOfTouch: pointOfTouch, level_np : tutti_button_np, level_p : tutti_button_p, touched : &dummy2)
+            touched_button2(pointOfTouch: pointOfTouch, level_np : guapo_button_np, level_p : guapo_button_p, touched : &dummy1)
+            touched_button2(pointOfTouch: pointOfTouch, level_np : tutti_button_np, level_p : tutti_button_p, touched : &dummy2)
             
             if dummy1 {
                 let defaults = UserDefaults()
@@ -113,6 +113,22 @@ class PlayerScene: SKScene {
         self.addChild(button_p)
     }
     
+    func place_button2(fac : CGFloat, button_np : SKSpriteNode, button_p : SKSpriteNode) {
+        
+        let width_button = self.size.width / 4
+        let height_button = self.size.height / 16
+        
+        button_np.size = CGSize(width: width_button, height: height_button)
+        button_np.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
+        button_np.zPosition = 2
+        self.addChild(button_np)
+        
+        button_p.size = CGSize(width: width_button, height: height_button)
+        button_p.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
+        button_p.zPosition = -1
+        self.addChild(button_p)
+    }
+    
     func place_image(fac : CGFloat, button : SKSpriteNode) {
         
         let width_button = self.size.width / 16
@@ -125,6 +141,21 @@ class PlayerScene: SKScene {
     }
     
     func touched_button(pointOfTouch : CGPoint, level_np : SKSpriteNode, level_p : SKSpriteNode, touched : inout Bool) {
+    
+        
+        let touched_button_x = pointOfTouch.x > level_np.position.x - level_np.size.width / 2 && pointOfTouch.x < level_np.position.x + level_np.size.width / 2
+        
+        let touched_button_y = pointOfTouch.y > level_np.position.y - level_np.size.height / 2 && pointOfTouch.y < level_np.position.y + level_np.size.height / 2
+        
+        if touched_button_x && touched_button_y {
+            
+            level_np.zPosition = -1
+            level_p.zPosition = 2
+            touched = true
+        }
+    }
+    
+    func touched_button2(pointOfTouch : CGPoint, level_np : SKSpriteNode, level_p : SKSpriteNode, touched : inout Bool) {
     
         
         let touched_button_x = pointOfTouch.x > level_np.position.x - level_np.size.width / 2 && pointOfTouch.x < level_np.position.x + level_np.size.width / 2
