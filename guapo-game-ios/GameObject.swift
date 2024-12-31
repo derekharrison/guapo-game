@@ -28,6 +28,9 @@ class GameObject {
     var bubbles : Bubbles
     var pos_x : CGFloat
     var pos_y : CGFloat
+    var cape1 : SKSpriteNode
+    var cape2 : SKSpriteNode
+    var cape_counter = 1
     
     init() {
         self.z_pos = -1
@@ -45,6 +48,8 @@ class GameObject {
         self.bubbles = Bubbles()
         self.pos_x = -10000
         self.pos_y = 0
+        self.cape1 = SKSpriteNode(imageNamed: CAPE_IMAGE1)
+        self.cape2 = SKSpriteNode(imageNamed: CAPE_IMAGE2)
     }
     
     func set_height(height : CGFloat) {
@@ -121,6 +126,14 @@ class GameObject {
     }
     
     func add_childs(scene : SKScene) {
+        self.cape1.setScale(1)
+        self.cape1.size = CGSize(width: scene.size.width / 12, height: scene.size.height / 10)
+        self.cape2.setScale(1)
+        self.cape2.size = CGSize(width: scene.size.width / 12, height: scene.size.height / 10)
+        
+        scene.addChild(self.cape1)
+        scene.addChild(self.cape2)
+        
         for x in self.images {
             x.removeFromParent()
             scene.addChild(x)
@@ -367,7 +380,7 @@ class GameObject {
         self.pos_x = images[0].position.x
         self.pos_y = images[0].position.y
         
-        advance_bird_counter()
+        advance_bird_counter(num_frames: 5)
     }
     
     func update_pos(scene : SKScene) {
@@ -493,6 +506,7 @@ class GameObject {
     
     func advance_bird_counter(num_frames : Int) {
         bird_counter += 1
+    
         
         if(bird_counter < num_frames) {
             birdi_on_top(image_id: bird_id)

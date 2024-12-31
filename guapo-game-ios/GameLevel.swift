@@ -67,6 +67,8 @@ class GameLevel {
     var flag_freq = FLAG_FREQUENCY
     var flag_num = 1
     var num_lives = NUM_LIVES
+    var my_counter = 1
+    var my_switch = false
     
     var hit_bird = false
     
@@ -481,6 +483,7 @@ class GameLevel {
         scoreLabel.removeFromParent()
         scene.addChild(scoreLabel)
         
+        
         let defaults = UserDefaults()
         if level_id == LEVEL_ID_1 {
             highScore = defaults.integer(forKey: HIGH_SCORE_ID_1)
@@ -656,11 +659,23 @@ class GameLevel {
         let size = CGSize(width: scene.size.width / 5, height: scene.size.height / 7.5)
         
         var player_images : [String] = [String]()
-        player_images.append(PLAYER_IMAGE_1)
-        player_images.append(PLAYER_IMAGE_2)
         
-        player = Player(images: player_images, size: size, z_pos: z_pos_player)
-        player.add_image_hit(image: PLAYER_IMAGE_HIT, size: size, z_pos: -1)
+        let defaults = UserDefaults()
+        let player_id = defaults.integer(forKey: "player_id")
+        
+        if(player_id == 0) {
+            player_images.append(PLAYER_IMAGE_1)
+            player_images.append(PLAYER_IMAGE_2)
+            player = Player(images: player_images, size: size, z_pos: z_pos_player)
+            player.add_image_hit(image: PLAYER_IMAGE_HIT, size: size, z_pos: -1)
+        }
+        if(player_id == 1) {
+            player_images.append(PLAYER_TUTTI_IMAGE_1)
+            player_images.append(PLAYER_TUTTI_IMAGE_2)
+            player = Player(images: player_images, size: size, z_pos: z_pos_player)
+            player.add_image_hit(image: PLAYER_TUTTI_IMAGE_HIT, size: size, z_pos: -1)
+        }
+
         player.add_childs(scene : scene)
         player.set_vel(vel_x: 0, vel_y: 0)
         player.set_pos(pos: CGPoint(x : scene.size.width / 5, y : scene.size.height / 2))
@@ -672,11 +687,23 @@ class GameLevel {
         let size = CGSize(width: scene.size.width / 5, height: scene.size.height / 7.5)
         
         var player_images : [String] = [String]()
-        player_images.append(PLAYER_SNORKEL)
         
+        let defaults = UserDefaults()
+        let player_id = defaults.integer(forKey: "player_id")
         
-        player = Player(images: player_images, size: size, z_pos: z_pos_player)
-        player.add_image_hit(image: PLAYER_SNORKEL_HIT, size: size, z_pos: -1)
+        if player_id == 0 {
+            player_images.append(PLAYER_SNORKEL)
+            player = Player(images: player_images, size: size, z_pos: z_pos_player)
+            player.add_image_hit(image: PLAYER_SNORKEL_HIT, size: size, z_pos: -1)
+        }
+        
+        if player_id == 1 {
+            player_images.append(PLAYER_TUTTI_SNORKEL)
+            player = Player(images: player_images, size: size, z_pos: z_pos_player)
+            player.add_image_hit(image: PLAYER_TUTTI_SNORKEL_HIT, size: size, z_pos: -1)
+        }
+        
+
         player.set_vel(vel_x: 0, vel_y: 0)
         player.set_pos(pos: CGPoint(x : scene.size.width / 5, y : scene.size.height / 2))
         player.set_height(height : scene.size.height)
@@ -950,6 +977,27 @@ class GameLevel {
     
     func update_player() {
         player.update_pos_api()
+        
+        player.cape1.position.x = player.pos_x - player.cape1.size.width / 2
+        player.cape1.position.y = player.pos_y
+        player.cape2.position.x = player.pos_x - player.cape2.size.width / 2
+        player.cape2.position.y = player.pos_y
+        
+        if my_counter < 5 {
+            if my_switch {
+                player.cape1.zPosition = 2
+                player.cape2.zPosition = -1
+            }
+            else {
+                player.cape1.zPosition = -1
+                player.cape2.zPosition = 2
+            }
+            my_counter += 1
+        }
+        else {
+            my_switch = !my_switch
+            my_counter = 1
+        }
     }
     
     func update_birds() {
@@ -1070,7 +1118,7 @@ class GameLevel {
             play_flag_pop_up = true
             start_thread = true
             
-            //Reset sun popup zposition
+            //Reset flag popup zposition
             flag.set_z_pos(z_pos: -1)
         }
     }
