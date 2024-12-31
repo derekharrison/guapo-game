@@ -41,6 +41,7 @@ class PlayerScene: SKScene {
         
         background.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         background.zPosition = 0
+        background.removeFromParent()
         self.addChild(background)
         
         place_image(fac: 0.8, button: guapo_image_i)
@@ -105,11 +106,13 @@ class PlayerScene: SKScene {
         button_np.size = CGSize(width: width_button, height: height_button)
         button_np.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
         button_np.zPosition = 2
+        button_np.removeFromParent()
         self.addChild(button_np)
         
         button_p.size = CGSize(width: width_button, height: height_button)
         button_p.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
         button_p.zPosition = -1
+        button_p.removeFromParent()
         self.addChild(button_p)
     }
     
@@ -121,11 +124,13 @@ class PlayerScene: SKScene {
         button_np.size = CGSize(width: width_button, height: height_button)
         button_np.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
         button_np.zPosition = 2
+        button_np.removeFromParent()
         self.addChild(button_np)
         
         button_p.size = CGSize(width: width_button, height: height_button)
         button_p.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
         button_p.zPosition = -1
+        button_p.removeFromParent()
         self.addChild(button_p)
     }
     
@@ -137,6 +142,7 @@ class PlayerScene: SKScene {
         button.size = CGSize(width: width_button, height: height_button)
         button.position = CGPoint(x: self.size.width / 2 - self.guapo_image_i.size.width * 3, y: self.size.height / 2 * fac + self.size.height / 4)
         button.zPosition = 2
+        button.removeFromParent()
         self.addChild(button)
     }
     

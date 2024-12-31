@@ -34,6 +34,7 @@ class StartMenu: SKScene {
         
         background.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         background.zPosition = 0
+        background.removeFromParent()
         self.addChild(background)
         
         place_button(fac: 0.6, button_np: player_menu_np, button_p: player_menu_p)
@@ -77,11 +78,13 @@ class StartMenu: SKScene {
         button_np.size = CGSize(width: width_button, height: height_button)
         button_np.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
         button_np.zPosition = 2
+        button_np.removeFromParent()
         self.addChild(button_np)
         
         button_p.size = CGSize(width: width_button, height: height_button)
         button_p.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
         button_p.zPosition = -1
+        button_p.removeFromParent()
         self.addChild(button_p)
     }
     

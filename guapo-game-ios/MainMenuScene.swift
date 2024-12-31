@@ -112,6 +112,9 @@ class MainMenuScene: SKScene {
             volume_on.zPosition = 2
         }
         
+        volume_off.removeFromParent()
+        volume_on.removeFromParent()
+        
         self.addChild(volume_off)
         self.addChild(volume_on)
         let background = SKSpriteNode(imageNamed: BACKGROUND_START_SCREEN)
@@ -123,6 +126,7 @@ class MainMenuScene: SKScene {
         
         background.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         background.zPosition = 0
+        background.removeFromParent()
         self.addChild(background)
         
         levels_text.text = LEVELS_STR
@@ -130,6 +134,7 @@ class MainMenuScene: SKScene {
         levels_text.fontColor = SKColor.gray
         levels_text.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * 0.85 + self.size.height / 4)
         levels_text.zPosition = 1
+        levels_text.removeFromParent()
         self.addChild(levels_text)
         
         high_score_text.text = HIGHSCORE_STR
@@ -137,6 +142,7 @@ class MainMenuScene: SKScene {
         high_score_text.fontColor = SKColor.gray
         high_score_text.position = CGPoint(x: self.size.width / 2 + self.size.width / 4, y: self.size.height / 2 * 0.85 + self.size.height / 4)
         high_score_text.zPosition = 1
+        high_score_text.removeFromParent()
         self.addChild(high_score_text)
         
         highScoreNumberLevel1 = defaults.integer(forKey: HIGH_SCORE_ID_1)
@@ -145,7 +151,7 @@ class MainMenuScene: SKScene {
         highScoreNumberLevel4 = defaults.integer(forKey: HIGH_SCORE_ID_4)
         highScoreNumberLevel5 = defaults.integer(forKey: HIGH_SCORE_ID_5)
 
-        place_level_button(score_prev_level : highScoreNumberLevel1, fac : 0.73, level_np : level_1_np, level_p : level_1_p, level_gray : level_1_p, high_score : highScoreNumberLevel1, score_label : level_1_score)
+        place_first_level_button(fac : 0.73, level_np : level_1_np, level_p : level_1_p, level_gray : level_1_p, high_score : highScoreNumberLevel1, score_label : level_1_score)
         
         place_level_button(score_prev_level : highScoreNumberLevel1, fac : 0.58, level_np : level_2_np, level_p : level_2_p, level_gray : level_2_grey, high_score : highScoreNumberLevel2, score_label : level_2_score)
         
@@ -264,6 +270,33 @@ class MainMenuScene: SKScene {
         }
     }
     
+    func place_first_level_button(fac : CGFloat, level_np : SKSpriteNode, level_p : SKSpriteNode, level_gray : SKSpriteNode, high_score : Int, score_label : SKLabelNode) {
+        
+        let width_button = self.size.width / 5
+        let height_button = self.size.height / 16
+        
+        level_np.size = CGSize(width: width_button, height: height_button)
+        level_np.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
+        level_np.zPosition = 2
+        level_np.removeFromParent()
+        self.addChild(level_np)
+        
+        level_p.size = CGSize(width: width_button, height: height_button)
+        level_p.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
+        level_p.zPosition = -1
+        level_p.removeFromParent()
+        self.addChild(level_p)
+        
+        score_label.text = String(high_score)
+        score_label.fontSize = 70
+        score_label.fontColor = SKColor.gray
+        score_label.position = CGPoint(x: self.size.width / 2 + self.size.width / 4, y: self.size.height / 2 * (fac - 0.03) + self.size.height / 4)
+        score_label.zPosition = 1
+        score_label.removeFromParent()
+        self.addChild(score_label)
+    }
+    
+    
     func place_level_button(score_prev_level : Int, fac : CGFloat, level_np : SKSpriteNode, level_p : SKSpriteNode, level_gray : SKSpriteNode, high_score : Int, score_label : SKLabelNode) {
         
         let width_button = self.size.width / 5
@@ -273,27 +306,32 @@ class MainMenuScene: SKScene {
             level_np.size = CGSize(width: width_button, height: height_button)
             level_np.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
             level_np.zPosition = 2
+            level_np.removeFromParent()
             self.addChild(level_np)
             
             level_p.size = CGSize(width: width_button, height: height_button)
             level_p.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
             level_p.zPosition = -1
+            level_p.removeFromParent()
             self.addChild(level_p)
         }
         else {
             level_np.size = CGSize(width: width_button, height: height_button)
             level_np.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
             level_np.zPosition = -1
+            level_np.removeFromParent()
             self.addChild(level_np)
             
             level_gray.size = CGSize(width: width_button, height: height_button)
             level_gray.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
             level_gray.zPosition = 2
+            level_gray.removeFromParent()
             self.addChild(level_gray)
             
             level_p.size = CGSize(width: width_button, height: height_button)
             level_p.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 * fac + self.size.height / 4)
             level_p.zPosition = -1
+            level_p.removeFromParent()
             self.addChild(level_p)
         }
         
@@ -302,6 +340,7 @@ class MainMenuScene: SKScene {
         score_label.fontColor = SKColor.gray
         score_label.position = CGPoint(x: self.size.width / 2 + self.size.width / 4, y: self.size.height / 2 * (fac - 0.03) + self.size.height / 4)
         score_label.zPosition = 1
+        score_label.removeFromParent()
         self.addChild(score_label)
     }
     
@@ -313,11 +352,13 @@ class MainMenuScene: SKScene {
         button_np.size = CGSize(width: width_button, height: height_button)
         button_np.position = CGPoint(x: self.size.width / 6, y: self.size.height / 2 * fac + self.size.height / 4)
         button_np.zPosition = 2
+        button_np.removeFromParent()
         self.addChild(button_np)
         
         button_p.size = CGSize(width: width_button, height: height_button)
         button_p.position = CGPoint(x: self.size.width / 6, y: self.size.height / 2 * fac + self.size.height / 4)
         button_p.zPosition = -1
+        button_p.removeFromParent()
         self.addChild(button_p)
     }
 }

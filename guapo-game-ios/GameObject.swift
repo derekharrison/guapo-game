@@ -131,7 +131,9 @@ class GameObject {
         self.cape2.setScale(1)
         self.cape2.size = CGSize(width: scene.size.width / 12, height: scene.size.height / 10)
         
+        self.cape1.removeFromParent()
         scene.addChild(self.cape1)
+        self.cape2.removeFromParent()
         scene.addChild(self.cape2)
         
         for x in self.images {

@@ -287,6 +287,7 @@ func start_scene(scene : SKScene, start : inout Bool, GameLevel : SKScene) {
 
 func play_sound_api(scene : SKScene, sound : [SKAction]) {
     let bubble_sound = SKSpriteNode()
+    bubble_sound.removeFromParent()
     scene.addChild(bubble_sound)
 
     let bubble_sound_biteSequence = SKAction.sequence(sound)

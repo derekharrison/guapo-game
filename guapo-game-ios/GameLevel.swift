@@ -550,6 +550,8 @@ class GameLevel {
         black_background_bot.size = CGSize(width: scene.size.width, height: scene.size.height / 4)
         black_background_bot.position = CGPoint(x: scene.size.width / 2, y: scene.size.height * 0.25 - scene.size.height / 8)
         black_background_bot.zPosition = z_pos_black
+        black_background_top.removeFromParent()
+        black_background_bot.removeFromParent()
         scene.addChild(black_background_top)
         scene.addChild(black_background_bot)
         
@@ -569,6 +571,7 @@ class GameLevel {
             
             background.zPosition = 0
             backgrounds.append(background)
+            background.removeFromParent()
             scene.addChild(background)
         }
     }
@@ -713,6 +716,7 @@ class GameLevel {
         player.bubbles.add_bubble(image_id: BUBBLE_IMAGE_STR)
         
         for x in player.bubbles.bubbles {
+            x.removeFromParent()
             scene.addChild(x)
         }
         player.add_childs(scene : scene)
