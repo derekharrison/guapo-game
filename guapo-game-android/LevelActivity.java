@@ -60,7 +60,7 @@ public class LevelActivity extends AppCompatActivity {
         Parameters parameters = new Parameters();
 
         findViewById(R.id.level1_id).setOnClickListener(view -> {
-            TextView play_button_coloring = (TextView) findViewById(R.id.level1_id);
+            TextView play_button_coloring = findViewById(R.id.level1_id);
             play_button_coloring.setTextColor(Color.WHITE);
             startActivity(new Intent(LevelActivity.this, GameActivityLevel1.class));
         });
@@ -72,7 +72,7 @@ public class LevelActivity extends AppCompatActivity {
         else if(prefs.getInt("high_score", 0) >= parameters.LEVEL_UNLOCK_SCORE){
 
             findViewById(R.id.second_level2_id).setOnClickListener(view -> {
-                TextView play_button_coloring = (TextView) findViewById(R.id.second_level2_id);
+                TextView play_button_coloring = findViewById(R.id.second_level2_id);
                 play_button_coloring.setTextColor(Color.WHITE);
                 startActivity(new Intent(LevelActivity.this, GameActivityLevel2.class));
             });
@@ -86,7 +86,7 @@ public class LevelActivity extends AppCompatActivity {
         else if(prefs.getInt("high_score_level2", 0) >= parameters.LEVEL_UNLOCK_SCORE){
 
             findViewById(R.id.trip_id).setOnClickListener(view -> {
-                TextView play_button_coloring = (TextView) findViewById(R.id.trip_id);
+                TextView play_button_coloring = findViewById(R.id.trip_id);
                 play_button_coloring.setTextColor(Color.WHITE);
                 startActivity(new Intent(LevelActivity.this, GameActivityLevel3.class));
             });
@@ -100,7 +100,7 @@ public class LevelActivity extends AppCompatActivity {
         else if(prefs.getInt("high_score_level3", 0) >= parameters.LEVEL_UNLOCK_SCORE){
 
             findViewById(R.id.ocean_id).setOnClickListener(view -> {
-                TextView play_button_coloring = (TextView) findViewById(R.id.ocean_id);
+                TextView play_button_coloring = findViewById(R.id.ocean_id);
                 play_button_coloring.setTextColor(Color.WHITE);
                 startActivity(new Intent(LevelActivity.this, GameActivityLevel4.class));
             });
@@ -114,7 +114,7 @@ public class LevelActivity extends AppCompatActivity {
         else if(prefs.getInt("high_score_level3", 0) >= parameters.LEVEL_UNLOCK_SCORE){
 
             findViewById(R.id.utreg_id).setOnClickListener(view -> {
-                TextView play_button_coloring = (TextView) findViewById(R.id.utreg_id);
+                TextView play_button_coloring = findViewById(R.id.utreg_id);
                 play_button_coloring.setTextColor(Color.WHITE);
                 startActivity(new Intent(LevelActivity.this, GameActivityLevel5.class));
             });
@@ -142,5 +142,18 @@ public class LevelActivity extends AppCompatActivity {
 
         });
 
+        findViewById(R.id.choose_level_id3).setOnClickListener(view -> {
+            TextView play_button = findViewById(R.id.choose_level_id3);
+            play_button.setTextColor(Color.WHITE);
+            startActivity(new Intent(LevelActivity.this, ChooseCharacterActivity.class));
+        });
+
+        findViewById(R.id.main_menu_button3).setOnClickListener(view -> {
+            TextView play_button = findViewById(R.id.main_menu_button3);
+            play_button.setTextColor(Color.WHITE);
+            startActivity(new Intent(LevelActivity.this, MainActivity.class));
+        });
     }
+
+
 }

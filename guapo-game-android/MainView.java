@@ -49,8 +49,8 @@ public class MainView extends SurfaceView {
     public boolean game_paused = false;
     public Bitmap guapo_body;
     public Bitmap guapo_head;
-    public Bitmap guapo_head_hit;
     public GuapoImage guapo_image;
+    public HeroImage hero_image;
     public int guapo_loc_x;
     public int guapo_loc_x_o;
     public int guapo_loc_y;
@@ -104,6 +104,7 @@ public class MainView extends SurfaceView {
     public int x_velocity_o = 0;
     public int y_velocity = 0;
     public int y_velocity_o = 0;
+    public int hero_id = 0;
 
     public MainView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -228,7 +229,25 @@ public class MainView extends SurfaceView {
         pause_region_max_y = 5 * screen_height / 30;
         pause_region_min_y = screen_height / 15;
 
-        // Initialize images related to Guapo
+        hero_id = prefs.getInt("choose_character", 0);
+        if(hero_id == 1) {
+            hero_image = new HeroImage(getResources(),
+                    (int) screen_factor_x * 3 / 2,
+                    (int) screen_factor_y * 3 / 2,
+                    R.drawable.tutti_bitmap_no_cape_cropped,
+                    R.drawable.tutti_bitmap_hit_no_cape_cropped,
+                    R.drawable.cape1_bitmap_cropped,
+                    R.drawable.cape2_bitmap_cropped);
+        }
+        else {
+            hero_image = new HeroImage(getResources(),
+                    (int) screen_factor_x * 3 / 2,
+                    (int) screen_factor_y * 3 / 2,
+                    R.drawable.guapo_main_image_bitmap_cropped,
+                    R.drawable.guapo_main_image_hit_bitmap_cropped,
+                    R.drawable.cape1_bitmap_cropped1,
+                    R.drawable.cape2_bitmap_cropped1);
+        }
         guapo_image = new GuapoImage(getResources(),
                 (int) screen_factor_x,
                 (int) screen_factor_y,
@@ -236,11 +255,10 @@ public class MainView extends SurfaceView {
                 R.drawable.cape1_guapo_bitmap_cropped,
                 R.drawable.cape2_guapo_bitmap_cropped);
 
+
+
         guapo_head = guapo_image.get_image();
         cape_image = guapo_image.get_cape();
-
-        guapo_head_hit = BitmapFactory.decodeResource(getResources(), R.drawable.guapo_hit_bitmap_cropped);
-        guapo_head_hit = Bitmap.createScaledBitmap(guapo_head_hit, (int) screen_factor_x, (int) screen_factor_y, false);
 
         guapo_body = BitmapFactory.decodeResource(getResources(), R.drawable.guapo_body_bitmap_cropped);
         guapo_body = Bitmap.createScaledBitmap(guapo_body, (int) ((screen_factor_x * 4) / 3), (int) ((screen_factor_y * 2) / 3), false);
@@ -446,6 +464,8 @@ public class MainView extends SurfaceView {
         guapo_head = guapo_image.get_image();
         cape_image = guapo_image.get_cape();
 
+        hero_image.update();
+
         if((action == MotionEvent.ACTION_MOVE) && !game_paused) {
             guapo_loc_x_o = guapo_loc_x;
             guapo_loc_x = (int) loc_x - guapo_head.getWidth() / 2;
@@ -515,6 +535,9 @@ public class MainView extends SurfaceView {
         coordinates[0] = guapo_loc_x;
         coordinates[1] = guapo_loc_y;
 
+        hero_image.x = guapo_loc_x;
+        hero_image.y = guapo_loc_y;
+
         return coordinates;
 
     }
@@ -532,7 +555,7 @@ public class MainView extends SurfaceView {
     }
 
     void check_if_hit_character(CharacterImage animal) {
-        Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + guapo_head.getWidth(), guapo_loc_y + guapo_head.getHeight());
+        Rect rect_1 = new Rect(guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_hero_image().getHeight() / 3, guapo_loc_x + hero_image.get_hero_image().getWidth(), guapo_loc_y - hero_image.get_hero_image().getHeight() / 3 + hero_image.get_hero_image().getHeight());
         Rect rect_2 = new Rect(animal.x + animal.get_character_image().getWidth() / 5,
                 animal.y + animal.get_character_image().getHeight() / 5,
                 animal.x + ((animal.get_character_image().getWidth() * 4) / 5),
@@ -565,7 +588,7 @@ public class MainView extends SurfaceView {
             float snack_inst_width = (float) snack_inst.get_snack_image().getWidth();
             float snack_inst_height = (float) snack_inst.get_snack_image().getHeight();
 
-            Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + guapo_head.getWidth(), guapo_loc_y + guapo_head.getHeight());
+            Rect rect_1 = new Rect(guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_hero_image().getHeight() / 3, guapo_loc_x - hero_image.get_hero_image().getWidth() / 3 + hero_image.get_hero_image().getWidth(), guapo_loc_y - hero_image.get_hero_image().getHeight() / 3 + hero_image.get_hero_image().getHeight());
             Rect rect_2 = new Rect(snack_inst.x + (int) snack_inst_width/5,
                     snack_inst.y + (int) snack_inst_height/5,
                     snack_inst.x + (int) ((snack_inst_width*4)/5),
@@ -603,7 +626,7 @@ public class MainView extends SurfaceView {
             float beggin_strip_width = (float) beggin_strip.get_snack_image().getWidth();
             float beggin_strip_height = (float) beggin_strip.get_snack_image().getHeight();
 
-            Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + guapo_head.getWidth(), guapo_loc_y + guapo_head.getHeight());
+            Rect rect_1 = new Rect(guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_hero_image().getHeight() / 3, guapo_loc_x - hero_image.get_hero_image().getWidth() / 3 + hero_image.get_hero_image().getWidth(), guapo_loc_y - hero_image.get_hero_image().getHeight() / 3 + hero_image.get_hero_image().getHeight());
             Rect rect_2 = new Rect(beggin_strip.x + (int) beggin_strip_width / 5,
                     beggin_strip.y + (int) beggin_strip_height / 5,
                     beggin_strip.x + (int) ((beggin_strip_width * 4) / 5),
@@ -809,7 +832,7 @@ public class MainView extends SurfaceView {
         float bird_width = (float) bird.get_bird_image().getWidth();
         float bird_height = (float) bird.get_bird_image().getHeight();
 
-        Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + guapo_head.getWidth(), guapo_loc_y + guapo_head.getHeight());
+        Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + hero_image.get_hero_image().getWidth() / 2, guapo_loc_y + hero_image.get_hero_image().getHeight() / 2);
         Rect rect_2 = new Rect(bird.x + (int) ((bird_width * 35) / 100),
                 bird.y + (int) ((bird_height * 35) / 100),
                 bird.x + (int) ((bird_width * 65) / 100),
@@ -1349,14 +1372,14 @@ public class MainView extends SurfaceView {
     }
 
     public void draw_guapo(Canvas canvas) {
-        int yh = guapo_loc_y + (4 * guapo_head.getHeight()) / 5;
-        int y2 = yh - cape_image.getHeight() / 2;
-        int yh_body = guapo_loc_y + (5 * guapo_head.getHeight()) / 5;
-        int y2_body = yh_body - guapo_body.getHeight() / 2;
-        canvas.drawBitmap(cape_image, guapo_loc_x - (cape_image.getWidth() - (float) (11 * cape_image.getWidth()) / 20), y2, null);
-        canvas.drawBitmap(guapo_body, guapo_loc_x - (guapo_body.getWidth() - (float) (guapo_body.getWidth() * 3) / 5), y2_body, null);
-        if(!hit_bird) {
-            canvas.drawBitmap(guapo_head, guapo_loc_x, guapo_loc_y, null);
+        hero_image.hero_is_hit = hit_bird;
+        if(hero_id == 0) {
+            canvas.drawBitmap(hero_image.get_cape_image(), guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_cape_image().getHeight() / 5, null);
+            canvas.drawBitmap(hero_image.get_hero_image(), guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_hero_image().getHeight() / 3, null);
+        }
+        else {
+            canvas.drawBitmap(hero_image.get_cape_image(), guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_cape_image().getHeight() / 3, null);
+            canvas.drawBitmap(hero_image.get_hero_image(), guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_hero_image().getHeight() / 3, null);
         }
     }
 

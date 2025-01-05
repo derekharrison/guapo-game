@@ -1,7 +1,7 @@
 package com.main.guapogame;
 public class Parameters {
     // Level Parameters
-    public final int LEVEL_UNLOCK_SCORE = 200;
+    public final int LEVEL_UNLOCK_SCORE = 100;
     public final int CHECK_POINT_INTERVAL = 100;
     public final int MAX_NUM_BIRDS = 12;
     public final int POINTS_BEGGIN_STRIPS = 5;

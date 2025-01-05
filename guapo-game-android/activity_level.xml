@@ -1,0 +1,186 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/high_score_level2_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_guapo_game_startscreen2" />
+
+    <ImageView
+        android:id="@+id/volumeCtrl"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:src="@drawable/volume_on" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Levels   "
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/level1_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView18"
+        android:layout_alignRight="@+id/textView18"
+        android:text="aruba "
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_orange_dark" />
+
+    <Button
+        android:id="@+id/second_level2_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/level1_id"
+        android:layout_alignLeft="@id/level1_id"
+        android:layout_alignRight="@id/level1_id"
+        android:text="beach"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_orange_dark" />
+
+    <TextView
+        android:id="@+id/high_score_id_level1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/level1_id"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="7sp"
+        android:layout_toEndOf="@+id/level1_id"
+        android:layout_toRightOf="@+id/level1_id"
+        android:text="0"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/high_score_id_level2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/second_level2_id"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="7sp"
+        android:layout_toEndOf="@+id/second_level2_id"
+        android:layout_toRightOf="@+id/second_level2_id"
+        android:text="0"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/trip_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/second_level2_id"
+        android:layout_alignRight="@id/level1_id"
+        android:text="trip"
+        android:layout_alignLeft="@id/level1_id"
+        app:backgroundTint="@android:color/holo_orange_dark"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/high_score_id_level3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/trip_id"
+        android:layout_toEndOf="@+id/trip_id"
+        android:layout_toRightOf="@+id/trip_id"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="7sp"
+        android:text="0"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/ocean_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_id"
+        android:layout_alignLeft="@id/level1_id"
+        android:layout_alignRight="@id/level1_id"
+        android:text="ocean"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_orange_dark" />
+
+    <Button
+        android:id="@+id/utreg_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ocean_id"
+        android:layout_alignLeft="@id/level1_id"
+        android:layout_alignRight="@id/level1_id"
+        android:text="utreg"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_orange_dark" />
+
+    <TextView
+        android:id="@+id/high_score_id_level_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="7sp"
+        android:layout_alignTop="@+id/utreg_id"
+        android:layout_toEndOf="@+id/utreg_id"
+        android:layout_toRightOf="@+id/utreg_id"
+        android:text="0"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/high_score_id_level_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="7sp"
+        android:layout_alignTop="@+id/ocean_id"
+        android:layout_toEndOf="@+id/ocean_id"
+        android:layout_toRightOf="@+id/ocean_id"
+        android:text="0"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView18"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_toEndOf="@+id/textView18"
+        android:layout_toRightOf="@+id/textView18"
+        android:text="High Score"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/choose_level_id3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Player Menu"
+        android:layout_marginTop="7sp"
+        android:layout_marginLeft="7sp"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_blue_dark" />
+
+    <Button
+        android:id="@+id/main_menu_button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/choose_level_id3"
+        android:layout_alignRight="@id/choose_level_id3"
+        android:text="Main Menu"
+        android:layout_below="@+id/choose_level_id3"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_blue_dark" />
+
+</RelativeLayout>

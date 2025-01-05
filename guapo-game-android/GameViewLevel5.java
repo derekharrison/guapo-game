@@ -158,9 +158,6 @@ public class GameViewLevel5 extends MainView implements Runnable {
             // Draw Guapo
             draw_guapo(canvas);
 
-            // Draw hit Guapo
-            canvas.drawBitmap(guapo_head_hit, guapo_loc_x, guapo_loc_y, null);
-
             canvas.drawBitmap(continue_button_not_pressed, left1, top1, null);
             canvas.drawBitmap(restart_game_pressed, left2, top2, null);
 
@@ -197,9 +194,6 @@ public class GameViewLevel5 extends MainView implements Runnable {
             // Draw Guapo
             draw_guapo(canvas);
 
-            // Draw hit Guapo
-            canvas.drawBitmap(guapo_head_hit, guapo_loc_x, guapo_loc_y, null);
-
             canvas.drawBitmap(continue_button_pressed, left1, top1, null);
             canvas.drawBitmap(restart_game_not_pressed, left2, top2, null);
 
@@ -235,8 +229,8 @@ public class GameViewLevel5 extends MainView implements Runnable {
 
             // Case Guapo hit a bird. Draw hit Guapo and stop game.
             if(hit_bird && num_lives > 0) {
-                // Draw hit Guapo
-                canvas.drawBitmap(guapo_head_hit, guapo_loc_x, guapo_loc_y, null);
+                // Draw Guapo
+                draw_guapo(canvas);
 
                 // Draw restart and continue buttons
                 canvas.drawBitmap(continue_button_not_pressed, (float)screen_width / 2 - 10 - continue_button_not_pressed.getWidth(), (float) screen_height / 2 - 10, null);
@@ -246,12 +240,11 @@ public class GameViewLevel5 extends MainView implements Runnable {
                 is_playing = false;
             }
             else if(hit_bird && num_lives == 0) {
+                // Draw Guapo
+                draw_guapo(canvas);
+
                 // Set playing bit to false
                 is_playing = false;
-
-                // Draw hit Guapo
-                canvas.drawBitmap(guapo_head_hit, guapo_loc_x, guapo_loc_y, null);
-
 
                 getHolder().unlockCanvasAndPost(canvas);
 

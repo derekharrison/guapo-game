@@ -17,8 +17,6 @@ public class GameViewLevel4 extends MainView implements Runnable{
     private Jellyfish[] jellyfish;
     private Backgrounds backgrounds_level4;
     private GameActivityLevel4 game_activity;
-    private Bitmap scuba_tank;
-    private Bitmap snorkel_mask;
     private boolean hit_jellyfish = false;
     private BubbleProducers bubble_producers;
 
@@ -147,20 +145,23 @@ public class GameViewLevel4 extends MainView implements Runnable{
                 R.drawable.cape1_guapo_bitmap_cropped,
                 R.drawable.cape2_guapo_bitmap_cropped);
 
+        if(hero_id == 1) {
+            hero_image = new HeroImage(getResources(),
+                    (int) screen_factor_x * 3 / 2,
+                    (int) screen_factor_y * 3 / 2,
+                    R.drawable.tutti_snorkel1_cropped,
+                    R.drawable.tutti_snorkel1_hit_cropped);
+        }
+        else {
+            hero_image = new HeroImage(getResources(),
+                    (int) screen_factor_x * 3 / 2,
+                    (int) screen_factor_y * 3 / 2,
+                    R.drawable.guapo_snorkel_bitmap_cropped,
+                    R.drawable.guapo_snorkel_hit_bitmap_cropped);
+        }
+
         guapo_head = guapo_image.get_image();
         cape_image = guapo_image.get_cape();
-
-        guapo_head_hit = BitmapFactory.decodeResource(getResources(),R.drawable.guapo_snorkelhit_bitmap_cropped);
-        guapo_head_hit = Bitmap.createScaledBitmap(guapo_head_hit, (int) screen_factor_x, (int) screen_factor_y, false);
-
-        guapo_body = BitmapFactory.decodeResource(getResources(), R.drawable.guapo_body_bitmap_cropped);
-        guapo_body = Bitmap.createScaledBitmap(guapo_body, (int) ((screen_factor_x *4)/3), (int) ((screen_factor_y *2)/3), false);
-
-        scuba_tank = BitmapFactory.decodeResource(getResources(), R.drawable.scuba_tank_bitmap_cropped);
-        scuba_tank = Bitmap.createScaledBitmap(scuba_tank, (int) ((screen_factor_x *4)/5), (int) ((screen_factor_y *2)/5), false);
-
-        snorkel_mask = BitmapFactory.decodeResource(getResources(), R.drawable.snorkel_mask_bitmap_cropped);
-        snorkel_mask = Bitmap.createScaledBitmap(snorkel_mask, (int) ((screen_factor_x *5)/5), (int) ((screen_factor_y *5)/5), false);
 
         pause_button = BitmapFactory.decodeResource(getResources(), R.drawable.pause_button_bitmap_cropped);
         pause_button = Bitmap.createScaledBitmap(pause_button, (int) (screen_factor_x *1)/4, (int) (screen_factor_y *1)/4, false);
@@ -314,7 +315,7 @@ public class GameViewLevel4 extends MainView implements Runnable{
             float jellyfish_inst_width = (float) jellyfish_inst.get_jellyfish().getWidth();
             float jellyfish_inst_height = (float) jellyfish_inst.get_jellyfish().getHeight();
 
-            Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + guapo_head.getWidth(), guapo_loc_y + guapo_head.getHeight());
+            Rect rect_1 = new Rect(guapo_loc_x + hero_image.get_hero_image().getWidth() / 4, guapo_loc_y + hero_image.get_hero_image().getHeight() / 4, guapo_loc_x + hero_image.get_hero_image().getWidth() * 3 / 4, guapo_loc_y + hero_image.get_hero_image().getHeight() * 3 / 4);
             Rect rect_2 = new Rect(jellyfish_inst.x + (int) ((jellyfish_inst_width*35)/100),
                     jellyfish_inst.y + (int) ((jellyfish_inst_height*35)/100),
                     jellyfish_inst.x + (int) ((jellyfish_inst_width*65)/100),
@@ -411,7 +412,7 @@ public class GameViewLevel4 extends MainView implements Runnable{
             float pufferfish_inst_width = (float) pufferfish_inst.get_fish_width();
             float pufferfish_inst_height = (float) pufferfish_inst.get_fish_height();
 
-            Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + guapo_head.getWidth(), guapo_loc_y + guapo_head.getHeight());
+            Rect rect_1 = new Rect(guapo_loc_x, guapo_loc_y, guapo_loc_x + hero_image.get_hero_image().getWidth(), guapo_loc_y + hero_image.get_hero_image().getHeight());
             Rect rect_2 = new Rect(pufferfish_inst.x + (int) ((pufferfish_inst_width*35)/100),
                     pufferfish_inst.y + (int) ((pufferfish_inst_height*35)/100),
                     pufferfish_inst.x + (int) ((pufferfish_inst_width*65)/100),
@@ -551,19 +552,18 @@ public class GameViewLevel4 extends MainView implements Runnable{
 
     private void update_guapo_bubbles() {
         int yh_snorkel = guapo_loc_y + (guapo_head.getHeight()) / 4;
-        int y2_snorkel = yh_snorkel - snorkel_mask.getHeight() / 5;
 
         bubble_producers.guapo_bubbles.update_bubble1();
         bubble_producers.guapo_bubbles.update_bubble2();
         bubble_producers.guapo_bubbles.update_bubble3();
 
         if(bubble_producers.guapo_bubbles.are_bubbles_out_of_bounds()) {
+            bubble_producers.guapo_bubbles.y_b1 = yh_snorkel;
+            bubble_producers.guapo_bubbles.y_b2 = yh_snorkel;
+            bubble_producers.guapo_bubbles.y_b3 = yh_snorkel;
             bubble_producers.guapo_bubbles.x_b1 = guapo_loc_x + (3 * guapo_head.getWidth()) / 4;
-            bubble_producers.guapo_bubbles.y_b1 = y2_snorkel;
             bubble_producers.guapo_bubbles.x_b2 = guapo_loc_x + (3 * guapo_head.getWidth()) / 4;
-            bubble_producers.guapo_bubbles.y_b2 = y2_snorkel;
             bubble_producers.guapo_bubbles.x_b3 = guapo_loc_x + (3 * guapo_head.getWidth()) / 4;
-            bubble_producers.guapo_bubbles.y_b3 = y2_snorkel;
             bubble_producers.guapo_bubbles.bubble1_is_just_in_bounds_again = true;
             bubble_producers.guapo_bubbles.bubble2_is_just_in_bounds_again = true;
             bubble_producers.guapo_bubbles.bubble3_is_just_in_bounds_again = true;
@@ -571,7 +571,6 @@ public class GameViewLevel4 extends MainView implements Runnable{
         else {
             if(bubble_producers.guapo_bubbles.bubble1_is_just_in_bounds_again) {
                 bubble_producers.guapo_bubbles.x_b1 = guapo_loc_x + (3 * guapo_head.getWidth()) / 4;
-                bubble_producers.guapo_bubbles.y_b1 = y2_snorkel;
                 bubble_producers.guapo_bubbles.bubble1_is_just_in_bounds_again = false;
                 play_sound_bubbles();
             }
@@ -581,7 +580,6 @@ public class GameViewLevel4 extends MainView implements Runnable{
             if(bubble_producers.guapo_bubbles.b2_can_be_produced) {
                 if(bubble_producers.guapo_bubbles.bubble2_is_just_in_bounds_again) {
                     bubble_producers.guapo_bubbles.x_b2 = guapo_loc_x + (3* guapo_head.getWidth())/4;
-                    bubble_producers.guapo_bubbles.y_b2 = y2_snorkel;
                     bubble_producers.guapo_bubbles.bubble2_is_just_in_bounds_again = false;
                 }
             }
@@ -590,7 +588,7 @@ public class GameViewLevel4 extends MainView implements Runnable{
             if(bubble_producers.guapo_bubbles.b3_can_be_produced) {
                 if(bubble_producers.guapo_bubbles.bubble3_is_just_in_bounds_again) {
                     bubble_producers.guapo_bubbles.x_b3 = guapo_loc_x + (3 * guapo_head.getWidth())/4;
-                    bubble_producers.guapo_bubbles.y_b3 = y2_snorkel;
+                    bubble_producers.guapo_bubbles.y_b3 = yh_snorkel;
                     bubble_producers.guapo_bubbles.bubble3_is_just_in_bounds_again = false;
                 }
             }
@@ -599,17 +597,9 @@ public class GameViewLevel4 extends MainView implements Runnable{
     }
 
     private void draw_guapo_level4(Canvas canvas) {
-        int yh_body = guapo_loc_y + (5 * guapo_head.getHeight()) / 5;
-        int y2_body = yh_body - guapo_body.getHeight() / 2;
-        int yh_scuba = guapo_loc_y + (4 * guapo_head.getHeight()) / 5;
-        int y2_scuba = yh_scuba - scuba_tank.getHeight() / 2;
 
-        canvas.drawBitmap(guapo_body, guapo_loc_x - (guapo_body.getWidth() - (float) (guapo_body.getWidth() * 50) / 100), y2_body, null);
-        canvas.drawBitmap(scuba_tank, guapo_loc_x - (scuba_tank.getWidth() - (float) (8 * scuba_tank.getWidth()) / 20), y2_scuba, null);
-
-        if(!hit_jellyfish) {
-            canvas.drawBitmap(guapo_head, guapo_loc_x, guapo_loc_y, null);
-        }
+        hero_image.hero_is_hit = hit_jellyfish;
+        canvas.drawBitmap(hero_image.get_hero_image(), guapo_loc_x - hero_image.get_hero_image().getWidth() / 3, guapo_loc_y - hero_image.get_hero_image().getHeight() / 3, null);
 
         Bitmap bubble1 = bubble_producers.guapo_bubbles.get_bubble1();
         Bitmap bubble2 = bubble_producers.guapo_bubbles.get_bubble2();
@@ -925,9 +915,6 @@ public class GameViewLevel4 extends MainView implements Runnable{
 
             draw_guapo_level4(canvas);
 
-            // Draw hit Guapo
-            canvas.drawBitmap(guapo_head_hit, guapo_loc_x, guapo_loc_y, null);
-
             // Draw restart and continue buttons
             canvas.drawBitmap(continue_button_not_pressed, left1, top1, null);
             canvas.drawBitmap(restart_game_pressed, left2, top2, null);
@@ -989,9 +976,6 @@ public class GameViewLevel4 extends MainView implements Runnable{
             draw_pause_button(canvas);
 
             draw_guapo_level4(canvas);
-
-            // Draw hit Guapo
-            canvas.drawBitmap(guapo_head_hit, guapo_loc_x, guapo_loc_y, null);
 
             // Draw restart and continue buttons
             canvas.drawBitmap(continue_button_pressed, left1, top1, null);
@@ -1056,8 +1040,7 @@ public class GameViewLevel4 extends MainView implements Runnable{
             draw_guapo_level4(canvas);
 
             if(hit_jellyfish && num_lives > 0) {
-                // Draw hit Guapo
-                canvas.drawBitmap(guapo_head_hit, guapo_loc_x, guapo_loc_y, null);
+                draw_guapo_level4(canvas);
 
                 // Draw restart and continue buttons
                 canvas.drawBitmap(continue_button_not_pressed, (float)screen_width / 2 - 10 - continue_button_not_pressed.getWidth(), (float) screen_height / 2 - 10, null);
@@ -1068,7 +1051,6 @@ public class GameViewLevel4 extends MainView implements Runnable{
             }
             else if(hit_jellyfish && num_lives == 0) {
                 is_playing = false;
-                canvas.drawBitmap(guapo_head_hit, guapo_loc_x - (float) guapo_head_hit.getWidth() / 20, guapo_loc_y, null);
                 getHolder().unlockCanvasAndPost(canvas);
                 save_high_score("high_score_level4");
                 quit_game();
