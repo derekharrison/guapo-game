@@ -32,6 +32,7 @@ let num_screen_lengths_for_disp = 10
 let points_at_which_beggin_strips_appear = 50
 let num_frames_sun_popup = 180
 let num_frames_flag_popup = 180
+let num_frames_misty = 60
 let bubble_vel_y = 5.0
 
 let pause_button = SKSpriteNode(imageNamed: "pause_button_bitmap_cropped")
@@ -217,7 +218,7 @@ let MAIN_MENU_BUTTON_GRAY_2 = "beach_level_button_grey_1"
 let MAIN_MENU_BUTTON_GRAY_3 = "trip_level_button_grey_1"
 let MAIN_MENU_BUTTON_GRAY_4 = "ocean_level_button_grey_1"
 let MAIN_MENU_BUTTON_GRAY_5 = "utreg_level_button_grey_1"
-let LEVEL_UNLOCK_GUARD = 10
+let LEVEL_UNLOCK_GUARD = 100
 let FLAG_FREQUENCY = 100
 
 let BACKGROUNDS_STR = "backgrounds"

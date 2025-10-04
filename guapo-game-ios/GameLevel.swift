@@ -811,7 +811,7 @@ class GameLevel {
         }
         
         if gameScore >= play_misty_guard {
-            play_misty_guard += 20 + Int.random(in: 10..<40)
+            play_misty_guard += 200 + Int.random(in: 10..<40)
             misty.play_misty(bool: Bool.random())
             if misty.top {
                 misty.set_pos(pos: CGPoint(x : misty.width / 2, y : misty.height * 0.75 + misty.images[0].size.height / 2))

@@ -282,17 +282,17 @@ class Misty : GameObject {
             self.birdi_on_top(image_id: 1)
         }
         
-        if counter1 < 60 {
+        if counter1 < num_frames_misty {
             self.update_pos()
             counter1 += 1
         }
         
-        else if counter1 == 60 {
+        else if counter1 == num_frames_misty {
             self.vel_y = -self.vel_y
             counter1 += 1
         }
         
-        else if counter1 < 120 {
+        else if counter1 < num_frames_misty + 60 {
             self.update_pos()
             counter1 += 1
         }
