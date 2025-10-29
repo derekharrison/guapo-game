@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+// TODO : refactor
 
 public class CharacterImage {
     public int speed = 20;

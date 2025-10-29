@@ -1,11 +1,12 @@
 package com.main.guapogame;
 
+import static com.main.guapogame.Parameters.getBackgroundSpeed;
+
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class Snack {
-    public int speed = 20;
+public class Snack implements Position, Velocity, Update, GameImage {
     public int x = 0, y, width, height;
     public Bitmap snack_image;
     public boolean play_sound_allowed = true;
@@ -21,7 +22,6 @@ public class Snack {
         snack_image = Bitmap.createScaledBitmap(snack_image, width, height, false);
 
         y = -height;
-
     }
 
     public Bitmap get_snack_image () {
@@ -29,4 +29,34 @@ public class Snack {
     }
 
     public void set_x(int x) { this.x = x; }
+
+    @Override
+    public Bitmap getImage() {
+        return this.snack_image;
+    }
+
+    @Override
+    public float getPositionX() {
+        return x;
+    }
+
+    @Override
+    public float getPositionY() {
+        return y;
+    }
+
+    @Override
+    public void update() {
+        this.x += (int) getVelocityX();
+    }
+
+    @Override
+    public float getVelocityX() {
+        return -getBackgroundSpeed();
+    }
+
+    @Override
+    public float getVelocityY() {
+        return 0;
+    }
 }

@@ -1,20 +1,21 @@
 package com.main.guapogame;
 
+import static com.main.guapogame.Constants.FPS;
+import static com.main.guapogame.Constants.START_NUM_OF_VILLAINS;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.LinkedList;
 
 public class GameViewLevel1 extends MainView implements Runnable {
-
     private Thread thread;
-
-    private Eagle[] eagles;
-
-    private Backgrounds backgrounds_level1;
-
-    private GameActivityLevel1 game_activity;
+    private LinkedList<Background> backgrounds;
+    private GameActivityLevel1 gameActivity;
 
     public GameViewLevel1(Context context) {
         super(context);
@@ -26,401 +27,169 @@ public class GameViewLevel1 extends MainView implements Runnable {
 
     public GameViewLevel1(GameActivityLevel1 activity) {
         super(activity);
+        gameActivity = activity;
 
-        game_activity = activity;
+        createVillains();
+        createBackgrounds();
 
-        backgrounds_level1 = new Backgrounds(activity, screen_width, screen_height, parameters.BACKGROUND_IMAGES_LEVEL1);
-
-        init_eagles();
-
-        init_reset(parameters.LEVEL1_STR);
+        // TODO : support continue active session
     }
+
 
     @Override
     public void run() {
+        runGame();
+    }
 
-        long start_time;
-        long time_millis;
-        long wait_time;
-        int target_FPS = 30;
-        long target_time = 1000 / target_FPS;
-
-        while (is_playing) {
-
-            start_time = System.nanoTime();
-
-            if(!game_paused) {
-                update();
-            }
-
+    private void runGame() {
+        while (!gameIsOver()) {
+            long start_time = System.nanoTime();
             draw();
-
-            time_millis = (System.nanoTime() - start_time) / 1000000;
-            wait_time = target_time - time_millis;
-
-            try{
-                Thread.sleep(wait_time);
-            }catch(Exception e){
-            }
+            update();
+            makeThreadSleepWithDelay(computeDelay(start_time));
         }
-    }
 
-    private void init_reset(String level) {
-        boolean in_game = get_game_state(parameters.GAME_STATE_STR + level);
-        if(in_game) {
-            get_num_lives(parameters.NUM_LIVES_STR + level);
-
-            get_backgrounds(backgrounds_level1, parameters.BACKGROUNDS_STR + level);
-
-            get_num_birds(parameters.NUM_BIRDS_STR + level);
-
-            get_eagles(eagles, parameters.BIRDS_STR + level);
-
-            get_character(frito, parameters.FRITO_STR + level);
-
-            get_character(misty, parameters.MISTY_STR + level);
-
-            get_character(misty_top, parameters.MISTY_TOP_STR + level);
-
-            get_character(brownie, parameters.BROWNIE_STR + level);
-
-            get_snacks(broccoli, parameters.BROCCOLI_STR + level);
-
-            get_snacks(cheesy_bites, parameters.CHEESY_BITES_STR + level);
-
-            get_snacks(paprika, parameters.PAPRIKA_STR + level);
-
-            get_snacks(cucumbers, parameters.CUCUMBERS_STR + level);
-
-            Coordinates coordinates_beggin = get_loc(parameters.BEGGIN_STR + level);
-
-            beggin_strip.x = coordinates_beggin.x;
-            beggin_strip.y = coordinates_beggin.y;
-
-            Coordinates coordinates_guapo = get_loc(parameters.GUAPO_LOC_STR + level);
-
-            guapo_loc_x = coordinates_guapo.x;
-            guapo_loc_y = coordinates_guapo.y;
-
-            get_score(parameters.SCORE_STR + level);
-
-            get_difficulty_level(parameters.DIFFICULTY_LEVEL_STR + level);
-
-            get_check_point(parameters.CHECKPOINT_STR + level);
-        }
-    }
-
-    public void init_eagles() {
-        eagles = new Eagle[parameters.MAX_NUM_BIRDS];
-        for (int i = 0; i < parameters.MAX_NUM_BIRDS; i++) {
-
-            Eagle eagle = new Eagle(getResources(), (int) screen_factor_x, (int) screen_factor_y);
-            eagles[i] = eagle;
-        }
-    }
-
-    public void draw_backgrounds(Canvas canvas) {
-        for(int i = 0; i < backgrounds_level1.num_backgrounds; ++i) {
-            if(backgrounds_level1.backgrounds[i].x <= screen_width && backgrounds_level1.backgrounds[i].x + backgrounds_level1.backgrounds[i].background.getWidth() >= 0) {
-                canvas.drawBitmap(backgrounds_level1.backgrounds[i].background,
-                        backgrounds_level1.backgrounds[i].x,
-                        backgrounds_level1.backgrounds[i].y, null);
-            }
-        }
-    }
-
-    private void draw_back_restart_pressed(int left1, int top1, int left2, int top2) {
-
-        if (getHolder().getSurface().isValid()) {
-
-            Canvas canvas = getHolder().lockCanvas();
-
-            // Draw backgrounds
-            draw_backgrounds(canvas);
-
-            // Draw lives
-            draw_lives(canvas, screen_width / 2 - 20, 20);
-
-            // Draw snacks, characters, score and pause button
-            draw_all(canvas);
-
-            // Draw birds
-            draw_birds(canvas, eagles);
-
-            // Draw sun popup
-            draw_sun_popup(canvas, "high_score");
-
-            // Draw checkpoint flag
-            if(num_lives > 0) {
-                draw_flag_popup(canvas, backgrounds_level1, eagles, "level_1");
-            }
-
-            // Draw Guapo
-            draw_guapo(canvas);
-
-            canvas.drawBitmap(continue_button_not_pressed, left1, top1, null);
-            canvas.drawBitmap(restart_game_pressed, left2, top2, null);
-
-            getHolder().unlockCanvasAndPost(canvas);
-        }
-    }
-
-    private void draw_back_continue_pressed(int left1, int top1, int left2, int top2) {
-
-        if (getHolder().getSurface().isValid()) {
-
-            Canvas canvas = getHolder().lockCanvas();
-
-            // Draw backgrounds
-            draw_backgrounds(canvas);
-
-            // Draw lives
-            draw_lives(canvas, screen_width / 2 - 20, 20);
-
-            // Draw snacks, characters, score and pause button
-            draw_all(canvas);
-
-            // Draw birds
-            draw_birds(canvas, eagles);
-
-            // Draw sun popup
-            draw_sun_popup(canvas, "high_score");
-
-            // Draw checkpoint flag
-            if(num_lives > 0) {
-                draw_flag_popup(canvas, backgrounds_level1, eagles, "level_1");
-            }
-
-            // Draw Guapo
-            draw_guapo(canvas);
-
-            canvas.drawBitmap(continue_button_pressed, left1, top1, null);
-            canvas.drawBitmap(restart_game_not_pressed, left2, top2, null);
-
-            getHolder().unlockCanvasAndPost(canvas);
-        }
+        handleGameOver();
     }
 
     private void draw() {
-
-        hero_image.hero_is_hit = hit_bird;
-
         if (getHolder().getSurface().isValid()) {
-
             Canvas canvas = getHolder().lockCanvas();
 
-            // Draw backgrounds
-            draw_backgrounds(canvas);
-
-            // Draw lives
-            draw_lives(canvas, screen_width / 2 - 20, 20);
-
-            // Draw snacks, characters, score and pause button
-            draw_all(canvas);
-
-            // Draw birds
-            draw_birds(canvas, eagles);
-
-            // Draw sun popup
-            draw_sun_popup(canvas, "high_score");
-
-            // Draw checkpoint flag
-            if(num_lives > 0) {
-                draw_flag_popup(canvas, backgrounds_level1, eagles, "level_1");
-            }
-
-            // Draw Guapo
-            draw_guapo(canvas);
-
-            // Case Guapo hit a bird. Draw hit Guapo and stop game.
-            if(hit_bird && num_lives > 0) {
-                // Draw Guapo
-                draw_guapo(canvas);
-
-                // Draw restart and continue buttons
-                canvas.drawBitmap(continue_button_not_pressed, (float)screen_width / 2 - 10 - continue_button_not_pressed.getWidth(), (float) screen_height / 2 - 10, null);
-
-                canvas.drawBitmap(restart_game_not_pressed, (float) screen_width / 2 + 10, (float) screen_height / 2 - 10, null);
-
-                is_playing = false;
-            }
-            else if(hit_bird && num_lives == 0) {
-                // Set playing bit to false
-                is_playing = false;
-
-                // Draw Guapo
-                draw_guapo(canvas);
-
-                getHolder().unlockCanvasAndPost(canvas);
-
-                // Save high score and stop game.
-                save_high_score("high_score");
-                quit_game();
-                return;
-            }
+            drawBackgrounds(canvas);
+            drawLives(canvas, screenWidth / 2 - 20, 20);
+            drawAll(canvas);
+            drawVillains(canvas);
+            drawSunPopup(canvas, "high_score");
+            drawHero(canvas);
 
             getHolder().unlockCanvasAndPost(canvas);
-
         }
     }
 
-    public void update_background() {
-        int n = backgrounds_level1.num_backgrounds;
-        for(int i = 0; i < n; ++i) {
-            backgrounds_level1.backgrounds[i].x -= background_speed;
+    public void drawBackgrounds(Canvas canvas) {
+        for(Background background : backgrounds) {
+            background.draw(canvas);
+        }
+    }
 
-            if(backgrounds_level1.backgrounds[i].x < 0) {
-                if(i == n - 1) {
-                    backgrounds_level1.backgrounds[0].x = backgrounds_level1.backgrounds[n - 1].x +
-                            backgrounds_level1.backgrounds[n - 1].background.getWidth() - 10;
-                }
-                if(i < n - 1) {
-                    backgrounds_level1.backgrounds[i + 1].x = backgrounds_level1.backgrounds[i].x + backgrounds_level1.backgrounds[i].background.getWidth() - 10;
-                }
-            }
-            if(backgrounds_level1.backgrounds[i].x + backgrounds_level1.backgrounds[i].background.getWidth() < 0) {
-                if(i == 0) {
-                    backgrounds_level1.backgrounds[i].x = backgrounds_level1.backgrounds[n - 1].x +
-                            backgrounds_level1.backgrounds[n - 1].background.getWidth() - 10;
-                }
-                if(i != 0) {
-                    backgrounds_level1.backgrounds[i].x = backgrounds_level1.backgrounds[i - 1].x +
-                            backgrounds_level1.backgrounds[i - 1].background.getWidth() - 10;
-                }
+    private void update() {
+        if(gameIsPlaying()) {
+            updateBackground();
+            updateVillains();
+            updateAll();
+            // TODO : save game state
+            if (heroHitVillain()) {
+                // TODO : take life
+                setGameStateToGameOver();
             }
         }
     }
 
-    public void update() {
-
-        update_background();
-
-        update_birds(eagles);
-
-        // Update Guapo, snacks and characters
-        update_all();
+    public void updateBackground() {
+        int backgroundId = 1;
+        for(Background background : backgrounds) {
+            background.update();
+            if(background.getPositionX() <= 0) {
+                backgrounds
+                        .get(getProceedingBackground(backgroundId))
+                        .setPositionX(background.getPositionX() + background.getBackground().getWidth() - 10);
+            }
+            backgroundId++;
+        }
     }
 
-    private void restart_game() {
+    private void makeThreadSleepWithDelay(long delay) {
+        try{
+            Thread.sleep(delay);
+        } catch(Exception _) {}
+    }
 
+    private long computeDelay(long start_time) {
+        long time_millis;
+        long target_time = 1000 / FPS;
+
+        time_millis = (System.nanoTime() - start_time) / 1000000;
+
+        return target_time - time_millis;
+    }
+
+    private void createVillains() {
+        for(int villain = 0; villain < START_NUM_OF_VILLAINS; villain++) {
+            addVillain(
+                    new Villain.Builder()
+                            .x(-500)
+                            .images(createVillainImages())
+                            .build()
+            );
+        }
+    }
+
+    private int getProceedingBackground(int id) {
+        return id % backgrounds.size();
+    }
+
+    private void handleGameOver() {
+        if(getLives() <= 0) {
+            saveHighScore("high_score");
+            // TODO : handle game is over
+        }
+        if(getLives() > 0) {
+            saveHighScore("high_score");
+            // TODO : handle game restart
+        }
+
+        transitionToActivity(LevelActivity.class);
+    }
+
+    private GameActivityLevel1 getGameActivity() {
+        return gameActivity;
+    }
+
+    private void createBackgrounds() {
+        backgrounds = new LinkedList<>();
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr1));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr2));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr3));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr4));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr5));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr6));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr7));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr8));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr9));
+        backgrounds.add(createBackground(R.drawable.background_guapo_game_nr10));
+    }
+
+    private Background createBackground(int backgroundId) {
+        return new Background.Builder()
+                .positionX(0)
+                .velocityX(-background_speed)
+                .background(getBitmapScaled(screenWidth, screenHeight, backgroundId))
+                .build();
+    }
+
+    private <T extends AppCompatActivity> void transitionToActivity(Class<T> clazz) {
         try {
             Thread.sleep(1000);
             soundPool.release();
             soundPool = null;
-            game_activity.startActivity(new Intent(game_activity, GameActivityLevel1.class));
-            game_activity.finish();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void quit_game() {
-
-        save_game_state(parameters.GAME_STATE_STR + parameters.LEVEL1_STR, false);
-
-        num_lives = parameters.NUM_LIVES;
-
-        save_num_lives(parameters.NUM_LIVES_STR + parameters.LEVEL1_STR);
-
-        try {
-            Thread.sleep(3000);
-            soundPool.release();
-            soundPool = null;
-            game_activity.startActivity(new Intent(game_activity, MainActivity.class));
-            game_activity.finish();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            getGameActivity().startActivity(new Intent(getGameActivity(), clazz));
+            getGameActivity().finish();
+        } catch (InterruptedException _) {
         }
     }
 
     public void resume() {
-
-        is_playing = true;
+        setGameStateToPlay();
         thread = new Thread(this);
         thread.start();
     }
 
     public void pause() {
-
         try {
-            is_playing = false;
+            setGameStateToGameOver();
             thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException _) {
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                int local_x = (int) event.getX();
-                int local_y = (int) event.getY();
-                action = MotionEvent.ACTION_DOWN;
-                boolean in_pause_area = (local_x >= (float) (pause_region_min_x - pause_button.getWidth() / 2)) &&
-                        (local_x <= (float) screen_width) &&
-                        (local_y >= (float) 0) &&
-                        (local_y <= (float) (pause_region_max_y + pause_button.getHeight() / 2));
-                if(in_pause_area && !hit_bird) {
-                    if(!game_paused) {
-                        game_paused = true;
-                        loc_x = guapo_loc_x + (float) guapo_head.getWidth() / 2;
-                        loc_y = guapo_loc_y + (float) guapo_head.getHeight() / 2;
-                    }
-                    else if(game_paused) {
-                        game_paused = false;
-                    }
-                }
-                else if(!in_pause_area && !game_paused && !hit_bird){
-                    loc_x = local_x;
-                    loc_y = local_y;
-                    x_velocity_o = 0;
-                    y_velocity_o = 0;
-                }
-                else if(hit_bird && !continue_restart_pressed) {
-                    int left_continue = screen_width / 2 - 10 - continue_button_not_pressed.getWidth();
-                    int top_continue = screen_height / 2 - 10;
-                    int right_continue = screen_width / 2 - 10;
-                    int bottom_continue = screen_height / 2 - 10 + continue_button_not_pressed.getHeight();
-
-                    int left_restart = screen_width / 2 + 10;
-                    int top_restart = screen_height / 2 - 10;
-                    int right_restart = screen_width / 2 + 10 + restart_game_not_pressed.getWidth();
-                    int bottom_restart = screen_height / 2 - 10 + restart_game_not_pressed.getHeight();
-
-                    if(local_x >= left_continue && local_x <= right_continue && local_y >= top_continue && local_y <= bottom_continue) {
-                        continue_restart_pressed = true;
-                        draw_back_continue_pressed(left_continue, top_continue, left_restart, top_restart);
-                        save_lives(parameters.LEVEL1_STR);
-                        save_high_score("high_score");
-                        restart_game();
-                    }
-                    else if(local_x >= left_restart && local_x <= right_restart && local_y >= top_restart && local_y <= bottom_restart) {
-                        continue_restart_pressed = true;
-                        draw_back_restart_pressed(left_continue, top_continue, left_restart, top_restart);
-                        save_high_score("high_score");
-                        quit_game();
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                local_x = (int) event.getX();
-                local_y = (int) event.getY();
-                in_pause_area = (local_x >= (float) (pause_region_min_x - pause_button.getWidth() / 2)) &&
-                        (local_x <= (float) screen_width) &&
-                        (local_y >= (float) 0) &&
-                        (local_y <= (float) (pause_region_max_y + pause_button.getHeight() / 2));
-                if(!game_paused && !in_pause_area) {
-                    action = MotionEvent.ACTION_MOVE;
-                    loc_x = local_x;
-                    loc_y = local_y;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                action = MotionEvent.ACTION_UP;
-                break;
-        }
-
-        return true;
     }
 }

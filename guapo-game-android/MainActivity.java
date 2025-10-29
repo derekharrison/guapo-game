@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (insetsController != null) {
                 insetsController.hide(WindowInsets.Type.statusBars());
+                insetsController.hide(WindowInsets.Type.navigationBars());
             }
         } else {
             getWindow().setFlags(

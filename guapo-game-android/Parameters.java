@@ -69,4 +69,32 @@ public class Parameters {
     public final String FISH5 = "fish5";
     public final String FISH7 = "fish7";
     public final String PUFFERFISH_STR = "pufferfish";
+
+    private static int BACKGROUND_SPEED;
+    private static int SCREEN_WIDTH;
+    private static int SCREEN_HEIGHT;
+
+    public static void setBackgroundSpeed(int backgroundSpeed) {
+        BACKGROUND_SPEED = backgroundSpeed;
+    }
+
+    public static int getBackgroundSpeed() {
+        return BACKGROUND_SPEED;
+    }
+
+    public static void setScreenWidth(int screenWidth) {
+        SCREEN_WIDTH = screenWidth;
+    }
+
+    public static int getScreenWidth() {
+        return SCREEN_WIDTH;
+    }
+
+    public static void setScreenHeight(int screenHeight) {
+        SCREEN_HEIGHT = screenHeight;
+    }
+
+    public static int getScreenHeight() {
+        return SCREEN_HEIGHT;
+    }
 }

@@ -9,21 +9,19 @@ import android.view.WindowManager;
 
 public class GameActivityLevel4 extends AppCompatActivity {
 
-    private GameViewLevel4 gameView;
-
     @Override
     @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        gameView = new GameViewLevel4(this);
+        GameViewLevel4 gameView = new GameViewLevel4(this);
         setContentView(gameView);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             final WindowInsetsController insetsController;
             insetsController = getWindow().getInsetsController();
-
             if (insetsController != null) {
                 insetsController.hide(WindowInsets.Type.statusBars());
+                insetsController.hide(WindowInsets.Type.navigationBars());
             }
         } else {
             getWindow().setFlags(
@@ -36,12 +34,14 @@ public class GameActivityLevel4 extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gameView.pause();
+//        gameView.pause();
+        // TODO : implement pause handline
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        gameView.resume();
+//        gameView.resume();
+        // TODO : implement resume handling
     }
 }

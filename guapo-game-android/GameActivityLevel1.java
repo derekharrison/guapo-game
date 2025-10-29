@@ -21,11 +21,12 @@ public class GameActivityLevel1 extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             final WindowInsetsController insetsController;
             insetsController = getWindow().getInsetsController();
-
             if (insetsController != null) {
                 insetsController.hide(WindowInsets.Type.statusBars());
+                insetsController.hide(WindowInsets.Type.navigationBars());
             }
-        } else {
+        }
+        else {
             getWindow().setFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN
