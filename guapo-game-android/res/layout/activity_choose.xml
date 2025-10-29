@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_guapo_game_startscreen2" />
+
+    <Button
+        android:id="@+id/guapo_char_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Guapo"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_orange_dark" />
+
+    <ImageView
+        android:id="@+id/guapoImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_toLeftOf="@+id/guapo_char_id"
+        android:layout_alignTop="@+id/guapo_char_id"
+        android:adjustViewBounds="true"
+        android:maxWidth="44dp"
+        android:maxHeight="44dp"
+        android:src="@drawable/guapo_head_bitmap_cropped" />
+
+    <Button
+        android:id="@+id/tutti_char_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/guapo_char_id"
+        android:layout_alignLeft="@id/guapo_char_id"
+        android:layout_alignRight="@id/guapo_char_id"
+        android:text="Tutti "
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_orange_dark" />
+
+    <ImageView
+        android:id="@+id/tuttiImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_toLeftOf="@+id/tutti_char_id"
+        android:layout_alignTop="@+id/tutti_char_id"
+        android:adjustViewBounds="true"
+        android:maxWidth="44dp"
+        android:maxHeight="44dp"
+        android:src="@drawable/tutti_main_image_cropped_resized" />
+
+    <Button
+        android:id="@+id/choose_level_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/main_menu_button2"
+        android:layout_alignRight="@id/main_menu_button2"
+        android:text="Continue"
+        android:layout_above="@+id/main_menu_button2"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_blue_dark" />
+
+    <Button
+        android:id="@+id/main_menu_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Main Menu"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_blue_dark" />
+
+</RelativeLayout>
