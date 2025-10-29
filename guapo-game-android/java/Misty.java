@@ -2,6 +2,7 @@ package com.main.guapogame;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 public class Misty extends CharacterImage {
 
@@ -20,6 +21,22 @@ public class Misty extends CharacterImage {
 
     public Bitmap get_misty_hit () {
         return this.character_hit;
+    }
+
+    public void draw(Canvas canvas) {
+        if(!hit_character && !is_top) {
+            canvas.drawBitmap(get_misty(), pop_up_at_x, y, null);
+        }
+        else if(hit_character && !is_top) {
+            canvas.drawBitmap(get_misty_hit(), pop_up_at_x, y, null);
+        }
+
+        if(!hit_character && is_top) {
+            canvas.drawBitmap(get_misty(), pop_up_at_x, y, null);
+        }
+        else if(hit_character && is_top) {
+            canvas.drawBitmap(get_misty_hit(), pop_up_at_x, y, null);
+        }
     }
 
 }

@@ -1,37 +1,45 @@
 package com.main.guapogame;
 
 import static com.main.guapogame.Constants.FPS;
+import static com.main.guapogame.Parameters.getScreenHeight;
+import static com.main.guapogame.Parameters.getScreenWidth;
 
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class Character extends AbstractCharacter {
+public class Frito extends Character {
     private float x = 0;
     private float y = 0;
     private float velX = 0;
     private float velY = 0;
-    private final Bitmap characterImage;
-    private final List<Bitmap> characterImages;
+    private Bitmap fritoImage;
+    private Bitmap fritoImageRotated;
+    private boolean hasInteractedWithHero = false;
+    private boolean hasAppearedOnScreen = false;
+    private boolean play_sound_allowed = false;
+
     private int frameCounter = 0;
 
-    protected Character(Builder builder) {
+    protected Frito(Builder builder) {
+        super(builder);
         this.x = builder.x;
         this.y = builder.y;
         this.velX = builder.velX;
         this.velY = builder.velY;
-        this.characterImage = builder.characterImage;
-        this.characterImages = builder.characterImages;
+
     }
 
-    public static class Builder {
+    public static class Builder extends Character.Builder {
         private float x = 0;
         private float y = 0;
         private float velX = 0;
         private float velY = 0;
-        private Bitmap characterImage;
-        private List<Bitmap> characterImages = new ArrayList<>();
+        private Bitmap fritoImage;
+        private Bitmap fritoImageRotated;
+
 
         public Builder x(float x) {
             this.x = x;
@@ -43,13 +51,13 @@ public class Character extends AbstractCharacter {
             return this;
         }
 
-        public Builder characterImage(Bitmap characterImage) {
-            this.characterImage = characterImage;
+        public Builder fritoImage(Bitmap characterImage) {
+            this.fritoImage = characterImage;
             return this;
         }
 
-        public Builder characterImages(List<Bitmap> characterImages) {
-            this.characterImages = characterImages;
+        public Builder fritoImageRotated(Bitmap characterImage) {
+            this.fritoImageRotated = characterImage;
             return this;
         }
 
@@ -63,18 +71,9 @@ public class Character extends AbstractCharacter {
             return this;
         }
 
-        public Character build() {
-            return new Character(this);
+        public Frito build() {
+            return new Frito(this);
         }
-    }
-
-
-    public void addCharacter(Bitmap character) {
-        characterImages.add(character);
-    }
-
-    public Bitmap getCharacterImage() {
-        return characterImage;
     }
 
     @Override
@@ -119,14 +118,7 @@ public class Character extends AbstractCharacter {
 
     @Override
     public void update() {
-        advanceFrameCounter();
-    }
-
-    private void advanceFrameCounter() {
-        frameCounter++;
-
-        if(frameCounter >= 2 * FPS) {
-            frameCounter = 0;
-        }
+        super.update();
+        // TODO : implement
     }
 }

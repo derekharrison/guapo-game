@@ -5,6 +5,7 @@ import static com.main.guapogame.Parameters.getBackgroundSpeed;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 public class Snack implements Position, Velocity, Update, GameImage {
     public int x = 0, y, width, height;
@@ -13,7 +14,6 @@ public class Snack implements Position, Velocity, Update, GameImage {
     public int points_snack;
 
     Snack (Resources res, int screenFactorX, int screenFactorY, int id) {
-
         snack_image = BitmapFactory.decodeResource(res, id);
 
         width = screenFactorX - screenFactorX/3;
@@ -58,5 +58,9 @@ public class Snack implements Position, Velocity, Update, GameImage {
     @Override
     public float getVelocityY() {
         return 0;
+    }
+
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(get_snack_image(), x, y, null);
     }
 }

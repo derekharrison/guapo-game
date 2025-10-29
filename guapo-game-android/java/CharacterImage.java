@@ -3,6 +3,7 @@ package com.main.guapogame;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 // TODO : refactor
 
@@ -40,4 +41,13 @@ public class CharacterImage {
     public Bitmap get_image_hit () {
         return this.character_hit;
     }
+
+
+    public void draw(Canvas canvas) {
+        if(hit_character) {
+            canvas.drawBitmap(get_image_hit(), x, y, null);
+        }
+        canvas.drawBitmap(get_character_image(), x, y, null);
+    }
+
 }

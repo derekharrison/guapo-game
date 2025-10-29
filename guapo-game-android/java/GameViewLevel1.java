@@ -12,6 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.LinkedList;
 
+// TODO : save game state
+// TODO : support continue active session
+// TODO : take life
+// TODO : handle game is over
+// TODO : handle game restart
+
 public class GameViewLevel1 extends MainView implements Runnable {
     private Thread thread;
     private LinkedList<Background> backgrounds;
@@ -31,8 +37,6 @@ public class GameViewLevel1 extends MainView implements Runnable {
 
         createVillains();
         createBackgrounds();
-
-        // TODO : support continue active session
     }
 
 
@@ -55,14 +59,11 @@ public class GameViewLevel1 extends MainView implements Runnable {
     private void draw() {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-
             drawBackgrounds(canvas);
-            drawLives(canvas, screenWidth / 2 - 20, 20);
+            drawLives(canvas);
             drawAll(canvas);
             drawVillains(canvas);
-            drawSunPopup(canvas, "high_score");
             drawHero(canvas);
-
             getHolder().unlockCanvasAndPost(canvas);
         }
     }
@@ -78,9 +79,8 @@ public class GameViewLevel1 extends MainView implements Runnable {
             updateBackground();
             updateVillains();
             updateAll();
-            // TODO : save game state
+
             if (heroHitVillain()) {
-                // TODO : take life
                 setGameStateToGameOver();
             }
         }
@@ -132,18 +132,12 @@ public class GameViewLevel1 extends MainView implements Runnable {
     private void handleGameOver() {
         if(getLives() <= 0) {
             saveHighScore("high_score");
-            // TODO : handle game is over
+            transitionToActivity(MainActivity.class);
         }
         if(getLives() > 0) {
             saveHighScore("high_score");
-            // TODO : handle game restart
+            transitionToActivity(LevelActivity.class);
         }
-
-        transitionToActivity(LevelActivity.class);
-    }
-
-    private GameActivityLevel1 getGameActivity() {
-        return gameActivity;
     }
 
     private void createBackgrounds() {
@@ -163,19 +157,16 @@ public class GameViewLevel1 extends MainView implements Runnable {
     private Background createBackground(int backgroundId) {
         return new Background.Builder()
                 .positionX(0)
-                .velocityX(-background_speed)
-                .background(getBitmapScaled(screenWidth, screenHeight, backgroundId))
+                .velocityX(-getBackgroundSpeed())
+                .background(getBitmapScaled(getScreenWidth(), getScreenHeight(), backgroundId))
                 .build();
     }
 
     private <T extends AppCompatActivity> void transitionToActivity(Class<T> clazz) {
         try {
-            Thread.sleep(1000);
-            soundPool.release();
-            soundPool = null;
             getGameActivity().startActivity(new Intent(getGameActivity(), clazz));
             getGameActivity().finish();
-        } catch (InterruptedException _) {
+        } catch (Exception _) {
         }
     }
 
@@ -191,5 +182,9 @@ public class GameViewLevel1 extends MainView implements Runnable {
             thread.join();
         } catch (InterruptedException _) {
         }
+    }
+
+    private GameActivityLevel1 getGameActivity() {
+        return gameActivity;
     }
 }
