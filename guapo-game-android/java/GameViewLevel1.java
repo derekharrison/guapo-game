@@ -92,7 +92,7 @@ public class GameViewLevel1 extends MainView implements Runnable {
             background.update();
             if(background.getPositionX() <= 0) {
                 backgrounds
-                        .get(getProceedingBackground(backgroundId))
+                        .get(getFollowingBackground(backgroundId))
                         .setPositionX(background.getPositionX() + background.getBackground().getWidth() - 10);
             }
             backgroundId++;
@@ -125,7 +125,7 @@ public class GameViewLevel1 extends MainView implements Runnable {
         }
     }
 
-    private int getProceedingBackground(int id) {
+    private int getFollowingBackground(int id) {
         return id % backgrounds.size();
     }
 
