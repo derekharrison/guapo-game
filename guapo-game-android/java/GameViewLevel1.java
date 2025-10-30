@@ -60,7 +60,7 @@ public class GameViewLevel1 extends MainView implements Runnable {
         }
     }
 
-    public void drawBackgrounds(Canvas canvas) {
+    private void drawBackgrounds(Canvas canvas) {
         for(Background background : backgrounds) {
             background.draw(canvas);
         }
@@ -79,7 +79,7 @@ public class GameViewLevel1 extends MainView implements Runnable {
         }
     }
 
-    public void updateBackground() {
+    private void updateBackground() {
         int backgroundId = 1;
         for(Background background : backgrounds) {
             background.update();
@@ -160,6 +160,7 @@ public class GameViewLevel1 extends MainView implements Runnable {
 
     private <T extends AppCompatActivity> void transitionToActivity(Class<T> clazz) {
         try {
+            Thread.sleep(1000);
             getGameActivity().startActivity(new Intent(getGameActivity(), clazz));
             getGameActivity().finish();
         } catch (Exception _) {

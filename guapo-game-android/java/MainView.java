@@ -14,7 +14,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
@@ -34,7 +33,7 @@ public class MainView extends SurfaceView {
     private int difficultyLevel = 0;
     private Bitmap[] lives;
     private int numLives = 3;
-    private Paint paint;
+    private final Paint paint;
     private Snack[] paprika;
     private Parameters parameters;
     private int pauseRegionMinX;
@@ -53,25 +52,46 @@ public class MainView extends SurfaceView {
     private Lives lives1;
     private final List<Villain> villains = new ArrayList<>();
     private Sounds sounds;
-    
-     public MainView(Context activity) {
+
+    public MainView(Context activity) {
         super(activity);
 
         paint = new Paint();
         paint.setTextSize(128);
         paint.setColor(Color.BLACK);
 
-        createParameters();
         getSharedPreferences(activity);
-        getSounds(activity);
-
         getScreenParameters();
+
+        createSounds(activity);
+        createParameters();
         createSnacks();
         createPauseAndPlayButtons();
+        createLives();
+        createLives1();
+        createHero();
+
         getPauseRegion();
 
-        createLives();
-        createHero();
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                handleClick(event);
+                handlePause(event);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                handleMove(event);
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+        }
+
+        return true;
     }
 
     protected int getBackgroundSpeed() {
@@ -86,15 +106,17 @@ public class MainView extends SurfaceView {
         return screenHeight;
     }
 
-    private void createParameters() {
-        parameters = new Parameters();
-    }
+    private void createParameters() { parameters = new Parameters(); }
 
     private void getSharedPreferences(Context activity) {
         prefs = activity.getSharedPreferences("game", Context.MODE_PRIVATE);
     }
 
-    private void getSounds(Context activity) {
+    private void createLives1() {
+        lives1 = new Lives();
+    }
+
+    private void createSounds(Context activity) {
         sounds = new Sounds(activity);
     }
 
@@ -138,17 +160,17 @@ public class MainView extends SurfaceView {
         broccoli = createSnacks(parameters.NUM_BROCCOLI, parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped);
     }
 
-    private HeroId getHeroId() {
+    private Heros getHeroId() {
         int heroId = prefs.getInt("choose_character", 0);
         if(heroId == 1) {
-            return HeroId.TUTTI;
+            return Heros.TUTTI;
         }
 
-        return HeroId.GUAPO;
+        return Heros.GUAPO;
     }
 
     private void createHero() {
-        if(getHeroId().equals(HeroId.TUTTI)) {
+        if(getHeroId().equals(Heros.TUTTI)) {
             hero = createTutti();
         }
         else {
@@ -203,7 +225,7 @@ public class MainView extends SurfaceView {
                 .build();
     }
 
-    public Snack[] createSnacks(int numSnacks, int pointsForSnack, int snackId) {
+    private Snack[] createSnacks(int numSnacks, int pointsForSnack, int snackId) {
         Snack[] snacks = new Snack[numSnacks];
 
         random = new Random();
@@ -219,7 +241,7 @@ public class MainView extends SurfaceView {
         return snacks;
     }
 
-    public void updateSnack(Snack snack) {
+    private void updateSnack(Snack snack) {
         if (snack.x + snack.width < 0) {
             Random rand = new Random();
             snack.x = rand.nextInt(screenWidth + 1) + screenWidth;
@@ -231,12 +253,7 @@ public class MainView extends SurfaceView {
         if(heroInteractsWithSnack(hero, snack)) {
             score += snack.points_snack;
             snack.set_x(-500);
-            if (snack.play_sound_allowed) {
-                sounds.playSoundEat();
-                snack.play_sound_allowed = false;
-            } else {
-                snack.play_sound_allowed = true;
-            }
+            snack.playSoundEat(sounds);
         }
     }
 
@@ -300,24 +317,6 @@ public class MainView extends SurfaceView {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                handleClick(event);
-                handlePause(event);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                handleMove(event);
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-        }
-
-        return true;
-    }
-
     private void updatePositionHero(MotionEvent event) {
         hero.setPositionX(event.getX());
         hero.setPositionY(event.getY());
@@ -352,11 +351,26 @@ public class MainView extends SurfaceView {
         }
     }
 
-    public void updateBegginStrip() {
+    protected void updateBegginStrip() {
         // TODO : implement
     }
 
-    protected void updateNumberOfVillains() {
+    protected void updateVillains() {
+        updateNumberOfVillains();
+        for(Villain villain : villains) {
+            villain.update();
+        }
+    }
+
+    protected void updateSnacks() {
+        updateBegginStrip();
+        updateSnacks(cheesyBites);
+        updateSnacks(paprika);
+        updateSnacks(cucumbers);
+        updateSnacks(broccoli);
+    }
+
+    private void updateNumberOfVillains() {
         int scoreThatRequiresNumberOfVillainsIncreases =
                 difficultyLevel * parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL;
 
@@ -372,24 +386,10 @@ public class MainView extends SurfaceView {
         }
     }
 
-    protected void updateVillains() {
-        updateNumberOfVillains();
-        for(Villain villain : villains) {
-            villain.update();
-        }
-    }
-
-    public void updateSnacks() {
-        updateBegginStrip();
-        updateSnacks(cheesyBites);
-        updateSnacks(paprika);
-        updateSnacks(cucumbers);
-        updateSnacks(broccoli);
-    }
-
     protected boolean heroHitVillain() {
         for(Villain villain : villains) {
             if(heroInteractsWithVillan(hero, villain)) {
+                hero.playSoundInteractingWithVillain(sounds);
                 return true;
             }
         }
@@ -442,7 +442,7 @@ public class MainView extends SurfaceView {
         return Rect.intersects(rect_1, rect_2);
     }
 
-    public void saveHighScore(String score_id) {
+    protected void saveHighScore(String score_id) {
         if (prefs.getInt(score_id, 0) < score) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(score_id, score);
@@ -450,7 +450,7 @@ public class MainView extends SurfaceView {
         }
     }
 
-    public int getNumVillains(String store_id) {
+    private int getNumVillains(String store_id) {
         return prefs.getInt(store_id, 2);
     }
 
@@ -475,15 +475,15 @@ public class MainView extends SurfaceView {
         this.villains.add(villain);
     }
 
-    public boolean isActiveSession(String store_id) {
+    private boolean isActiveSession(String store_id) {
         return prefs.getBoolean(store_id, false);
     }
 
-    public void getNumLives(String store_id) {
+    private void getNumLives(String store_id) {
         numLives = prefs.getInt(store_id, 3);
     }
 
-    public void getScore(String store_id) {
+    private void getScore(String store_id) {
         score = prefs.getInt(store_id, 0);
     }
 
@@ -501,17 +501,17 @@ public class MainView extends SurfaceView {
         canvas.drawText(" " + score, 30, (float) screenHeight / 6, paint);
     }
 
-    public void drawCharacters(Canvas canvas) {
+    protected void drawCharacters(Canvas canvas) {
         // TODO : implement
     }
 
-    public void drawVillains(Canvas canvas) {
+    protected void drawVillains(Canvas canvas) {
         for(Villain villain : villains) {
             villain.draw(canvas);
         }
     }
 
-    public void drawLives(Canvas canvas) {
+    protected void drawLives(Canvas canvas) {
         int left_most_x = screenWidth / 2 - 20;
         for (int i = 0; i < numLives; i++) {
             canvas.drawBitmap(lives[i], left_most_x, 20, null);
@@ -519,7 +519,7 @@ public class MainView extends SurfaceView {
         }
     }
 
-    public void drawPauseButton(Canvas canvas) {
+    protected void drawPauseButton(Canvas canvas) {
         if(gameIsPaused()) {
             canvas.drawBitmap(playButton, pauseRegionMaxX - playButton.getWidth(), pauseRegionMinY, null);
         }
@@ -532,7 +532,7 @@ public class MainView extends SurfaceView {
         hero.draw(canvas);
     }
 
-    public void drawAll(Canvas canvas) {
+    protected void drawAll(Canvas canvas) {
         drawSnacks(canvas, cheesyBites);
         drawSnacks(canvas, paprika);
         drawSnacks(canvas, cucumbers);

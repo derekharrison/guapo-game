@@ -48,6 +48,9 @@ public class Snack implements Position, Velocity, Update, GameImage {
     @Override
     public void update() {
         this.x += (int) getVelocityX();
+        if(this.x + get_snack_image().getWidth() < 0) {
+            play_sound_allowed = true;
+        }
     }
 
     @Override
@@ -62,5 +65,12 @@ public class Snack implements Position, Velocity, Update, GameImage {
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(get_snack_image(), x, y, null);
+    }
+
+    public void playSoundEat(Sounds sounds) {
+        if(play_sound_allowed) {
+            sounds.playSoundEat();
+            play_sound_allowed = false;
+        }
     }
 }
