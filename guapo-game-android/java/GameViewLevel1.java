@@ -23,14 +23,6 @@ public class GameViewLevel1 extends MainView implements Runnable {
     private LinkedList<Background> backgrounds;
     private GameActivityLevel1 gameActivity;
 
-    public GameViewLevel1(Context context) {
-        super(context);
-    }
-
-    public GameViewLevel1(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
     public GameViewLevel1(GameActivityLevel1 activity) {
         super(activity);
         gameActivity = activity;
@@ -47,10 +39,10 @@ public class GameViewLevel1 extends MainView implements Runnable {
 
     private void runGame() {
         while (!gameIsOver()) {
-            long start_time = System.nanoTime();
+            long startTime = System.nanoTime();
             draw();
             update();
-            makeThreadSleepWithDelay(computeDelay(start_time));
+            makeThreadSleepWithDelay(getDelay(startTime));
         }
 
         handleGameOver();
@@ -78,7 +70,8 @@ public class GameViewLevel1 extends MainView implements Runnable {
         if(gameIsPlaying()) {
             updateBackground();
             updateVillains();
-            updateAll();
+            updateHero();
+            updateSnacks();
 
             if (heroHitVillain()) {
                 setGameStateToGameOver();
@@ -105,13 +98,16 @@ public class GameViewLevel1 extends MainView implements Runnable {
         } catch(Exception _) {}
     }
 
-    private long computeDelay(long start_time) {
-        long time_millis;
-        long target_time = 1000 / FPS;
+    private long getDelay(long startTime) {
+        return getScreenTime() - getCurrentTimeLapse(startTime);
+    }
 
-        time_millis = (System.nanoTime() - start_time) / 1000000;
+    private long getCurrentTimeLapse(long startTime) {
+        return (System.nanoTime() - startTime) / 1000000;
+    }
 
-        return target_time - time_millis;
+    private long getScreenTime() {
+        return 1000 / FPS;
     }
 
     private void createVillains() {

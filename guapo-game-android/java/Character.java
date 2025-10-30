@@ -45,11 +45,12 @@ public class Character extends AbstractCharacter {
 
         public Builder characterImage(Bitmap characterImage) {
             this.characterImage = characterImage;
+            this.characterImages.add(characterImage);
             return this;
         }
 
-        public Builder characterImages(List<Bitmap> characterImages) {
-            this.characterImages = characterImages;
+        public Builder characterImages(List<Bitmap> characterImage) {
+            this.characterImages.addAll(characterImage);
             return this;
         }
 
@@ -115,6 +116,10 @@ public class Character extends AbstractCharacter {
 
     protected int getFrameCounter() {
         return frameCounter;
+    }
+
+    protected void resetFrameCounter() {
+        frameCounter = 0;
     }
 
     @Override

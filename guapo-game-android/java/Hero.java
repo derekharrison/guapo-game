@@ -39,6 +39,7 @@ public class Hero extends Character {
 
         public Builder heroImage(Bitmap heroImage) {
             this.heroImage = heroImage;
+            super.characterImage(heroImage);
             return this;
         }
 
@@ -65,14 +66,14 @@ public class Hero extends Character {
     }
 
     public float getWidth() {
-        return getHeroImage().getWidth();
+        return getImage().getWidth();
     }
 
     public float getHeight() {
-        return getHeroImage().getHeight();
+        return getImage().getHeight();
     }
 
-    private Bitmap getHeroImage() {
+    public Bitmap getImage() {
         if(GameState.getGameState().equals(State.GAME_OVER)
         || GameState.getGameState().equals(State.CONTINUE)) {
             return heroHitImage;
@@ -85,15 +86,16 @@ public class Hero extends Character {
         if (getFrameCounter() > 2 && getFrameCounter() <= 4) {
             return capes.get(1);
         }
+        resetFrameCounter();
         return capes.get(0);
     }
 
     public void draw(Canvas canvas) {
         float x = getPositionX();
         float y = getPositionY();
-        float width = getHeroImage().getWidth();
-        float height = getHeroImage().getHeight();
+        float width = getImage().getWidth();
+        float height = getImage().getHeight();
         canvas.drawBitmap(getHeroCapeImage(), x - width / 3, getPositionY() - height / 5, null);
-        canvas.drawBitmap(getHeroImage(), x - width / 3, y -height / 3, null);
+        canvas.drawBitmap(getImage(), x - width / 3, y -height / 3, null);
     }
 }

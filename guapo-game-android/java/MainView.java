@@ -3,8 +3,6 @@ package com.main.guapogame;
 import static com.main.guapogame.Parameters.setBackgroundSpeed;
 import static com.main.guapogame.Parameters.setScreenHeight;
 import static com.main.guapogame.Parameters.setScreenWidth;
-import static java.lang.Math.abs;
-import static java.lang.Math.sqrt;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -55,24 +53,25 @@ public class MainView extends SurfaceView {
     private Lives lives1;
     private final List<Villain> villains = new ArrayList<>();
     private Sounds sounds;
-
-    public MainView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        paint = new Paint();
-        paint.setTextSize(128);
-        paint.setColor(Color.BLACK);
-    }
     
      public MainView(Context activity) {
         super(activity);
 
+        paint = new Paint();
+        paint.setTextSize(128);
+        paint.setColor(Color.BLACK);
+
         createParameters();
-        initDisplay();
         getSharedPreferences(activity);
         getSounds(activity);
-        createImagesAndPositions();
+
+        getScreenParameters();
+        createSnacks();
+        createPauseAndPlayButtons();
+        getPauseRegion();
+
         createLives();
+        createHero();
     }
 
     protected int getBackgroundSpeed() {
@@ -91,18 +90,6 @@ public class MainView extends SurfaceView {
         parameters = new Parameters();
     }
 
-    private void createImagesAndPositions() {
-        paint = new Paint();
-        paint.setTextSize(128);
-        paint.setColor(Color.BLACK);
-
-        createImages();
-    }
-
-    private void createLives() {
-        lives1 = new Lives();
-    }
-
     private void getSharedPreferences(Context activity) {
         prefs = activity.getSharedPreferences("game", Context.MODE_PRIVATE);
     }
@@ -111,12 +98,7 @@ public class MainView extends SurfaceView {
         sounds = new Sounds(activity);
     }
 
-    private void initDisplay() {
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    }
-
-    private void initLives() {
+    private void createLives() {
         numLives = prefs.getInt("num_lives", parameters.NUM_LIVES);
         lives = new Bitmap[numLives];
         for(int i = 0; i < numLives; i++) {
@@ -125,16 +107,9 @@ public class MainView extends SurfaceView {
         }
     }
 
-    private void createImages() {
-        getParameters();
-        createSnacks();
-        createPauseAndPlayButtons();
-        getPauseRegion();
-        initLives();
-        createHero();
-    }
-
-    private void getParameters() {
+    private void getScreenParameters() {
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         screenFactorX = (int) (((float) screenWidth) / 10);
         screenFactorY = (int) (((float) screenHeight) / 5);
         backgroundSpeed = (int) (((float) screenWidth) / 400);
@@ -251,6 +226,8 @@ public class MainView extends SurfaceView {
             snack.y = random.nextInt(screenHeight - snack.height);
         }
 
+        snack.x = snack.x - backgroundSpeed;
+
         if(heroInteractsWithSnack(hero, snack)) {
             score += snack.points_snack;
             snack.set_x(-500);
@@ -263,7 +240,7 @@ public class MainView extends SurfaceView {
         }
     }
 
-    private void updateHero() {
+    protected void updateHero() {
         hero.update();
     }
 
@@ -299,20 +276,20 @@ public class MainView extends SurfaceView {
         return GameState.getGameState().equals(State.PLAY);
     }
 
-    private void handleHeroActionClick(MotionEvent event) {
+    private void handleClick(MotionEvent event) {
         if(!touchInPauseArea(event) && gameIsPlaying()){
             updatePositionHero(event);
             setVelocityHeroToZero();
         }
     }
 
-    private void handleHeroActionMove(MotionEvent event) {
+    private void handleMove(MotionEvent event) {
         if(gameIsPlaying() && !touchInPauseArea(event)) {
             updateVelocityHero(event);
         }
     }
 
-    private void handlePauseAction(MotionEvent event) {
+    private void handlePause(MotionEvent event) {
         if(touchInPauseArea(event)) {
             if(gameIsPlaying()) {
                 setGameStateToPaused();
@@ -328,11 +305,11 @@ public class MainView extends SurfaceView {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                handleHeroActionClick(event);
-                handlePauseAction(event);
+                handleClick(event);
+                handlePause(event);
                 break;
             case MotionEvent.ACTION_MOVE:
-                handleHeroActionMove(event);
+                handleMove(event);
                 break;
             case MotionEvent.ACTION_UP:
                 break;
@@ -351,7 +328,7 @@ public class MainView extends SurfaceView {
         float velY = event.getY() - hero.getPositionY();
         hero.setVelX(velX);
         hero.setVelY(velY);
-        setMaxVelocityHero();
+        setLowVelocitiesToZero();
     }
 
     private void setVelocityHeroToZero() {
@@ -359,30 +336,11 @@ public class MainView extends SurfaceView {
         hero.setVelY(0);
     }
 
-    private void setMaxVelocityHero() {
+    private void setLowVelocitiesToZero() {
         float velX = hero.getVelocityX();
         float velY = hero.getVelocityY();
 
-        float maxSpeed = 100;
-        if(velX * velX + velY * velY > maxSpeed * maxSpeed) {
-            float ratio = velY / (velX + 1e-8f);
-            float xVelocityMax = (float) sqrt(maxSpeed * maxSpeed / (1 + ratio * ratio));
-            float yVelocityMax = abs(ratio * xVelocityMax);
-            if(velX < 0) {
-                hero.setVelX(-xVelocityMax);
-            }
-            else {
-                hero.setVelX(xVelocityMax);
-            }
-            if(velY < 0) {
-                hero.setVelY(-yVelocityMax);
-            }
-            else {
-                hero.setVelY(yVelocityMax);
-            }
-        }
-
-        if(velX * velX + velY * velY < 20) {
+        if(velX * velX + velY * velY < 25) {
             hero.setVelX(0);
             hero.setVelY(0);
         }
@@ -421,8 +379,7 @@ public class MainView extends SurfaceView {
         }
     }
 
-    public void updateAll() {
-        updateHero();
+    public void updateSnacks() {
         updateBegginStrip();
         updateSnacks(cheesyBites);
         updateSnacks(paprika);
@@ -440,50 +397,47 @@ public class MainView extends SurfaceView {
         return false;
     }
 
+    private Rect getHeroRectangle(Bitmap image, int x, int y) {
+        return new Rect(
+                x,
+                y,
+                (int) (x + image.getWidth() / 2.0),
+                (int) (y + image.getHeight() / 2.0)
+        );
+    }
+
+    private Rect getVillainRectangle(Bitmap image, int x, int y) {
+        return new Rect(
+                (int) (x + image.getWidth() * 35.0 / 100.0),
+                (int) (y + image.getHeight() * 35.0 / 100.0),
+                (int) (x + image.getWidth() * 65.0 / 100.0),
+                (int) (y + image.getHeight() * 65.0 / 100.0)
+        );
+    }
+
+    private Rect getSnackRectangle(Bitmap image, int x, int y) {
+        return new Rect(
+                (int) (x + image.getWidth() * 35.0 / 100.0),
+                (int) (y + image.getHeight() * 35.0 / 100.0),
+                (int) (x + image.getWidth() * 65.0 / 100.0),
+                (int) (y + image.getHeight() * 65.0 / 100.0)
+        );
+    }
+
     private boolean heroInteractsWithVillan(Hero hero, Villain villain) {
-        float positionX = hero.getPositionX();
-        float positionY = hero.getPositionY();
-        float width = hero.getWidth();
-        float height = hero.getHeight();
+          Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
+                (int) hero.getPositionY());
+        Rect villainArea = getVillainRectangle(villain.getImage(), (int) villain.getPositionX(),
+                (int) villain.getPositionY());
 
-        float birdWidth = villain.getVillainImage().getWidth();
-        float birdHeight = villain.getVillainImage().getHeight();
-
-        Rect rect_1 = new Rect(
-                (int) positionX, (int) positionY,
-                (int) (positionX + width / 2.0),
-                (int) (positionY + height / 2.0)
-        );
-        Rect rect_2 = new Rect(
-                (int) villain.getPositionX() + (int) ((birdWidth * 35) / 100),
-                (int) villain.getPositionY() + (int) ((birdHeight * 35) / 100),
-                (int) villain.getPositionX() + (int) ((birdWidth * 65) / 100),
-                (int) villain.getPositionY() + (int) ((birdHeight * 65) / 100)
-        );
-
-        return Rect.intersects(rect_1, rect_2);
+        return Rect.intersects(heroArea, villainArea);
     }
 
     private boolean heroInteractsWithSnack(Hero hero, Snack snack) {
-        float positionX = hero.getPositionX();
-        float positionY = hero.getPositionY();
-        float width = hero.getWidth();
-        float height = hero.getHeight();
-
-        float birdWidth = snack.getImage().getWidth();
-        float birdHeight = snack.getImage().getHeight();
-
-        Rect rect_1 = new Rect(
-                (int) positionX, (int) positionY,
-                (int) (positionX + width / 2.0),
-                (int) (positionY + height / 2.0)
-        );
-        Rect rect_2 = new Rect(
-                (int) snack.getPositionX() + (int) ((birdWidth * 35) / 100),
-                (int) snack.getPositionY() + (int) ((birdHeight * 35) / 100),
-                (int) snack.getPositionX() + (int) ((birdWidth * 65) / 100),
-                (int) snack.getPositionY() + (int) ((birdHeight * 65) / 100)
-        );
+        Rect rect_1 = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
+                (int) hero.getPositionY());
+        Rect rect_2 = getSnackRectangle(snack.getImage(), (int) snack.getPositionX(),
+                (int) snack.getPositionY());
 
         return Rect.intersects(rect_1, rect_2);
     }
@@ -506,14 +460,9 @@ public class MainView extends SurfaceView {
         int width =  (int) (((float) screenWidth) / 10);
         int height = (int) (((float) screenHeight) / 5);
 
-        Bitmap bird_image1 = BitmapFactory.decodeResource(getResources(), R.drawable.warawara1_bitmap_custom_mod_cropped);
-        bird_image1 = Bitmap.createScaledBitmap(bird_image1, width, height, false);
-
-        Bitmap bird_image2 = BitmapFactory.decodeResource(getResources(), R.drawable.warawara2_bitmap_custom_mod_cropped);
-        bird_image2 = Bitmap.createScaledBitmap(bird_image2, width, height, false);
-
-        Bitmap bird_image3 = BitmapFactory.decodeResource(getResources(), R.drawable.warawara3_bitmap_custom_mod_cropped);
-        bird_image3 = Bitmap.createScaledBitmap(bird_image3, width, height, false);
+        Bitmap bird_image1 = getBitmapScaled(width, height, R.drawable.warawara1_bitmap_custom_mod_cropped);
+        Bitmap bird_image2 = getBitmapScaled(width, height, R.drawable.warawara2_bitmap_custom_mod_cropped);
+        Bitmap bird_image3 = getBitmapScaled(width, height, R.drawable.warawara3_bitmap_custom_mod_cropped);
 
         images.add(bird_image1);
         images.add(bird_image2);

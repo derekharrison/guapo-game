@@ -14,9 +14,9 @@ import java.util.Random;
 public class Villain extends Character {
     private int speed = 20;
     private static int NUM_FRAMES_DISPLAY = 3;
-    private List<Bitmap> images = new ArrayList<>();
+    private List<Bitmap> images;
 
-    private boolean play_sound_allowed = true;
+    private boolean playSound = true;
 
     protected Villain(Builder builder) {
         super(builder);
@@ -42,7 +42,6 @@ public class Villain extends Character {
         }
 
         public Builder images(Bitmap image) {
-            super.characterImage(image);
             this.images.add(image);
             return this;
         }
@@ -63,11 +62,11 @@ public class Villain extends Character {
     }
 
     public float getWidth() {
-        return getVillainImage().getWidth();
+        return getImage().getWidth();
     }
 
     public float getHeight() {
-        return getVillainImage().getHeight();
+        return getImage().getHeight();
     }
 
     @Override
@@ -88,7 +87,8 @@ public class Villain extends Character {
         setPositionX(getPositionX() - speed);
     }
 
-    public Bitmap getVillainImage() {
+    @Override
+    public Bitmap getImage() {
         if (getFrameCounter() >= 1 && getFrameCounter() <= NUM_FRAMES_DISPLAY) {
             return images.get(0);
         }
@@ -101,10 +101,12 @@ public class Villain extends Character {
             return images.get(2);
         }
 
+        resetFrameCounter();
+
         return images.get(0);
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(getVillainImage(), getPositionX(), getPositionY(), null);
+        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
     }
 }

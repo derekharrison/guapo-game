@@ -10,14 +10,6 @@ public class GameViewLevel2 extends MainView {
 
     // TODO : implement
 
-    public GameViewLevel2(Context context) {
-        super(context);
-    }
-
-    public GameViewLevel2(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
     public GameViewLevel2(GameActivityLevel2 activity) {
         super(activity);
     }
