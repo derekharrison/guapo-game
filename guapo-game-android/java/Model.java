@@ -1,5 +1,6 @@
 package com.main.guapogame;
 
+import static com.main.guapogame.Parameters.POINTS_BEGGIN_STRIPS;
 import static com.main.guapogame.Parameters.setBackgroundSpeed;
 import static com.main.guapogame.Parameters.setScreenHeight;
 import static com.main.guapogame.Parameters.setScreenWidth;
@@ -24,21 +25,16 @@ import java.util.Random;
 
 public class Model {
     private final List<Background> backgrounds;
-    private int backgroundSpeed;
-    private Snack[] broccoli;
-    private Snack[] cheesyBites;
-    private Snack[] cucumbers;
+    private final List<Snack> snacks = new ArrayList<>();
     private int difficultyLevel = 0;
-    private Bitmap[] lives;
+    private final List<Bitmap> lives = new ArrayList<>();
     private int numLives = 3;
     private final Paint paint;
-    private Snack[] paprika;
     private int pauseRegionMaxX;
     private int pauseRegionMinY;
     private Bitmap playButton;
     private Bitmap pauseButton;
     private SharedPreferences prefs;
-    private Random random;
     private int score = 0;
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -62,8 +58,8 @@ public class Model {
         getScreenParameters();
 
         createSounds(activity);
-        createSnacks();
         createPauseAndPlayButtons();
+        createSnacks();
         createLives();
         createLives1();
         createHero();
@@ -93,19 +89,21 @@ public class Model {
 
     private void createLives() {
         numLives = prefs.getInt("num_lives", Parameters.NUM_LIVES);
-        lives = new Bitmap[numLives];
         for(int i = 0; i < numLives; i++) {
-            lives[i] = BitmapFactory.decodeResource(getResources(), R.drawable.heart1_bitmap_cropped);
-            lives[i] = Bitmap.createScaledBitmap(lives[i], (int) screenFactorX / 4, (int) screenFactorY / 4, false);
+            Bitmap life = getBitmapScaled(
+                    (int) screenFactorX / 4,
+                    (int) screenFactorY / 4,
+                    R.drawable.heart1_bitmap_cropped);
+            lives.add(life);
         }
     }
 
     private void getScreenParameters() {
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        screenFactorX = (int) (((float) screenWidth) / 10);
-        screenFactorY = (int) (((float) screenHeight) / 5);
-        backgroundSpeed = (int) (((float) screenWidth) / 400);
+        screenFactorX = (int) (screenWidth / 10.0);
+        screenFactorY = (int) (screenHeight / 5.0);
+        int backgroundSpeed = (int) (screenWidth / 400.0);
 
         setScreenWidth(screenWidth);
         setScreenHeight(screenHeight);
@@ -123,10 +121,11 @@ public class Model {
     }
 
     private void createSnacks() {
-        cheesyBites = createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized);
-        paprika = createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped);
-        cucumbers = createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped);
-        broccoli = createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped);
+        snacks.addAll(createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized));
+        snacks.addAll(createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
+        snacks.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
+        snacks.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
+        snacks.addAll(createSnacks(1, POINTS_BEGGIN_STRIPS, R.drawable.beggin_strip_cropped));
     }
 
     private Heros getHeroId() {
@@ -148,10 +147,10 @@ public class Model {
     }
 
     private Hero createGuapo() {
-        int startPosX = (int) (((float) screenWidth) / 10);
-        int startPosY = (int) (((float) screenHeight) / 2);
-        int width = (int) screenFactorX * 3 / 2;
-        int height = (int) screenFactorY * 3 / 2;
+        int startPosX = (int) (screenWidth / 10.0);
+        int startPosY = (int) (screenHeight / 2.0);
+        int width = (int) (screenFactorX * 3 / 2.0);
+        int height = (int) (screenFactorY * 3 / 2.0);
 
         Bitmap heroImage = getBitmapScaled(width, height, R.drawable.guapo_main_image_bitmap_cropped);
         Bitmap heroImageHit = getBitmapScaled(width, height, R.drawable.guapo_main_image_hit_bitmap_cropped);
@@ -174,10 +173,10 @@ public class Model {
     }
 
     private Hero createTutti() {
-        int startPosX = (int) (((float) screenWidth) / 10);
-        int startPosY = (int) (((float) screenHeight) / 2);
-        int width = (int) screenFactorX * 3 / 2;
-        int height = (int) screenFactorY * 3 / 2;
+        int startPosX = (int) (screenWidth / 10.0);
+        int startPosY = (int) (screenHeight / 2.0);
+        int width = (int) (screenFactorX * 3 / 2.0);
+        int height = (int) (screenFactorY * 3 / 2.0);
 
         Bitmap heroImage = getBitmapScaled(width, height, R.drawable.tutti_bitmap_no_cape_cropped);
         Bitmap heroImageHit = getBitmapScaled(width, height, R.drawable.tutti_bitmap_hit_no_cape_cropped);
@@ -194,32 +193,22 @@ public class Model {
                 .build();
     }
 
-    private Snack[] createSnacks(int numSnacks, int pointsForSnack, int snackId) {
-        Snack[] snacks = new Snack[numSnacks];
-
-        random = new Random();
-
+    private List<Snack> createSnacks(int numSnacks, int pointsForSnack, int snackId) {
+        List<Snack> snacks = new ArrayList<>();
+        Random random = new Random();
         for (int i = 0; i < numSnacks; i++) {
             Snack snack = new Snack(getResources(), (int) screenFactorX, (int) screenFactorY, snackId);
-            snack.x = random.nextInt(2 * screenWidth - snack.get_snack_image().getWidth()/2);
-            snack.y = random.nextInt(screenHeight - snack.get_snack_image().getHeight()/2);
+            snack.x = random.nextInt(2 * screenWidth - snack.getSnackImage().getWidth() / 2);
+            snack.y = random.nextInt(screenHeight - snack.getSnackImage().getHeight() / 2);
             snack.points_snack = pointsForSnack;
-            snacks[i] = snack;
+            snacks.add(snack);
         }
 
         return snacks;
     }
 
     private void updateSnack(Snack snack) {
-        if (snack.x + snack.width < 0) {
-            Random rand = new Random();
-            snack.x = rand.nextInt(screenWidth + 1) + screenWidth;
-            snack.y = random.nextInt(screenHeight - snack.height);
-            snack.setPlaySoundAllowed(true);
-        }
-
-        snack.x = snack.x - backgroundSpeed;
-
+        snack.update();
         if(heroInteractsWithSnack(hero, snack)) {
             score += snack.points_snack;
             snack.set_x(-500);
@@ -245,7 +234,7 @@ public class Model {
     }
 
     private void takeLife() {
-        lives1.takeLife();
+        lives.remove(0);
     }
 
     private void setGameStateToGameOver() {
@@ -256,21 +245,11 @@ public class Model {
         return GameState.getGameState().equals(State.PAUSED);
     }
 
-    private void updateSnacks(Snack[] snacks) {
-        for(Snack snack : snacks) {
-            updateSnack(snack);
-        }
-    }
-
     public void update() {
         updateBackground();
         updateVillains();
         updateHero();
         updateSnacks();
-
-        if (heroHitVillain()) {
-            setGameStateToGameOver();
-        }
     }
 
     public void draw(Canvas canvas) {
@@ -303,23 +282,28 @@ public class Model {
         return id % backgrounds.size();
     }
 
-    private void updateBegginStrip() {
-        // TODO : implement
-    }
-
     private void updateVillains() {
         updateNumberOfVillains();
         for(Villain villain : villains) {
             villain.update();
+            if(heroBumpsIntoVillain(hero, villain)) {
+                hero.playSoundInteractingWithVillain(sounds);
+                setGameStateToGameOver();
+            }
         }
     }
 
     private void updateSnacks() {
-        updateBegginStrip();
-        updateSnacks(cheesyBites);
-        updateSnacks(paprika);
-        updateSnacks(cucumbers);
-        updateSnacks(broccoli);
+        for(Snack snack : snacks) {
+            updateSnack(snack);
+        }
+    }
+
+    private Villain createVillain() {
+        return new Villain.Builder()
+                .x(-500)
+                .images(createVillainImages())
+                .build();
     }
 
     private void updateNumberOfVillains() {
@@ -328,25 +312,9 @@ public class Model {
 
         if(score >= scoreThatRequiresNumberOfVillainsIncreases
                 && villains.size() < Parameters.MAX_NUM_BIRDS) {
-            addVillain(
-                    new Villain.Builder()
-                            .x(-500)
-                            .images(createVillainImages())
-                            .build()
-            );
+            addVillain(createVillain());
             difficultyLevel++;
         }
-    }
-
-    private boolean heroHitVillain() {
-        for(Villain villain : villains) {
-            if(heroInteractsWithVillan(hero, villain)) {
-                hero.playSoundInteractingWithVillain(sounds);
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private Rect getHeroRectangle(Bitmap image, int x, int y) {
@@ -376,7 +344,7 @@ public class Model {
         );
     }
 
-    private boolean heroInteractsWithVillan(Hero hero, Villain villain) {
+    private boolean heroBumpsIntoVillain(Hero hero, Villain villain) {
         Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
                 (int) hero.getPositionY());
         Rect villainArea = getVillainRectangle(villain.getImage(), (int) villain.getPositionX(),
@@ -439,14 +407,10 @@ public class Model {
         score = prefs.getInt(store_id, 0);
     }
 
-    private void drawSnacks(Canvas canvas, Snack [] snacks) {
+    private void drawSnacks(Canvas canvas) {
         for (Snack snack : snacks) {
             snack.draw(canvas);
         }
-    }
-
-    private void drawSnack(Canvas canvas, Snack snack) {
-        snack.draw(canvas);
     }
 
     private void drawScore(Canvas canvas) {
@@ -464,10 +428,10 @@ public class Model {
     }
 
     private void drawLives(Canvas canvas) {
-        int left_most_x = screenWidth / 2 - 20;
-        for (int i = 0; i < numLives; i++) {
-            canvas.drawBitmap(lives[i], left_most_x, 20, null);
-            left_most_x += lives[i].getWidth() + 5;
+        int lifeLocation = screenWidth / 2 - 20;
+        for (Bitmap life : lives) {
+            canvas.drawBitmap(life, lifeLocation, 20, null);
+            lifeLocation += life.getWidth() + 5;
         }
     }
 
@@ -485,10 +449,7 @@ public class Model {
     }
 
     private void drawAll(Canvas canvas) {
-        drawSnacks(canvas, cheesyBites);
-        drawSnacks(canvas, paprika);
-        drawSnacks(canvas, cucumbers);
-        drawSnacks(canvas, broccoli);
+        drawSnacks(canvas);
         drawScore(canvas);
         drawCharacters(canvas);
         drawPauseButton(canvas);

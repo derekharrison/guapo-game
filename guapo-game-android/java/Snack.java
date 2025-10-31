@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+import java.util.Random;
+
 public class Snack implements Position, Velocity, Update, GameImage {
     public int x = 0, y, width, height;
     public Bitmap snack_image;
@@ -24,7 +26,7 @@ public class Snack implements Position, Velocity, Update, GameImage {
         y = -height;
     }
 
-    public Bitmap get_snack_image () {
+    public Bitmap getSnackImage() {
         return this.snack_image;
     }
 
@@ -47,9 +49,19 @@ public class Snack implements Position, Velocity, Update, GameImage {
 
     @Override
     public void update() {
+        int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
         this.x += (int) getVelocityX();
-        if(this.x + get_snack_image().getWidth() < 0) {
+        if(this.x + getSnackImage().getWidth() < 0) {
             play_sound_allowed = true;
+        }
+
+        if (this.x + getSnackImage().getWidth() < 0) {
+            Random rand = new Random();
+            this.x = rand.nextInt(screenWidth + 1) + screenWidth;
+            this.y = rand.nextInt(screenHeight - getSnackImage().getHeight());
+            this.setPlaySoundAllowed(true);
         }
     }
 
@@ -64,7 +76,7 @@ public class Snack implements Position, Velocity, Update, GameImage {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(get_snack_image(), x, y, null);
+        canvas.drawBitmap(getSnackImage(), x, y, null);
     }
 
     public void playSoundEat(Sounds sounds) {
