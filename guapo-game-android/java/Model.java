@@ -252,10 +252,6 @@ public class Model {
         GameState.setGameStateToGameOver();
     }
 
-    protected boolean gameIsOver() {
-        return GameState.getGameState().equals(State.GAME_OVER);
-    }
-
     private boolean gameIsPaused() {
         return GameState.getGameState().equals(State.PAUSED);
     }

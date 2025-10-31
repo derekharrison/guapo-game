@@ -47,7 +47,6 @@ public class MainView extends SurfaceView implements Runnable {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 handleClick(event);
-                handlePause(event);
                 break;
             case MotionEvent.ACTION_MOVE:
                 handleMove(event);
@@ -149,10 +148,8 @@ public class MainView extends SurfaceView implements Runnable {
     }
 
     private void handleClick(MotionEvent event) {
-        if(!touchInPauseArea(event) && gameIsPlaying()){
-            updatePositionHero(event);
-            setVelocityHeroToZero();
-        }
+        handlePause(event);
+        handleUpdatePosition(event);
     }
 
     private void handleMove(MotionEvent event) {
@@ -169,6 +166,13 @@ public class MainView extends SurfaceView implements Runnable {
             else if(gameIsPaused()) {
                 setGameStateToPlay();
             }
+        }
+    }
+
+    private void handleUpdatePosition(MotionEvent event) {
+        if(!touchInPauseArea(event) && gameIsPlaying()){
+            updatePositionHero(event);
+            setVelocityHeroToZero();
         }
     }
 
@@ -201,16 +205,21 @@ public class MainView extends SurfaceView implements Runnable {
     }
 
     private boolean touchInPauseArea(MotionEvent event) {
-        // TODO : refactor
-        Bitmap pauseButton = getPauseButton();
-        int pauseRegionMaxX = screenWidth - screenWidth / 30;
-        int pauseRegionMinX = pauseRegionMaxX - pauseButton.getWidth() - 3 * screenWidth / 60;
-        int pauseRegionMaxY = 5 * screenHeight / 30;
-        return (event.getX() >= pauseRegionMinX - pauseButton.getWidth() / 2.0)
-                && (event.getX() <= screenWidth) && (event.getY() >= 0)
-                && (event.getY() <=  (float) (pauseRegionMaxY + pauseButton.getHeight() / 2));
+        return event.getX() >= getMinXPauseRegion(getPauseButton())
+                && event.getY() <= getMaxYPauseRegion(getPauseButton())
+                && event.getX() <= screenWidth
+                && event.getY() >= 0;
     }
 
+    private int getMinXPauseRegion(Bitmap pauseButton) {
+        int width = pauseButton.getWidth();
+        return (int) (screenWidth- width - 5.0 * screenWidth / 60.0 - width / 2.0);
+    }
+
+    private int getMaxYPauseRegion(Bitmap pauseButton) {
+        return (int) (5.0 * screenHeight / 30.0 + pauseButton.getHeight() / 2.0);
+    }
+    
     private AppCompatActivity getGameActivity() {
         return gameActivity;
     }
