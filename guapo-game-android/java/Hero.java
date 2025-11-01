@@ -31,19 +31,19 @@ public class Hero extends Character {
         private final List<Bitmap> capes = new ArrayList<>();
         private Heros hero;
 
-        public Builder x(float x) {
+        public Builder positionX(float x) {
             this.x = x;
             return this;
         }
 
-        public Builder y(float y) {
+        public Builder positionY(float y) {
             this.y = y;
             return this;
         }
 
         public Builder heroImage(Bitmap heroImage) {
             this.heroImage = heroImage;
-            super.characterImage(heroImage);
+            super.image(heroImage);
             return this;
         }
 

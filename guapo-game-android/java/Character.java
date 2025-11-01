@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Character extends AbstractCharacter {
-    private float x = 0;
-    private float y = 0;
-    private float velX = 0;
-    private float velY = 0;
-    private final Bitmap characterImage;
-    private final List<Bitmap> characterImages;
+    private float x;
+    private float y;
+    private float velX;
+    private float velY;
+    private final Bitmap image;
+    private final List<Bitmap> images;
     private int frameCounter = 0;
 
     protected Character(Builder builder) {
@@ -21,8 +21,8 @@ public class Character extends AbstractCharacter {
         this.y = builder.y;
         this.velX = builder.velX;
         this.velY = builder.velY;
-        this.characterImage = builder.characterImage;
-        this.characterImages = builder.characterImages;
+        this.image = builder.image;
+        this.images = builder.images;
     }
 
     public static class Builder {
@@ -30,27 +30,27 @@ public class Character extends AbstractCharacter {
         private float y = 0;
         private float velX = 0;
         private float velY = 0;
-        private Bitmap characterImage;
-        private List<Bitmap> characterImages = new ArrayList<>();
+        private Bitmap image;
+        private final List<Bitmap> images = new ArrayList<>();
 
-        public Builder x(float x) {
+        public Builder positionX(float x) {
             this.x = x;
             return this;
         }
 
-        public Builder y(float y) {
+        public Builder positionY(float y) {
             this.y = y;
             return this;
         }
 
-        public Builder characterImage(Bitmap characterImage) {
-            this.characterImage = characterImage;
-            this.characterImages.add(characterImage);
+        public Builder image(Bitmap image) {
+            this.image = image;
+            this.images.add(image);
             return this;
         }
 
-        public Builder characterImages(List<Bitmap> characterImage) {
-            this.characterImages.addAll(characterImage);
+        public Builder images(List<Bitmap> characterImage) {
+            this.images.addAll(characterImage);
             return this;
         }
 
@@ -71,12 +71,14 @@ public class Character extends AbstractCharacter {
 
 
     public void addCharacter(Bitmap character) {
-        characterImages.add(character);
+        images.add(character);
     }
 
     public Bitmap getCharacterImage() {
-        return characterImage;
+        return image;
     }
+
+    public List<Bitmap> getImages() { return images; }
 
     @Override
     public float getPositionX() {

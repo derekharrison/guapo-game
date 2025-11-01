@@ -165,8 +165,8 @@ public class Model {
         Bitmap capeImage2 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape2_bitmap_cropped1);
 
         return new Hero.Builder()
-                .x(startPosX)
-                .y(startPosY)
+                .positionX(startPosX)
+                .positionY(startPosY)
                 .heroImage(heroImage)
                 .heroHitImage(heroImageHit)
                 .capes(capeImage1)
@@ -192,8 +192,8 @@ public class Model {
         Bitmap capeImage2 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape2_bitmap_cropped);
 
         return new Hero.Builder()
-                .x(startPosX)
-                .y(startPosY)
+                .positionX(startPosX)
+                .positionY(startPosY)
                 .heroImage(heroImage)
                 .heroHitImage(heroImageHit)
                 .capes(capeImage1)
@@ -316,7 +316,7 @@ public class Model {
 
     private Villain createVillain() {
         return new Villain.Builder()
-                .x(-500)
+                .positionX(-500)
                 .images(createVillainImages())
                 .build();
     }

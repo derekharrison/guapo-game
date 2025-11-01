@@ -7,54 +7,30 @@ import static com.main.guapogame.Parameters.getScreenWidth;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Villain extends Character {
     private int speed = 20;
     private final static int NUM_FRAMES_DISPLAY = 3;
-    private final List<Bitmap> images;
 
     protected Villain(Builder builder) {
         super(builder);
-        this.images = builder.images;
     }
 
-
     public static class Builder extends Character.Builder {
-        private float x = 0;
-        private float y = 0;
-        private float velX;
-
-        private List<Bitmap> images = new ArrayList<>();
-
-        public Builder x(float x) {
-            this.x = x;
-            return this;
-        }
-
-        public Builder y(float y) {
-            this.y = y;
-            return this;
-        }
-
-        public Builder images(Bitmap image) {
-            this.images.add(image);
+        public Builder positionX(float positionX) {
+            super.positionX(positionX);
             return this;
         }
 
         public Builder images(List<Bitmap> images) {
-            this.images.addAll(images);
-            return this;
-        }
-
-        public Builder velX(float velX) {
-            this.velX = velX;
+            super.images(images);
             return this;
         }
 
         public Villain build() {
+            super.build();
             return new Villain(this);
         }
     }
@@ -80,7 +56,7 @@ public class Villain extends Character {
             }
 
             setPositionX(((float) getScreenWidth() * 5) / 4);
-            setPositionY(random.nextInt(getScreenHeight()));
+            setPositionY(random.nextInt((int) (getScreenHeight() - getHeight())));
         }
         setPositionX(getPositionX() - speed);
     }
@@ -88,20 +64,20 @@ public class Villain extends Character {
     @Override
     public Bitmap getImage() {
         if (getFrameCounter() >= 1 && getFrameCounter() <= NUM_FRAMES_DISPLAY) {
-            return images.get(0);
+            return getImages().get(0);
         }
 
         if (getFrameCounter() > NUM_FRAMES_DISPLAY && getFrameCounter() <= 2 * NUM_FRAMES_DISPLAY) {
-            return images.get(1);
+            return getImages().get(1);
         }
 
         if (getFrameCounter() > 2 * NUM_FRAMES_DISPLAY && getFrameCounter() <= 3 * NUM_FRAMES_DISPLAY) {
-            return images.get(2);
+            return getImages().get(2);
         }
 
         resetFrameCounter();
 
-        return images.get(0);
+        return getImages().get(0);
     }
 
     public void draw(Canvas canvas) {
