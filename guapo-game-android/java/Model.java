@@ -270,7 +270,10 @@ public class Model {
     public void draw(Canvas canvas) {
         drawBackgrounds(canvas);
         drawLives(canvas);
-        drawAll(canvas);
+        drawSnacks(canvas);
+        drawScore(canvas);
+        drawCharacters(canvas);
+        drawPauseButton(canvas);
         drawVillains(canvas);
         drawHero(canvas);
     }
@@ -456,12 +459,5 @@ public class Model {
 
     private void drawHero(Canvas canvas) {
         hero.draw(canvas);
-    }
-
-    private void drawAll(Canvas canvas) {
-        drawSnacks(canvas);
-        drawScore(canvas);
-        drawCharacters(canvas);
-        drawPauseButton(canvas);
     }
 }
