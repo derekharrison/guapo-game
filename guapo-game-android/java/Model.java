@@ -72,12 +72,151 @@ public class Model {
         return hero;
     }
 
-    private Resources getResources() {
-        return resources;
+
+    public void saveHighScore() {
+        int score = 0;
+        if (prefs.getInt("high_score", 0) < score) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("high_score", score);
+            editor.apply();
+        }
     }
 
-    private void getSharedPreferences(Context activity) {
-        prefs = activity.getSharedPreferences("game", Context.MODE_PRIVATE);
+    public void update() {
+        updateBackground();
+        updateVillains();
+        updateHero();
+        updateSnacks();
+    }
+
+    public void draw(Canvas canvas) {
+        drawBackgrounds(canvas);
+        drawLives(canvas);
+        drawSnacks(canvas);
+        drawScore(canvas);
+        drawCharacters(canvas);
+        drawPauseButton(canvas);
+        drawVillains(canvas);
+        drawHero(canvas);
+    }
+
+    private void updateSnack(Snack snack) {
+        snack.update();
+        if(heroInteractsWithSnack(hero, snack)) {
+            score += snack.getPointsForSnack();
+            snack.setPositionX(-500);
+            snack.playSoundEat(sounds);
+        }
+    }
+
+    private void updateHero() {
+        hero.update();
+    }
+
+    private void updateBackground() {
+        int backgroundId = 1;
+        for(Background background : backgrounds) {
+            background.update();
+            if(background.getPositionX() <= 0) {
+                backgrounds
+                        .get(getFollowingBackground(backgroundId))
+                        .setPositionX(background.getPositionX() + background.getBackground().getWidth() - 10);
+            }
+            backgroundId++;
+        }
+    }
+
+    private void updateVillains() {
+        updateNumberOfVillains();
+        for(Villain villain : villains) {
+            villain.update();
+            if(heroInteractsWithVillain(hero, villain)) {
+                hero.playSoundInteractingWithVillain(sounds);
+                setGameStateToGameOver();
+            }
+        }
+    }
+
+    private void updateSnacks() {
+        for(Snack snack : snacks) {
+            updateSnack(snack);
+        }
+    }
+
+    private void updateNumberOfVillains() {
+        int scoreThatRequiresNumberOfVillainsIncreases =
+                difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL;
+
+        if(score >= scoreThatRequiresNumberOfVillainsIncreases
+                && villains.size() < Parameters.MAX_VILLAINS) {
+            addVillain(createVillain());
+            difficultyLevel++;
+        }
+    }
+
+    private void drawBackgrounds(Canvas canvas) {
+        for(Background background : backgrounds) {
+            background.draw(canvas);
+        }
+    }
+
+    private void drawSnacks(Canvas canvas) {
+        for (Snack snack : snacks) {
+            snack.draw(canvas);
+        }
+    }
+
+    private void drawScore(Canvas canvas) {
+        canvas.drawText(" " + score, 30, (float) screenHeight / 6, paint);
+    }
+
+    private void drawCharacters(Canvas canvas) {
+        // TODO : implement
+    }
+
+    private void drawVillains(Canvas canvas) {
+        for(Villain villain : villains) {
+            villain.draw(canvas);
+        }
+    }
+
+    private void drawLives(Canvas canvas) {
+        int lifeLocation = screenWidth / 2 - 20;
+        for (Bitmap life : lives) {
+            canvas.drawBitmap(life, lifeLocation, 20, null);
+            lifeLocation += life.getWidth() + 5;
+        }
+    }
+
+    private void drawPauseButton(Canvas canvas) {
+        if(gameIsPaused()) {
+            canvas.drawBitmap(playButton, pauseRegionMaxX - playButton.getWidth(), pauseRegionMinY, null);
+        }
+        else {
+            canvas.drawBitmap(pauseButton, pauseRegionMaxX - pauseButton.getWidth(), pauseRegionMinY, null);
+        }
+    }
+
+    private void drawHero(Canvas canvas) {
+        hero.draw(canvas);
+    }
+
+    private boolean heroInteractsWithVillain(Hero hero, Villain villain) {
+        Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
+                (int) hero.getPositionY());
+        Rect villainArea = getVillainRectangle(villain.getImage(), (int) villain.getPositionX(),
+                (int) villain.getPositionY());
+
+        return Rect.intersects(heroArea, villainArea);
+    }
+
+    private boolean heroInteractsWithSnack(Hero hero, Snack snack) {
+        Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
+                (int) hero.getPositionY());
+        Rect snackArea = getSnackRectangle(snack.getImage(), (int) snack.getPositionX(),
+                (int) snack.getPositionY());
+
+        return Rect.intersects(heroArea, snackArea);
     }
 
     private void createLives1() {
@@ -99,23 +238,6 @@ public class Model {
         }
     }
 
-    private void getScreenParameters() {
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        screenFactorX = (int) (screenWidth / 10.0);
-        screenFactorY = (int) (screenHeight / 5.0);
-        int backgroundSpeed = (int) (screenWidth / 400.0);
-
-        setScreenWidth(screenWidth);
-        setScreenHeight(screenHeight);
-        setBackgroundSpeed(backgroundSpeed);
-    }
-
-    private void getPauseRegion() {
-        pauseRegionMaxX = screenWidth - screenWidth / 30;
-        pauseRegionMinY = screenHeight / 15;
-    }
-
     private void createPauseAndPlayButtons() {
         playButton = getBitmapScaled((int) ((int) screenFactorX / 3.0), (int) ((int) screenFactorY / 3.0), R.drawable.play_button_bitmap_cropped);
         pauseButton = getBitmapScaled((int) ((int) screenFactorX / 3.0), (int) ((int) screenFactorY / 3.0), R.drawable.pause_button_bitmap_cropped);
@@ -127,15 +249,6 @@ public class Model {
         snacks.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
         snacks.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
         snacks.addAll(createSnacks(1, POINTS_BEGGIN_STRIPS, R.drawable.beggin_strip_cropped));
-    }
-
-    private Heros getHeroId() {
-        int heroId = prefs.getInt("choose_character", 0);
-        if(heroId == 1) {
-            return Heros.TUTTI;
-        }
-
-        return Heros.GUAPO;
     }
 
     private void createHero() {
@@ -173,11 +286,6 @@ public class Model {
                 .capes(capeImage2)
                 .hero(Heros.GUAPO)
                 .build();
-    }
-
-    private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
-        Bitmap heroImage = BitmapFactory.decodeResource(getResources(), drawableIdentification);
-        return Bitmap.createScaledBitmap(heroImage, scaleX, scaleY, false);
     }
 
     private Hero createTutti() {
@@ -222,169 +330,11 @@ public class Model {
         return snacks;
     }
 
-    private void updateSnack(Snack snack) {
-        snack.update();
-        if(heroInteractsWithSnack(hero, snack)) {
-            score += snack.getPointsForSnack();
-            snack.setPositionX(-500);
-            snack.playSoundEat(sounds);
-        }
-    }
-
-    private void updateHero() {
-        hero.update();
-    }
-
-    public void saveHighScore() {
-        int score = 0;
-        if (prefs.getInt("high_score", 0) < score) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("high_score", score);
-            editor.apply();
-        }
-    }
-
-    private int getLives() {
-        return lives1.getLives();
-    }
-
-    private void takeLife() {
-        lives.remove(0);
-    }
-
-    private void setGameStateToGameOver() {
-        GameState.setGameStateToGameOver();
-    }
-
-    private boolean gameIsPaused() {
-        return GameState.getGameState().equals(State.PAUSED);
-    }
-
-    public void update() {
-        updateBackground();
-        updateVillains();
-        updateHero();
-        updateSnacks();
-    }
-
-    public void draw(Canvas canvas) {
-        drawBackgrounds(canvas);
-        drawLives(canvas);
-        drawSnacks(canvas);
-        drawScore(canvas);
-        drawCharacters(canvas);
-        drawPauseButton(canvas);
-        drawVillains(canvas);
-        drawHero(canvas);
-    }
-
-    private void drawBackgrounds(Canvas canvas) {
-        for(Background background : backgrounds) {
-            background.draw(canvas);
-        }
-    }
-    private void updateBackground() {
-        int backgroundId = 1;
-        for(Background background : backgrounds) {
-            background.update();
-            if(background.getPositionX() <= 0) {
-                backgrounds
-                        .get(getFollowingBackground(backgroundId))
-                        .setPositionX(background.getPositionX() + background.getBackground().getWidth() - 10);
-            }
-            backgroundId++;
-        }
-    }
-
-    private int getFollowingBackground(int id) {
-        return id % backgrounds.size();
-    }
-
-    private void updateVillains() {
-        updateNumberOfVillains();
-        for(Villain villain : villains) {
-            villain.update();
-            if(heroBumpsIntoVillain(hero, villain)) {
-                hero.playSoundInteractingWithVillain(sounds);
-                setGameStateToGameOver();
-            }
-        }
-    }
-
-    private void updateSnacks() {
-        for(Snack snack : snacks) {
-            updateSnack(snack);
-        }
-    }
-
     private Villain createVillain() {
         return new Villain.Builder()
                 .positionX(-500)
                 .images(createVillainImages())
                 .build();
-    }
-
-    private void updateNumberOfVillains() {
-        int scoreThatRequiresNumberOfVillainsIncreases =
-                difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL;
-
-        if(score >= scoreThatRequiresNumberOfVillainsIncreases
-                && villains.size() < Parameters.MAX_VILLAINS) {
-            addVillain(createVillain());
-            difficultyLevel++;
-        }
-    }
-
-    private Rect getHeroRectangle(Bitmap image, int x, int y) {
-        return new Rect(x, y, x + image.getWidth(), y + image.getHeight());
-    }
-
-    private Rect getVillainRectangle(Bitmap image, int x, int y) {
-        return new Rect(
-                (int) (x + image.getWidth() * 45.0 / 100.0),
-                (int) (y + image.getHeight() * 45.0 / 100.0),
-                (int) (x + image.getWidth() * 55.0 / 100.0),
-                (int) (y + image.getHeight() * 55.0 / 100.0)
-        );
-    }
-
-    private Rect getSnackRectangle(Bitmap image, int x, int y) {
-        return new Rect(
-                x + image.getWidth(),
-                y + image.getHeight(),
-                x + image.getWidth(),
-                y + image.getHeight()
-        );
-    }
-
-    private boolean heroBumpsIntoVillain(Hero hero, Villain villain) {
-        Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
-                (int) hero.getPositionY());
-        Rect villainArea = getVillainRectangle(villain.getImage(), (int) villain.getPositionX(),
-                (int) villain.getPositionY());
-
-        return Rect.intersects(heroArea, villainArea);
-    }
-
-    private boolean heroInteractsWithSnack(Hero hero, Snack snack) {
-        Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
-                (int) hero.getPositionY());
-        Rect snackArea = getSnackRectangle(snack.getImage(), (int) snack.getPositionX(),
-                (int) snack.getPositionY());
-
-        return Rect.intersects(heroArea, snackArea);
-    }
-
-    private void saveHighScore(String score_id) {
-        if (prefs.getInt(score_id, 0) < score) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(score_id, score);
-            editor.apply();
-        }
-    }
-
-    private int getNumVillains(String store_id) {
-        return prefs.getInt(store_id, 2);
     }
 
     private List<Bitmap> createVillainImages() {
@@ -412,6 +362,39 @@ public class Model {
         return prefs.getBoolean(store_id, false);
     }
 
+    private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
+        Bitmap heroImage = BitmapFactory.decodeResource(getResources(), drawableIdentification);
+        return Bitmap.createScaledBitmap(heroImage, scaleX, scaleY, false);
+    }
+
+    private void getScreenParameters() {
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        screenFactorX = (int) (screenWidth / 10.0);
+        screenFactorY = (int) (screenHeight / 5.0);
+        int backgroundSpeed = (int) (screenWidth / 400.0);
+
+        setScreenWidth(screenWidth);
+        setScreenHeight(screenHeight);
+        setBackgroundSpeed(backgroundSpeed);
+    }
+
+    private void getPauseRegion() {
+        pauseRegionMaxX = screenWidth - screenWidth / 30;
+        pauseRegionMinY = screenHeight / 15;
+    }
+
+    private Resources getResources() {
+        return resources;
+    }
+
+    private void getSharedPreferences(Context activity) {
+        prefs = activity.getSharedPreferences("game", Context.MODE_PRIVATE);
+    }
+
+    private int getNumVillains(String store_id) {
+        return prefs.getInt(store_id, 2);
+    }
     private void getNumLives(String store_id) {
         numLives = prefs.getInt(store_id, 3);
     }
@@ -420,44 +403,54 @@ public class Model {
         score = prefs.getInt(store_id, 0);
     }
 
-    private void drawSnacks(Canvas canvas) {
-        for (Snack snack : snacks) {
-            snack.draw(canvas);
+    private int getLives() {
+        return lives1.getLives();
+    }
+
+    private void takeLife() {
+        lives.remove(0);
+    }
+
+    private void setGameStateToGameOver() {
+        GameState.setGameStateToGameOver();
+    }
+
+    private boolean gameIsPaused() {
+        return GameState.getGameState().equals(State.PAUSED);
+    }
+
+    private Heros getHeroId() {
+        int heroId = prefs.getInt("choose_character", 0);
+        if(heroId == 1) {
+            return Heros.TUTTI;
         }
+
+        return Heros.GUAPO;
     }
 
-    private void drawScore(Canvas canvas) {
-        canvas.drawText(" " + score, 30, (float) screenHeight / 6, paint);
+    private Rect getHeroRectangle(Bitmap image, int x, int y) {
+        return new Rect(x, y, x + image.getWidth(), y + image.getHeight());
     }
 
-    private void drawCharacters(Canvas canvas) {
-        // TODO : implement
+    private Rect getVillainRectangle(Bitmap image, int x, int y) {
+        return new Rect(
+                (int) (x + image.getWidth() * 45.0 / 100.0),
+                (int) (y + image.getHeight() * 45.0 / 100.0),
+                (int) (x + image.getWidth() * 55.0 / 100.0),
+                (int) (y + image.getHeight() * 55.0 / 100.0)
+        );
     }
 
-    private void drawVillains(Canvas canvas) {
-        for(Villain villain : villains) {
-            villain.draw(canvas);
-        }
+    private Rect getSnackRectangle(Bitmap image, int x, int y) {
+        return new Rect(
+                x + image.getWidth(),
+                y + image.getHeight(),
+                x + image.getWidth(),
+                y + image.getHeight()
+        );
     }
 
-    private void drawLives(Canvas canvas) {
-        int lifeLocation = screenWidth / 2 - 20;
-        for (Bitmap life : lives) {
-            canvas.drawBitmap(life, lifeLocation, 20, null);
-            lifeLocation += life.getWidth() + 5;
-        }
-    }
-
-    private void drawPauseButton(Canvas canvas) {
-        if(gameIsPaused()) {
-            canvas.drawBitmap(playButton, pauseRegionMaxX - playButton.getWidth(), pauseRegionMinY, null);
-        }
-        else {
-            canvas.drawBitmap(pauseButton, pauseRegionMaxX - pauseButton.getWidth(), pauseRegionMinY, null);
-        }
-    }
-
-    private void drawHero(Canvas canvas) {
-        hero.draw(canvas);
+    private int getFollowingBackground(int id) {
+        return id % backgrounds.size();
     }
 }
