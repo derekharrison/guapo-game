@@ -177,13 +177,13 @@ public class MainView extends SurfaceView implements Runnable {
     }
 
     private void updatePositionHero(MotionEvent event) {
-        model.getHero().setPositionX(event.getX());
-        model.getHero().setPositionY(event.getY());
+        model.getHero().setPositionX(event.getX() - model.getHero().getWidth() / 2);
+        model.getHero().setPositionY(event.getY() - model.getHero().getHeight() / 2);
     }
 
     private void updateVelocityHero(MotionEvent event) {
-        float velX = event.getX() - model.getHero().getPositionX();
-        float velY = event.getY() - model.getHero().getPositionY();
+        float velX = event.getX() - model.getHero().getWidth() / 2 - model.getHero().getPositionX();
+        float velY = event.getY() - model.getHero().getHeight() / 2 - model.getHero().getPositionY();
         model.getHero().setVelX(velX);
         model.getHero().setVelY(velY);
         setLowVelocitiesToZero();
@@ -198,7 +198,7 @@ public class MainView extends SurfaceView implements Runnable {
         float velX = model.getHero().getVelocityX();
         float velY = model.getHero().getVelocityY();
 
-        if(velX * velX + velY * velY < 25) {
+        if(velX * velX + velY * velY < 50) {
             model.getHero().setVelX(0);
             model.getHero().setVelY(0);
         }

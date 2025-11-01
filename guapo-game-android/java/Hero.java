@@ -67,12 +67,8 @@ public class Hero extends Character {
     }
 
     public void draw(Canvas canvas) {
-        float x = getPositionX();
-        float y = getPositionY();
-        float width = getImage().getWidth();
-        float height = getImage().getHeight();
-        canvas.drawBitmap(getHeroCapeImage(), x - width / 3, getPositionY() - height / 5, null);
-        canvas.drawBitmap(getImage(), x - width / 3, y -height / 3, null);
+        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY(), null);
+        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
     }
 
     public float getWidth() {
@@ -99,11 +95,16 @@ public class Hero extends Character {
         }
     }
 
-    private Bitmap getHeroCapeImage() {
-        if (getFrameCounter() > 2 && getFrameCounter() <= 4) {
+    private Bitmap getCapeImage() {
+        if (getFrameCounter() <= 2) {
             return capes.get(1);
         }
+        else if(getFrameCounter() > 2 && getFrameCounter() <= 4) {
+            return capes.get(0);
+        }
+
         resetFrameCounter();
+        
         return capes.get(0);
     }
 }

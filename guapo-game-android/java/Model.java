@@ -22,6 +22,7 @@ import java.util.Random;
 // TODO : create characters
 // TODO : create beggin strip
 // TODO : implement checkpoints
+// TODO : inject game objects
 
 public class Model {
     private final List<Background> backgrounds;
@@ -154,8 +155,8 @@ public class Model {
 
         Bitmap heroImage = getBitmapScaled(width, height, R.drawable.guapo_main_image_bitmap_cropped);
         Bitmap heroImageHit = getBitmapScaled(width, height, R.drawable.guapo_main_image_hit_bitmap_cropped);
-        Bitmap capeImage1 = getBitmapScaled(width, height, R.drawable.cape1_bitmap_cropped1);
-        Bitmap capeImage2 = getBitmapScaled(width, height, R.drawable.cape1_bitmap_cropped1);
+        Bitmap capeImage1 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape1_bitmap_cropped1);
+        Bitmap capeImage2 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape2_bitmap_cropped1);
 
         return new Hero.Builder()
                 .x(startPosX)
@@ -180,8 +181,8 @@ public class Model {
 
         Bitmap heroImage = getBitmapScaled(width, height, R.drawable.tutti_bitmap_no_cape_cropped);
         Bitmap heroImageHit = getBitmapScaled(width, height, R.drawable.tutti_bitmap_hit_no_cape_cropped);
-        Bitmap capeImage1 = getBitmapScaled(width, height, R.drawable.cape1_bitmap_cropped1);
-        Bitmap capeImage2 = getBitmapScaled(width, height, R.drawable.cape2_bitmap_cropped);
+        Bitmap capeImage1 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape1_bitmap_cropped1);
+        Bitmap capeImage2 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape2_bitmap_cropped);
 
         return new Hero.Builder()
                 .x(startPosX)
@@ -318,29 +319,24 @@ public class Model {
     }
 
     private Rect getHeroRectangle(Bitmap image, int x, int y) {
-        return new Rect(
-                x,
-                y,
-                (int) (x + image.getWidth() / 2.0),
-                (int) (y + image.getHeight() / 2.0)
-        );
+        return new Rect(x, y, x + image.getWidth(), y + image.getHeight());
     }
 
     private Rect getVillainRectangle(Bitmap image, int x, int y) {
         return new Rect(
-                (int) (x + image.getWidth() * 35.0 / 100.0),
-                (int) (y + image.getHeight() * 35.0 / 100.0),
-                (int) (x + image.getWidth() * 65.0 / 100.0),
-                (int) (y + image.getHeight() * 65.0 / 100.0)
+                (int) (x + image.getWidth() * 45.0 / 100.0),
+                (int) (y + image.getHeight() * 45.0 / 100.0),
+                (int) (x + image.getWidth() * 55.0 / 100.0),
+                (int) (y + image.getHeight() * 55.0 / 100.0)
         );
     }
 
     private Rect getSnackRectangle(Bitmap image, int x, int y) {
         return new Rect(
-                (int) (x + image.getWidth() * 35.0 / 100.0),
-                (int) (y + image.getHeight() * 35.0 / 100.0),
-                (int) (x + image.getWidth() * 65.0 / 100.0),
-                (int) (y + image.getHeight() * 65.0 / 100.0)
+                x + image.getWidth(),
+                y + image.getHeight(),
+                x + image.getWidth(),
+                y + image.getHeight()
         );
     }
 
@@ -354,12 +350,12 @@ public class Model {
     }
 
     private boolean heroInteractsWithSnack(Hero hero, Snack snack) {
-        Rect rect_1 = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
+        Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
                 (int) hero.getPositionY());
-        Rect rect_2 = getSnackRectangle(snack.getImage(), (int) snack.getPositionX(),
+        Rect snackArea = getSnackRectangle(snack.getImage(), (int) snack.getPositionX(),
                 (int) snack.getPositionY());
 
-        return Rect.intersects(rect_1, rect_2);
+        return Rect.intersects(heroArea, snackArea);
     }
 
     private void saveHighScore(String score_id) {
