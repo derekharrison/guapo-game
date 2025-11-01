@@ -11,12 +11,14 @@ public class Hero extends Character {
     private final Bitmap heroHitImage;
     private final List<Bitmap> capes;
     private boolean playSound = true;
+    private Heros hero;
 
     protected Hero(Builder builder) {
         super(builder);
         this.heroImage = builder.heroImage;
         this.heroHitImage = builder.heroHitImage;
         this.capes = builder.capes;
+        this.hero = builder.hero;
         this.setPositionX(builder.x);
         this.setPositionY(builder.y);
     }
@@ -27,6 +29,7 @@ public class Hero extends Character {
         private Bitmap heroImage;
         private Bitmap heroHitImage;
         private final List<Bitmap> capes = new ArrayList<>();
+        private Heros hero;
 
         public Builder x(float x) {
             this.x = x;
@@ -54,6 +57,11 @@ public class Hero extends Character {
             return this;
         }
 
+        public Builder hero(Heros hero) {
+            this.hero = hero;
+            return this;
+        }
+
         public Hero build() {
             return new Hero(this);
         }
@@ -67,7 +75,21 @@ public class Hero extends Character {
     }
 
     public void draw(Canvas canvas) {
+        if(hero.equals(Heros.TUTTI)) {
+            drawTutti(canvas);
+        }
+        if(hero.equals(Heros.GUAPO)) {
+            drawGuapo(canvas);
+        }
+    }
+
+    private void drawGuapo(Canvas canvas) {
         canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() + getHeight() / 5, null);
+        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
+    }
+
+    private void drawTutti(Canvas canvas) {
+        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY(), null);
         canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
     }
 

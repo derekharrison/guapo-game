@@ -165,6 +165,7 @@ public class Model {
                 .heroHitImage(heroImageHit)
                 .capes(capeImage1)
                 .capes(capeImage2)
+                .hero(Heros.GUAPO)
                 .build();
     }
 
@@ -191,6 +192,7 @@ public class Model {
                 .heroHitImage(heroImageHit)
                 .capes(capeImage1)
                 .capes(capeImage2)
+                .hero(Heros.TUTTI)
                 .build();
     }
 

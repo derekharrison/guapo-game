@@ -80,8 +80,8 @@ public class MainView extends SurfaceView implements Runnable {
     private void runGame() {
         while (!gameIsOver()) {
             long startTime = System.nanoTime();
-            draw();
             update();
+            draw();
             makeThreadSleepWithDelay(getDelay(startTime));
         }
 
@@ -213,11 +213,11 @@ public class MainView extends SurfaceView implements Runnable {
 
     private int getMinXPauseRegion(Bitmap pauseButton) {
         int width = pauseButton.getWidth();
-        return (int) (screenWidth- width - 5.0 * screenWidth / 60.0 - width / 2.0);
+        return (int) (screenWidth * 55.0 / 60.0 - width * 3.0 / 2.0);
     }
 
     private int getMaxYPauseRegion(Bitmap pauseButton) {
-        return (int) (5.0 * screenHeight / 30.0 + pauseButton.getHeight() / 2.0);
+        return (int) (screenHeight * 5.0 / 30.0 + pauseButton.getHeight() / 2.0);
     }
     
     private AppCompatActivity getGameActivity() {
