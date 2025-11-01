@@ -31,12 +31,12 @@ public class LevelActivity extends AppCompatActivity {
         setHighScore(prefs, "high_score_level4", R.id.high_score_id_level_4);
         setHighScore(prefs, "high_score_level5", R.id.high_score_id_level_5);
 
-        setButton(R.id.level1_id, GameActivityLevel1.class);
         setLevelButton(prefs, "high_score", R.id.second_level2_id, GameActivityLevel2.class);
         setLevelButton(prefs, "high_score_level2", R.id.trip_id, GameActivityLevel3.class);
         setLevelButton(prefs, "high_score_level3", R.id.trip_id, GameActivityLevel4.class);
         setLevelButton(prefs, "high_score_level3", R.id.utreg_id, GameActivityLevel5.class);
 
+        setButton(R.id.level1_id, GameActivityLevel1.class);
         setButton(R.id.choose_level_id3, ChooseCharacterActivity.class);
         setButton(R.id.main_menu_button3, MainActivity.class);
 

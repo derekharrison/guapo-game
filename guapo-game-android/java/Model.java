@@ -29,6 +29,7 @@ public class Model {
     private final List<Snack> snacks = new ArrayList<>();
     private int difficultyLevel = 0;
     private final List<Bitmap> lives = new ArrayList<>();
+    private final List<Villain> villains = new ArrayList<>();
     private int numLives = 3;
     private final Paint paint;
     private int pauseRegionMaxX;
@@ -42,7 +43,6 @@ public class Model {
     private float screenFactorX, screenFactorY;
     private Hero hero;
     private Lives lives1;
-    private final List<Villain> villains = new ArrayList<>();
     private Sounds sounds;
     private final Resources resources;
 
@@ -155,8 +155,8 @@ public class Model {
 
         Bitmap heroImage = getBitmapScaled(width, height, R.drawable.guapo_main_image_bitmap_cropped);
         Bitmap heroImageHit = getBitmapScaled(width, height, R.drawable.guapo_main_image_hit_bitmap_cropped);
-        Bitmap capeImage1 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape1_bitmap_cropped1);
-        Bitmap capeImage2 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape2_bitmap_cropped1);
+        Bitmap capeImage1 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape1_bitmap_cropped1);
+        Bitmap capeImage2 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape2_bitmap_cropped1);
 
         return new Hero.Builder()
                 .x(startPosX)
@@ -181,8 +181,8 @@ public class Model {
 
         Bitmap heroImage = getBitmapScaled(width, height, R.drawable.tutti_bitmap_no_cape_cropped);
         Bitmap heroImageHit = getBitmapScaled(width, height, R.drawable.tutti_bitmap_hit_no_cape_cropped);
-        Bitmap capeImage1 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape1_bitmap_cropped1);
-        Bitmap capeImage2 = getBitmapScaled(width / 2, (2 * height) / 3, R.drawable.cape2_bitmap_cropped);
+        Bitmap capeImage1 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape1_bitmap_cropped1);
+        Bitmap capeImage2 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape2_bitmap_cropped);
 
         return new Hero.Builder()
                 .x(startPosX)

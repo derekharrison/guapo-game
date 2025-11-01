@@ -20,50 +20,68 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_choose);
-        TextView play_button1 = findViewById(R.id.guapo_char_id);
-        TextView play_button2 = findViewById(R.id.tutti_char_id);
+
+        setUpScreenApiVersionGreaterOrEqualTo30();
+        setUpScreenApiVersionLessThan30();
+        SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+
+        setCharacterChoiceIsTuttiButton(prefs);
+        setCharacterChoiceIsGuapoButton(prefs);
+
+        setButton(R.id.choose_level_id, LevelActivity.class);
+        setButton(R.id.main_menu_button2, MainActivity.class);
+    }
+
+    private void setUpScreenApiVersionGreaterOrEqualTo30() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             final WindowInsetsController insetsController;
             insetsController = getWindow().getInsetsController();
-
             if (insetsController != null) {
                 insetsController.hide(WindowInsets.Type.statusBars());
                 insetsController.hide(WindowInsets.Type.navigationBars());
             }
-        } else {
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setUpScreenApiVersionLessThan30() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) {
             getWindow().setFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN
             );
         }
-        SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+    }
 
-        findViewById(R.id.guapo_char_id).setOnClickListener(_ -> {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("choose_character", 0);
-            editor.apply();
-            play_button1.setTextColor(Color.WHITE);
-            play_button2.setTextColor(Color.BLACK);
-       });
-
+    private void setCharacterChoiceIsTuttiButton(SharedPreferences prefs) {
+        TextView guapoButton = findViewById(R.id.guapo_char_id);
+        TextView tuttiButton = findViewById(R.id.tutti_char_id);
         findViewById(R.id.tutti_char_id).setOnClickListener(_ -> {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("choose_character", 1);
             editor.apply();
-            play_button1.setTextColor(Color.WHITE);
-            play_button2.setTextColor(Color.BLACK);
+            tuttiButton.setTextColor(Color.WHITE);
+            guapoButton.setTextColor(Color.BLACK);
         });
+    }
 
-        findViewById(R.id.choose_level_id).setOnClickListener(_ -> {
-            TextView play_button = findViewById(R.id.choose_level_id);
-            play_button.setTextColor(Color.WHITE);
-            startActivity(new Intent(ChooseCharacterActivity.this, LevelActivity.class));
+    private void setCharacterChoiceIsGuapoButton(SharedPreferences prefs) {
+        TextView guapoButton = findViewById(R.id.guapo_char_id);
+        TextView tuttiButton = findViewById(R.id.tutti_char_id);
+        findViewById(R.id.guapo_char_id).setOnClickListener(_ -> {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("choose_character", 0);
+            editor.apply();
+            guapoButton.setTextColor(Color.WHITE);
+            tuttiButton.setTextColor(Color.BLACK);
         });
+    }
 
-        findViewById(R.id.main_menu_button2).setOnClickListener(_ -> {
-            TextView play_button = findViewById(R.id.main_menu_button2);
-            play_button.setTextColor(Color.WHITE);
-            startActivity(new Intent(ChooseCharacterActivity.this, MainActivity.class));
+    private <T extends AppCompatActivity> void setButton(int buttonId, Class<T> clazz) {
+        findViewById(buttonId).setOnClickListener(_ -> {
+            TextView textView = findViewById(buttonId);
+            textView.setTextColor(Color.WHITE);
+            startActivity(new Intent(ChooseCharacterActivity.this, clazz));
         });
     }
 }

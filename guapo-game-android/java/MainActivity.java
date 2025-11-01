@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setUpScreenApiVersionGreaterOrEqualTo30();
         setUpScreenApiVersionLessThan30();
 
-        setButton(R.id.play, LevelActivity.class);
+        setButton(R.id.play, ChooseCharacterActivity.class);
         setButton(R.id.choose_level_id_main, LevelActivity.class);
     }
 

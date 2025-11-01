@@ -67,7 +67,7 @@ public class Hero extends Character {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY(), null);
+        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() + getHeight() / 5, null);
         canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
     }
 
