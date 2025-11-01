@@ -4,47 +4,74 @@ import static com.main.guapogame.Parameters.getBackgroundSpeed;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import java.util.Random;
 
 public class Snack implements Position, Velocity, Update, GameImage {
-    public int x = 0, y, width, height;
-    public Bitmap snack_image;
-    public boolean play_sound_allowed = true;
-    public int points_snack;
+    private int positionX;
+    private int positionY;
+    private final Bitmap snackImage;
+    private boolean playSound = true;
+    private final int pointsSnack;
 
-    Snack (Resources res, int screenFactorX, int screenFactorY, int id) {
-        snack_image = BitmapFactory.decodeResource(res, id);
+    protected Snack(Builder builder) {
+        this.positionX = builder.positionX;
+        this.positionY = builder.positionY;
+        this.snackImage = builder.snackImage;
+        this.pointsSnack = builder.pointsSnack;
+    }
 
-        width = screenFactorX - screenFactorX/3;
-        height = screenFactorY - screenFactorY/3;
+    public static class Builder {
+        private int positionX = 0;
+        private int positionY;
+        private Bitmap snackImage;
+        private int pointsSnack;
 
-        snack_image = Bitmap.createScaledBitmap(snack_image, width, height, false);
+        public Builder positionX(int positionX) {
+            this.positionX = positionX;
+            return this;
+        }
 
-        y = -height;
+        public Builder positionY(int positionY) {
+            this.positionY = positionY;
+            return this;
+        }
+
+        public Builder snackImage(Bitmap snackImage) {
+            this.snackImage = snackImage;
+            return this;
+        }
+
+        public Builder pointsForSnack(int pointsSnack) {
+            this.pointsSnack = pointsSnack;
+            return this;
+        }
+
+        public Snack build() {
+            return new Snack(this);
+        }
     }
 
     public Bitmap getSnackImage() {
-        return this.snack_image;
+        return this.snackImage;
     }
 
-    public void set_x(int x) { this.x = x; }
+    public void setPositionX(int x) { this.positionX = x; }
 
     @Override
     public Bitmap getImage() {
-        return this.snack_image;
+        return this.snackImage;
     }
 
     @Override
     public float getPositionX() {
-        return x;
+        return positionX;
     }
 
     @Override
     public float getPositionY() {
-        return y;
+        return positionY;
     }
 
     @Override
@@ -52,16 +79,16 @@ public class Snack implements Position, Velocity, Update, GameImage {
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-        this.x += (int) getVelocityX();
-        if(this.x + getSnackImage().getWidth() < 0) {
-            play_sound_allowed = true;
+        this.positionX += (int) getVelocityX();
+        if(this.positionX + getSnackImage().getWidth() < 0) {
+            playSound = true;
         }
 
-        if (this.x + getSnackImage().getWidth() < 0) {
+        if (this.positionX + getSnackImage().getWidth() < 0) {
             Random rand = new Random();
-            this.x = rand.nextInt(screenWidth + 1) + screenWidth;
-            this.y = rand.nextInt(screenHeight - getSnackImage().getHeight());
-            this.setPlaySoundAllowed(true);
+            this.positionX = rand.nextInt(screenWidth + 1) + screenWidth;
+            this.positionY = rand.nextInt(screenHeight - getSnackImage().getHeight());
+            setPlaySoundAllowed();
         }
     }
 
@@ -76,17 +103,25 @@ public class Snack implements Position, Velocity, Update, GameImage {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(getSnackImage(), x, y, null);
+        canvas.drawBitmap(getSnackImage(), positionX, positionY, null);
     }
 
     public void playSoundEat(Sounds sounds) {
-        if(play_sound_allowed) {
+        if(playSound) {
             sounds.playSoundEat();
-            play_sound_allowed = false;
+            setPlaySoundDisallowed();
         }
     }
 
-    public void setPlaySoundAllowed(boolean play_sound_allowed) {
-        this.play_sound_allowed = play_sound_allowed;
+    public int getPointsForSnack() {
+        return pointsSnack;
+    }
+
+    private void setPlaySoundAllowed() {
+        this.playSound = true;
+    }
+
+    private void setPlaySoundDisallowed() {
+        this.playSound = false;
     }
 }

@@ -13,10 +13,8 @@ import java.util.Random;
 
 public class Villain extends Character {
     private int speed = 20;
-    private static int NUM_FRAMES_DISPLAY = 3;
-    private List<Bitmap> images;
-
-    private boolean playSound = true;
+    private final static int NUM_FRAMES_DISPLAY = 3;
+    private final List<Bitmap> images;
 
     protected Villain(Builder builder) {
         super(builder);

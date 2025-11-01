@@ -11,7 +11,7 @@ public class Hero extends Character {
     private final Bitmap heroHitImage;
     private final List<Bitmap> capes;
     private boolean playSound = true;
-    private Heros hero;
+    private final Heros hero;
 
     protected Hero(Builder builder) {
         super(builder);
@@ -83,16 +83,6 @@ public class Hero extends Character {
         }
     }
 
-    private void drawGuapo(Canvas canvas) {
-        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() + getHeight() / 5, null);
-        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
-    }
-
-    private void drawTutti(Canvas canvas) {
-        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY(), null);
-        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
-    }
-
     public float getWidth() {
         return getImage().getWidth();
     }
@@ -115,6 +105,16 @@ public class Hero extends Character {
             sounds.playSoundBarkHit();
             playSound = false;
         }
+    }
+
+    private void drawGuapo(Canvas canvas) {
+        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() + getHeight() / 5, null);
+        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
+    }
+
+    private void drawTutti(Canvas canvas) {
+        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY(), null);
+        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
     }
 
     private Bitmap getCapeImage() {

@@ -27,9 +27,9 @@ import java.util.Random;
 public class Model {
     private final List<Background> backgrounds;
     private final List<Snack> snacks = new ArrayList<>();
-    private int difficultyLevel = 0;
     private final List<Bitmap> lives = new ArrayList<>();
     private final List<Villain> villains = new ArrayList<>();
+    private int difficultyLevel = 0;
     private int numLives = 3;
     private final Paint paint;
     private int pauseRegionMaxX;
@@ -48,7 +48,6 @@ public class Model {
 
     public Model(Context activity, Resources resources, List<Background> backgrounds) {
         this.resources = resources;
-
         this.backgrounds = backgrounds;
 
         paint = new Paint();
@@ -64,6 +63,7 @@ public class Model {
         createLives();
         createLives1();
         createHero();
+        createVillains();
 
         getPauseRegion();
     }
@@ -147,6 +147,12 @@ public class Model {
         }
     }
 
+    private void createVillains() {
+        for(int i = 0; i < 2; i++) {
+            villains.add(createVillain());
+        }
+    }
+
     private Hero createGuapo() {
         int startPosX = (int) (screenWidth / 10.0);
         int startPosY = (int) (screenHeight / 2.0);
@@ -199,12 +205,18 @@ public class Model {
     private List<Snack> createSnacks(int numSnacks, int pointsForSnack, int snackId) {
         List<Snack> snacks = new ArrayList<>();
         Random random = new Random();
+        int width = (int) (screenFactorX - screenFactorX / 3.0);
+        int height = (int) (screenFactorY - screenFactorY / 3.0);
+        Bitmap snackImage = getBitmapScaled(width, height, snackId);
         for (int i = 0; i < numSnacks; i++) {
-            Snack snack = new Snack(getResources(), (int) screenFactorX, (int) screenFactorY, snackId);
-            snack.x = random.nextInt(2 * screenWidth - snack.getSnackImage().getWidth() / 2);
-            snack.y = random.nextInt(screenHeight - snack.getSnackImage().getHeight() / 2);
-            snack.points_snack = pointsForSnack;
-            snacks.add(snack);
+            snacks.add(
+                    new Snack.Builder()
+                            .positionX(random.nextInt(2 * screenWidth - snackImage.getWidth() / 2))
+                            .positionY(random.nextInt(screenHeight - snackImage.getHeight() / 2))
+                            .pointsForSnack(pointsForSnack)
+                            .snackImage(snackImage)
+                            .build()
+            );
         }
 
         return snacks;
@@ -213,8 +225,8 @@ public class Model {
     private void updateSnack(Snack snack) {
         snack.update();
         if(heroInteractsWithSnack(hero, snack)) {
-            score += snack.points_snack;
-            snack.set_x(-500);
+            score += snack.getPointsForSnack();
+            snack.setPositionX(-500);
             snack.playSoundEat(sounds);
         }
     }
@@ -314,7 +326,7 @@ public class Model {
                 difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL;
 
         if(score >= scoreThatRequiresNumberOfVillainsIncreases
-                && villains.size() < Parameters.MAX_NUM_BIRDS) {
+                && villains.size() < Parameters.MAX_VILLAINS) {
             addVillain(createVillain());
             difficultyLevel++;
         }

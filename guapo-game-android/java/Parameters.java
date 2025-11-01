@@ -3,7 +3,7 @@ public class Parameters {
     // Level Parameters
     public static final int LEVEL_UNLOCK_SCORE = 100;
     public static final int CHECK_POINT_INTERVAL = 100;
-    public static final int MAX_NUM_BIRDS = 12;
+    public static final int MAX_VILLAINS = 12;
     public static final int POINTS_BEGGIN_STRIPS = 5;
     public static final int NUM_CHEESY_BITES = 2;
     public static final int POINTS_CHEESY_BITES = 1;
