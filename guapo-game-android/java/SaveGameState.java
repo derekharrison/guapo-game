@@ -1,0 +1,113 @@
+package com.main.guapogame;
+
+import static com.main.guapogame.Keys.BACKGROUND;
+import static com.main.guapogame.Keys.FRAME_COUNTER;
+import static com.main.guapogame.Keys.HERO;
+import static com.main.guapogame.Keys.POSITION_X;
+import static com.main.guapogame.Keys.POSITION_Y;
+import static com.main.guapogame.Keys.SNACK;
+import static com.main.guapogame.Keys.SNACK_POINTS;
+import static com.main.guapogame.Keys.VELOCITY_X;
+import static com.main.guapogame.Keys.VELOCITY_Y;
+import static com.main.guapogame.Keys.VILLAIN;
+import static com.main.guapogame.Keys.getKey;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import java.util.List;
+
+public class SaveGameState {
+
+    SharedPreferences prefs;
+
+    public SaveGameState(Context context) {
+        prefs = context.getSharedPreferences("game", Context.MODE_PRIVATE);
+    }
+
+    public void saveHero(Hero hero) {
+        savePosition(getKey(HERO, POSITION_X), hero.getPositionX());
+        savePosition(getKey(HERO, POSITION_Y), hero.getPositionY());
+        savePosition(getKey(HERO, VELOCITY_X), hero.getVelocityX());
+        savePosition(getKey(HERO, VELOCITY_Y), hero.getVelocityY());
+        saveFrameCounter(getKey(HERO, FRAME_COUNTER), hero.getFrameCounter());
+    }
+
+    public void saveVillains(List<Villain> villains) {
+        int villainId = 0;
+        for(Villain villain : villains) {
+            saveVillain(villain, String.valueOf(villainId));
+            villainId++;
+        }
+    }
+
+    public void saveSnacks(List<Snack> snacks) {
+        int snackId = 0;
+        for(Snack snack : snacks) {
+            saveSnack(snack, String.valueOf(snackId));
+            snackId++;
+        }
+    }
+
+    public void saveBackgrounds(List<Background> backgrounds) {
+        int backgroundId = 0;
+        for(Background background : backgrounds) {
+            saveBackground(background, String.valueOf(backgroundId));
+            backgroundId++;
+        }
+    }
+
+    public void saveLives() {
+        // TODO
+    }
+
+    public void saveLevel() {
+        // TODO
+    }
+
+    public void saveScore() {
+        // TODO
+    }
+
+    public void saveOther() {
+        // TODO
+    }
+
+    private void saveBackground(Background background, String backgroundId) {
+        savePosition(getKey(BACKGROUND, POSITION_X, backgroundId), background.getPositionX());
+    }
+
+    private void saveSnack(Snack snack, String snackId) {
+        savePosition(getKey(SNACK, POSITION_X, snackId), snack.getPositionX());
+        savePosition(getKey(SNACK, POSITION_Y, snackId), snack.getPositionY());
+        savePosition(getKey(SNACK, VELOCITY_X, snackId), snack.getVelocityX());
+        savePosition(getKey(SNACK, VELOCITY_Y, snackId), snack.getVelocityY());
+        saveSnackPoints(getKey(SNACK, SNACK_POINTS, snackId), snack.getPointsForSnack());
+    }
+
+    private void saveVillain(Villain villain, String villainId) {
+        savePosition(getKey(VILLAIN, POSITION_X, villainId), villain.getPositionX());
+        savePosition(getKey(VILLAIN, POSITION_Y, villainId), villain.getPositionY());
+        savePosition(getKey(VILLAIN, VELOCITY_X, villainId), villain.getVelocityX());
+        savePosition(getKey(VILLAIN, VELOCITY_Y, villainId), villain.getVelocityY());
+        saveFrameCounter(getKey(VILLAIN, FRAME_COUNTER), villain.getFrameCounter());
+    }
+
+    private void savePosition(String key, float position) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putFloat(key, position);
+        editor.apply();
+    }
+
+    private void saveSnackPoints(String key, int snackPoints) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(key, snackPoints);
+        editor.apply();
+    }
+
+    private void saveFrameCounter(String key, int frameCounter) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(key, frameCounter);
+        editor.apply();
+    }
+}

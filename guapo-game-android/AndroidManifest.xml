@@ -17,23 +17,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.noActionBar" />
         <activity
-            android:name=".GameActivityLevel1"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.noActionBar" />
-        <activity
-            android:name=".GameActivityLevel2"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.noActionBar" />
-        <activity
-            android:name=".GameActivityLevel3"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.noActionBar" />
-        <activity
-            android:name=".GameActivityLevel4"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.noActionBar" />
-        <activity
-            android:name=".GameActivityLevel5"
+            android:name=".GameActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.noActionBar" />
         <activity
@@ -43,7 +27,6 @@
             android:theme="@style/AppTheme.noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
