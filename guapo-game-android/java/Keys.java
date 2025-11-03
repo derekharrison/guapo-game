@@ -4,6 +4,7 @@ public class Keys {
     public static String HERO = "hero";
     public static String SNACK = "snack";
     public static String VILLAIN = "villain";
+    public static String NUM_VILLAINS = "numVillains";
     public static String BACKGROUND = "background";
     public static String NUM_BACKGROUNDS = "numBackgrounds";
     public static String SNACK_POINTS = "snackPoints";

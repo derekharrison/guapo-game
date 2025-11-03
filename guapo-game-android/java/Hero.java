@@ -62,6 +62,11 @@ public class Hero extends Character {
             return this;
         }
 
+        public Builder frameCounter(int frameCounter) {
+            super.frameCounter(frameCounter);
+            return this;
+        }
+
         public Hero build() {
             return new Hero(this);
         }

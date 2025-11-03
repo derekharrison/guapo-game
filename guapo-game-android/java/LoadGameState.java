@@ -1,7 +1,9 @@
 package com.main.guapogame;
 
 import static com.main.guapogame.Keys.BACKGROUND;
+import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
+import static com.main.guapogame.Keys.NUM_VILLAINS;
 import static com.main.guapogame.Keys.SNACK;
 import static com.main.guapogame.Keys.VILLAIN;
 import static com.main.guapogame.Keys.getKey;
@@ -34,16 +36,29 @@ public class LoadGameState {
         return getPosition(getKey(SNACK, key, snackId));
     }
 
-    public float getSnackVelocity(String key, String snackId) {
-        return getVelocity(getKey(SNACK, key, snackId));
-    }
-
     public float getBackgroundPosition(String key, String backgroundId) {
         return prefs.getFloat(getKey(BACKGROUND, key, backgroundId), 0);
     }
 
-    public float getBackgroundVelocity(String key, String backgroundId) {
-        return prefs.getFloat(getKey(BACKGROUND, key, backgroundId), 0);
+    public int getHeroFrameCounter() {
+        return prefs.getInt(getKey(HERO, FRAME_COUNTER), 0);
+    }
+
+    public int getScore() {
+        return prefs.getInt("score", 0);
+    }
+
+    public int getCheckpoint() {
+        return prefs.getInt("checkpoint", 0);
+    }
+
+
+    public int getNumVillains() {
+        return prefs.getInt(getKey(VILLAIN, NUM_VILLAINS), 3);
+    }
+
+    public int getVillainFrameCounter(String villainId) {
+        return prefs.getInt(getKey(VILLAIN, FRAME_COUNTER, villainId), 0);
     }
 
     private float getPosition(String key) {

@@ -11,6 +11,7 @@ import java.util.Random;
 public class Snack implements Position, Velocity, Update, GameImage {
     private int positionX;
     private int positionY;
+    private int velocityX;
     private final Bitmap snackImage;
     private boolean playSound = true;
     private final int pointsSnack;
@@ -20,10 +21,12 @@ public class Snack implements Position, Velocity, Update, GameImage {
         this.positionY = builder.positionY;
         this.snackImage = builder.snackImage;
         this.pointsSnack = builder.pointsSnack;
+        this.velocityX = builder.velocityX;
     }
 
     public static class Builder {
         private int positionX = 0;
+        private int velocityX;
         private int positionY;
         private Bitmap snackImage;
         private int pointsSnack;
@@ -35,6 +38,11 @@ public class Snack implements Position, Velocity, Update, GameImage {
 
         public Builder positionY(int positionY) {
             this.positionY = positionY;
+            return this;
+        }
+
+        public Builder velocityX(int velocityX) {
+            this.velocityX = velocityX;
             return this;
         }
 

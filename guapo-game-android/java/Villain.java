@@ -24,8 +24,23 @@ public class Villain extends Character {
             return this;
         }
 
+        public Builder positionY(float positionY) {
+            super.positionY(positionY);
+            return this;
+        }
+
+        public Builder velX(float velX) {
+            super.velX(velX);
+            return this;
+        }
+
         public Builder images(List<Bitmap> images) {
             super.images(images);
+            return this;
+        }
+
+        public Builder frameCounter(int frameCounter) {
+            super.frameCounter(frameCounter);
             return this;
         }
 

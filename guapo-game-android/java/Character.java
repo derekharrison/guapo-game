@@ -22,6 +22,7 @@ public class Character extends AbstractCharacter {
         this.velX = builder.velX;
         this.velY = builder.velY;
         this.image = builder.image;
+        this.frameCounter = builder.frameCounter;
         this.images = builder.images;
     }
 
@@ -31,6 +32,7 @@ public class Character extends AbstractCharacter {
         private float velX = 0;
         private float velY = 0;
         private Bitmap image;
+        private int frameCounter = 0;
         private final List<Bitmap> images = new ArrayList<>();
 
         public Builder positionX(float x) {
@@ -61,6 +63,11 @@ public class Character extends AbstractCharacter {
 
         public Builder velY(float velY) {
             this.velY = velY;
+            return this;
+        }
+
+        public Builder frameCounter(int frameCounter) {
+            this.frameCounter = frameCounter;
             return this;
         }
 

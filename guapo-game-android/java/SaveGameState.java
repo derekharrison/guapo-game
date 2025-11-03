@@ -3,6 +3,7 @@ package com.main.guapogame;
 import static com.main.guapogame.Keys.BACKGROUND;
 import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
+import static com.main.guapogame.Keys.NUM_VILLAINS;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
 import static com.main.guapogame.Keys.SNACK;
@@ -39,6 +40,7 @@ public class SaveGameState {
             saveVillain(villain, String.valueOf(villainId));
             villainId++;
         }
+        saveNum(getKey(VILLAIN, NUM_VILLAINS), villains.size());
     }
 
     public void saveSnacks(List<Snack> snacks) {
@@ -65,8 +67,16 @@ public class SaveGameState {
         // TODO
     }
 
-    public void saveScore() {
-        // TODO
+    public void saveScore(int score) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("score", score);
+        editor.apply();
+    }
+
+    public void saveCheckpoint(int checkpoint) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("checkpoint", checkpoint);
+        editor.apply();
     }
 
     public void saveOther() {
@@ -90,12 +100,18 @@ public class SaveGameState {
         savePosition(getKey(VILLAIN, POSITION_Y, villainId), villain.getPositionY());
         savePosition(getKey(VILLAIN, VELOCITY_X, villainId), villain.getVelocityX());
         savePosition(getKey(VILLAIN, VELOCITY_Y, villainId), villain.getVelocityY());
-        saveFrameCounter(getKey(VILLAIN, FRAME_COUNTER), villain.getFrameCounter());
+        saveFrameCounter(getKey(VILLAIN, FRAME_COUNTER, villainId), villain.getFrameCounter());
     }
 
     private void savePosition(String key, float position) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putFloat(key, position);
+        editor.apply();
+    }
+
+    private void saveNum(String key, int num) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(key, num);
         editor.apply();
     }
 

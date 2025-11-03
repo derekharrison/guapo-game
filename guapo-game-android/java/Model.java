@@ -4,7 +4,12 @@ import static com.main.guapogame.Keys.BACKGROUND;
 import static com.main.guapogame.Keys.GAMESTATE;
 import static com.main.guapogame.Keys.NUM_BACKGROUNDS;
 import static com.main.guapogame.Keys.POSITION_X;
+import static com.main.guapogame.Keys.POSITION_Y;
+import static com.main.guapogame.Keys.SNACK;
+import static com.main.guapogame.Keys.VELOCITY_X;
+import static com.main.guapogame.Parameters.CHECK_POINT_INTERVAL;
 import static com.main.guapogame.Parameters.POINTS_BEGGIN_STRIPS;
+import static com.main.guapogame.Parameters.getBackgroundSpeed;
 import static com.main.guapogame.Parameters.setBackgroundSpeed;
 import static com.main.guapogame.Parameters.setScreenHeight;
 import static com.main.guapogame.Parameters.setScreenWidth;
@@ -27,6 +32,7 @@ import java.util.Random;
 // TODO : create beggin strip
 // TODO : implement checkpoints
 // TODO : inject game objects
+// TODO : create model builder
 
 public class Model {
     private final List<Background> backgrounds = new ArrayList<>();
@@ -34,7 +40,6 @@ public class Model {
     private final List<Bitmap> lives = new ArrayList<>();
     private final List<Villain> villains = new ArrayList<>();
     private int difficultyLevel = 0;
-    private int numLives = 3;
     private final Paint paint;
     private int pauseRegionMaxX;
     private int pauseRegionMinY;
@@ -46,11 +51,11 @@ public class Model {
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     private float screenFactorX, screenFactorY;
     private Hero hero;
-    private Lives lives1;
     private Sounds sounds;
     private final Resources resources;
     private final GameState gameState;
     private final Context context;
+    private int checkpoint = 0;
 
     public Model(Context context, Resources resources) {
         this.resources = resources;
@@ -61,6 +66,10 @@ public class Model {
         paint.setTextSize(128);
         paint.setColor(Color.BLACK);
 
+        createModelData();
+    }
+
+    private void createModelData() {
         getSharedPreferences();
         getScreenParameters();
 
@@ -68,12 +77,12 @@ public class Model {
         createPauseAndPlayButtons();
         createSnacks();
         createLives();
-        createLives1();
         createHero();
         createVillains();
         createBackgrounds();
 
         getPauseRegion();
+        getScore();
     }
 
     public Hero getHero() {
@@ -81,7 +90,6 @@ public class Model {
     }
 
     public void saveHighScore() {
-        int score = 0;
         if (prefs.getInt("high_score", 0) < score) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("high_score", score);
@@ -94,6 +102,7 @@ public class Model {
         updateVillains();
         updateHero();
         updateSnacks();
+        saveGame();
     }
 
     public void draw(Canvas canvas) {
@@ -101,10 +110,46 @@ public class Model {
         drawLives(canvas);
         drawSnacks(canvas);
         drawScore(canvas);
-        drawCharacters(canvas);
         drawPauseButton(canvas);
         drawVillains(canvas);
         drawHero(canvas);
+    }
+
+    private void saveGame() {
+        if(reachedCheckpoint()) {
+            Thread thread = new Thread(new SaveState());
+            thread.start();
+            advanceCheckpoint();
+        }
+    }
+
+    private void save() {
+        gameState.saveGameState().saveHero(hero);
+        gameState.saveGameState().saveSnacks(snacks);
+        gameState.saveGameState().saveVillains(villains);
+        gameState.saveGameState().saveBackgrounds(backgrounds);
+        gameState.saveGameState().saveScore(score);
+        gameState.saveGameState().saveCheckpoint(checkpoint);
+    }
+
+    private void getCheckpoint() {
+        if(isActiveSession()) {
+            checkpoint = gameState.getLoadGameState().getCheckpoint();
+        }
+    }
+
+    private void getScore() {
+        if(isActiveSession()) {
+            score = gameState.getLoadGameState().getScore();
+        }
+    }
+
+    private boolean reachedCheckpoint() {
+        return score >= checkpoint * CHECK_POINT_INTERVAL;
+    }
+
+    private void advanceCheckpoint() {
+        checkpoint++;
     }
 
     private void updateSnack(Snack snack) {
@@ -151,14 +196,21 @@ public class Model {
     }
 
     private void updateNumberOfVillains() {
-        int scoreThatRequiresNumberOfVillainsIncreases =
-                difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL;
-
-        if(score >= scoreThatRequiresNumberOfVillainsIncreases
-                && villains.size() < Parameters.MAX_VILLAINS) {
+        if (needToIncreaseVillains() && lessThanMaxVillains()) {
             addVillain(createVillain());
-            difficultyLevel++;
+            advanceDifficultyLevel();
         }
+    }
+
+    private void advanceDifficultyLevel() {
+        difficultyLevel++;
+    }
+
+    private boolean lessThanMaxVillains() {
+        return villains.size() < Parameters.MAX_VILLAINS;
+    }
+    private boolean needToIncreaseVillains() {
+        return score >= difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL;
     }
 
     private void drawBackgrounds(Canvas canvas) {
@@ -175,10 +227,6 @@ public class Model {
 
     private void drawScore(Canvas canvas) {
         canvas.drawText(" " + score, 30, (float) screenHeight / 6, paint);
-    }
-
-    private void drawCharacters(Canvas canvas) {
-        // TODO : implement
     }
 
     private void drawVillains(Canvas canvas) {
@@ -209,53 +257,58 @@ public class Model {
     }
 
     private boolean heroInteractsWithVillain(Hero hero, Villain villain) {
-        Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
+        Rect heroArea = getHeroArea(hero.getImage(), (int) hero.getPositionX(),
                 (int) hero.getPositionY());
-        Rect villainArea = getVillainRectangle(villain.getImage(), (int) villain.getPositionX(),
+        Rect villainArea = getVillainArea(villain.getImage(), (int) villain.getPositionX(),
                 (int) villain.getPositionY());
 
         return Rect.intersects(heroArea, villainArea);
     }
 
     private boolean heroInteractsWithSnack(Hero hero, Snack snack) {
-        Rect heroArea = getHeroRectangle(hero.getImage(), (int) hero.getPositionX(),
+        Rect heroArea = getHeroArea(hero.getImage(), (int) hero.getPositionX(),
                 (int) hero.getPositionY());
-        Rect snackArea = getSnackRectangle(snack.getImage(), (int) snack.getPositionX(),
+        Rect snackArea = getSnackArea(snack.getImage(), (int) snack.getPositionX(),
                 (int) snack.getPositionY());
 
         return Rect.intersects(heroArea, snackArea);
     }
 
     private void createBackgrounds() {
-        int numBackgrounds = prefs.getInt(NUM_BACKGROUNDS, 0);
-        List<Integer> backgroundAssetIds = new ArrayList<>();
-        for(int i = 0; i < numBackgrounds; i++) {
-            backgroundAssetIds.add(prefs.getInt(BACKGROUND + i, 0));
-        }
+        List<Integer> assetIds = getBackgroundAssetIds();
         int backgroundId = 0;
-        for(Integer background : backgroundAssetIds) {
+        for(Integer background : assetIds) {
             this.backgrounds.add(createBackground(background, String.valueOf(backgroundId)));
             backgroundId++;
         }
     }
 
+    private List<Integer> getBackgroundAssetIds() {
+        int numBackgrounds = prefs.getInt(NUM_BACKGROUNDS, 0);
+        List<Integer> assetIds = new ArrayList<>();
+        for(int id = 0; id < numBackgrounds; id++) {
+            assetIds.add(prefs.getInt(BACKGROUND + id, 0));
+        }
+
+        return assetIds;
+    }
+
     private Background createBackground(int assetId, String backgroundId) {
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        int backgroundSpeed = (int) (((float) screenWidth) / 400);
-        float startPositionX = 0;
-        if(isActiveSession()) {
-            startPositionX = gameState.getLoadGameState().getBackgroundPosition(POSITION_X, backgroundId);
-        }
         return new Background.Builder()
-                .positionX(startPositionX)
-                .velocityX(-backgroundSpeed)
+                .positionX(getStartPositionBackground(backgroundId))
+                .velocityX(-getBackgroundSpeed())
                 .background(getBitmapScaled(screenWidth, screenHeight, assetId))
                 .build();
     }
 
-    private void createLives1() {
-        lives1 = new Lives();
+    private float getStartPositionBackground(String backgroundId) {
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getBackgroundPosition(POSITION_X, backgroundId);
+        }
+
+        return 0;
     }
 
     private void createSounds() {
@@ -263,7 +316,7 @@ public class Model {
     }
 
     private void createLives() {
-        numLives = prefs.getInt("num_lives", Parameters.NUM_LIVES);
+        int numLives = prefs.getInt("num_lives", Parameters.NUM_LIVES);
         for(int i = 0; i < numLives; i++) {
             Bitmap life = getBitmapScaled(
                     (int) screenFactorX / 4,
@@ -295,15 +348,7 @@ public class Model {
         }
     }
 
-    private void createVillains() {
-        for(int i = 0; i < 2; i++) {
-            villains.add(createVillain());
-        }
-    }
-
     private Hero createGuapo() {
-        int startPosX = (int) (screenWidth / 10.0);
-        int startPosY = (int) (screenHeight / 2.0);
         int width = (int) (screenFactorX * 3 / 2.0);
         int height = (int) (screenFactorY * 3 / 2.0);
 
@@ -313,19 +358,18 @@ public class Model {
         Bitmap capeImage2 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape2_bitmap_cropped1);
 
         return new Hero.Builder()
-                .positionX(startPosX)
-                .positionY(startPosY)
+                .positionX(getHeroPositionX())
+                .positionY(getHeroPositionY())
                 .heroImage(heroImage)
                 .heroHitImage(heroImageHit)
                 .capes(capeImage1)
                 .capes(capeImage2)
                 .hero(Heros.GUAPO)
+                .frameCounter(getHeroFrameCounter())
                 .build();
     }
 
     private Hero createTutti() {
-        int startPosX = (int) (screenWidth / 10.0);
-        int startPosY = (int) (screenHeight / 2.0);
         int width = (int) (screenFactorX * 3 / 2.0);
         int height = (int) (screenFactorY * 3 / 2.0);
 
@@ -335,27 +379,48 @@ public class Model {
         Bitmap capeImage2 = getBitmapScaled(width / 2, (3 * height) / 4, R.drawable.cape2_bitmap_cropped);
 
         return new Hero.Builder()
-                .positionX(startPosX)
-                .positionY(startPosY)
+                .positionX(getHeroPositionX())
+                .positionY(getHeroPositionY())
                 .heroImage(heroImage)
                 .heroHitImage(heroImageHit)
+                .frameCounter(getHeroFrameCounter())
                 .capes(capeImage1)
                 .capes(capeImage2)
                 .hero(Heros.TUTTI)
                 .build();
     }
 
-    private List<Snack> createSnacks(int numSnacks, int pointsForSnack, int snackId) {
+    private int getHeroFrameCounter() {
+        return gameState.getLoadGameState().getHeroFrameCounter();
+    }
+
+    private float getHeroPositionX() {
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getHeroPosition(POSITION_X);
+        }
+
+        return (float) (screenWidth / 10.0);
+    }
+
+    private float getHeroPositionY() {
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getHeroPosition(POSITION_Y);
+        }
+
+        return (float) (screenHeight / 2.0);
+    }
+
+    private List<Snack> createSnacks(int numSnacks, int pointsForSnack, int assetId) {
         List<Snack> snacks = new ArrayList<>();
-        Random random = new Random();
         int width = (int) (screenFactorX - screenFactorX / 3.0);
         int height = (int) (screenFactorY - screenFactorY / 3.0);
-        Bitmap snackImage = getBitmapScaled(width, height, snackId);
-        for (int i = 0; i < numSnacks; i++) {
+        Bitmap snackImage = getBitmapScaled(width, height, assetId);
+        for (int snackId = 0; snackId < numSnacks; snackId++) {
             snacks.add(
                     new Snack.Builder()
-                            .positionX(random.nextInt(2 * screenWidth - snackImage.getWidth() / 2))
-                            .positionY(random.nextInt(screenHeight - snackImage.getHeight() / 2))
+                            .positionX((int) getSnackPositionX(String.valueOf(snackId), snackImage))
+                            .positionY((int) getSnackPositionY(String.valueOf(snackId), snackImage))
+                            .velocityX(-getBackgroundSpeed())
                             .pointsForSnack(pointsForSnack)
                             .snackImage(snackImage)
                             .build()
@@ -365,11 +430,69 @@ public class Model {
         return snacks;
     }
 
+    private float getSnackPositionX(String snackId, Bitmap snackImage) {
+        Random random = new Random();
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getSnackPosition(SNACK, snackId);
+        }
+
+        return random.nextInt(2 * screenWidth - snackImage.getWidth() / 2);
+    }
+
+    private float getSnackPositionY(String snackId, Bitmap snackImage) {
+        Random random = new Random();
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getSnackPosition(SNACK, snackId);
+        }
+
+        return random.nextInt(screenHeight - snackImage.getHeight() / 2);
+    }
+
+    private void createVillains() {
+        int numVillains = getNumVillains();
+        for(int villainId = 0; villainId < numVillains; villainId++) {
+            if(isActiveSession()) {
+                createVillain(String.valueOf(villainId));
+            }
+            else {
+                addVillain(createVillain());
+            }
+        }
+    }
+
     private Villain createVillain() {
         return new Villain.Builder()
                 .positionX(-500)
                 .images(createVillainImages())
                 .build();
+    }
+
+    private void createVillain(String villainId) {
+        villains.add(
+                new Villain.Builder()
+                        .positionX(getVillainPositionX(villainId))
+                        .positionY(getVillainPositionY(villainId))
+                        .velX(getVillainVelocityX(villainId))
+                        .images(createVillainImages())
+                        .frameCounter(getVillainFrameCounter(villainId))
+                        .build()
+        );
+    }
+
+    private int getVillainFrameCounter(String villainId) {
+        return gameState.getLoadGameState().getVillainFrameCounter(villainId);
+    }
+
+    private float getVillainPositionX(String villainId) {
+        return gameState.getLoadGameState().getVillainPosition(POSITION_X, villainId);
+    }
+
+    private float getVillainPositionY(String villainId) {
+        return gameState.getLoadGameState().getVillainPosition(POSITION_Y, villainId);
+    }
+
+    private float getVillainVelocityX(String villainId) {
+        return gameState.getLoadGameState().getVillainVelocity(VELOCITY_X, villainId);
     }
 
     private List<Bitmap> createVillainImages() {
@@ -397,7 +520,8 @@ public class Model {
         return prefs.getBoolean(GAMESTATE, false);
     }
 
-    private void setSession(boolean isActive) {
+    private void setSessionIsActive(boolean isActive) {
+        // TODO : Implement
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(GAMESTATE, isActive);
         editor.apply();
@@ -433,29 +557,16 @@ public class Model {
         prefs = context.getSharedPreferences("game", Context.MODE_PRIVATE);
     }
 
-    private int getNumVillains(String store_id) {
-        return prefs.getInt(store_id, 2);
-    }
-    private void getNumLives(String store_id) {
-        numLives = prefs.getInt(store_id, 3);
-    }
+    private int getNumVillains() {
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getNumVillains();
+        }
 
-    private void getScore(String store_id) {
-        score = prefs.getInt(store_id, 0);
-    }
-
-    private int getLives() {
-        return lives1.getLives();
-    }
-
-    private void takeLife() {
-        lives.remove(0);
+        return 3;// TODO : Create constant
     }
 
     private void setGameStateToGameOver() {
         GameState.setGameStateToGameOver();
-        setSession(true);// TODO : Remove after testing
-        gameState.saveGameState().saveBackgrounds(backgrounds);
     }
 
     private boolean gameIsPaused() {
@@ -471,11 +582,11 @@ public class Model {
         return Heros.GUAPO;
     }
 
-    private Rect getHeroRectangle(Bitmap image, int x, int y) {
+    private Rect getHeroArea(Bitmap image, int x, int y) {
         return new Rect(x, y, x + image.getWidth(), y + image.getHeight());
     }
 
-    private Rect getVillainRectangle(Bitmap image, int x, int y) {
+    private Rect getVillainArea(Bitmap image, int x, int y) {
         return new Rect(
                 (int) (x + image.getWidth() * 45.0 / 100.0),
                 (int) (y + image.getHeight() * 45.0 / 100.0),
@@ -484,7 +595,7 @@ public class Model {
         );
     }
 
-    private Rect getSnackRectangle(Bitmap image, int x, int y) {
+    private Rect getSnackArea(Bitmap image, int x, int y) {
         return new Rect(
                 x + image.getWidth(),
                 y + image.getHeight(),
@@ -496,4 +607,13 @@ public class Model {
     private int getFollowingBackground(int id) {
         return id % backgrounds.size();
     }
+
+    private class SaveState implements Runnable {
+
+        @Override
+        public void run() {
+            save();
+        }
+    }
+
 }
