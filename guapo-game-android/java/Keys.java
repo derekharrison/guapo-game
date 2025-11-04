@@ -14,6 +14,12 @@ public class Keys {
     public static String VELOCITY_X = "velocityX";
     public static String VELOCITY_Y = "velocityY";
     public static String GAMESTATE = "gameState";
+    public static String LEVEL = "level";
+    public static String ARUBA = "aruba";
+    public static String BEACH = "beach";
+    public static String TRIP = "trip";
+    public static String OCEAN = "ocean";
+    public static String UTREG = "utrecht";
 
     public static String getKey(String...key) {
         StringBuilder stringBuilder = new StringBuilder();

@@ -3,6 +3,7 @@ package com.main.guapogame;
 import static com.main.guapogame.Keys.BACKGROUND;
 import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
+import static com.main.guapogame.Keys.LEVEL;
 import static com.main.guapogame.Keys.NUM_VILLAINS;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
@@ -63,8 +64,10 @@ public class SaveGameState {
         // TODO
     }
 
-    public void saveLevel() {
-        // TODO
+    public void saveLevel(String levelId) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(LEVEL, levelId);
+        editor.apply();
     }
 
     public void saveScore(int score) {
@@ -84,7 +87,12 @@ public class SaveGameState {
     }
 
     private void saveBackground(Background background, String backgroundId) {
-        savePosition(getKey(BACKGROUND, POSITION_X, backgroundId), background.getPositionX());
+        String levelId = getLevelId();
+        savePosition(getKey(BACKGROUND, levelId, POSITION_X, backgroundId), background.getPositionX());
+    }
+
+    private String getLevelId() {
+        return prefs.getString(LEVEL, "");
     }
 
     private void saveSnack(Snack snack, String snackId) {

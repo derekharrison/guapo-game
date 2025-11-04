@@ -1,13 +1,21 @@
 package com.main.guapogame;
 
 import static com.main.guapogame.Constants.FPS;
+import static com.main.guapogame.Keys.ARUBA;
 import static com.main.guapogame.Keys.BACKGROUND;
+import static com.main.guapogame.Keys.BEACH;
 import static com.main.guapogame.Keys.GAMESTATE;
+import static com.main.guapogame.Keys.LEVEL;
 import static com.main.guapogame.Keys.NUM_BACKGROUNDS;
+import static com.main.guapogame.Keys.OCEAN;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
 import static com.main.guapogame.Keys.SNACK;
+import static com.main.guapogame.Keys.TRIP;
+import static com.main.guapogame.Keys.UTREG;
 import static com.main.guapogame.Keys.VELOCITY_X;
+import static com.main.guapogame.Keys.VILLAIN;
+import static com.main.guapogame.Keys.getKey;
 import static com.main.guapogame.Parameters.CHECK_POINT_INTERVAL;
 import static com.main.guapogame.Parameters.POINTS_BEGGIN_STRIPS;
 import static com.main.guapogame.Parameters.getBackgroundSpeed;
@@ -314,20 +322,56 @@ public class Model {
     private void createBackgrounds() {
         List<Integer> assetIds = getBackgroundAssetIds();
         int backgroundId = 0;
-        for(Integer background : assetIds) {
-            this.backgrounds.add(createBackground(background, String.valueOf(backgroundId)));
+        for(Integer assetId : assetIds) {
+            this.backgrounds.add(createBackground(assetId, String.valueOf(backgroundId)));
             backgroundId++;
         }
     }
 
     private List<Integer> getBackgroundAssetIds() {
-        int numBackgrounds = prefs.getInt(NUM_BACKGROUNDS, 0);
+        String levelId = getLevelId();
+        if(levelId.equals(ARUBA)) {
+            return new BackgroundsLevel1().getAssetIds();
+        }
+        if(levelId.equals(BEACH)) {
+            return new BackgroundsLevel2().getAssetIds();
+        }
+        if(levelId.equals(TRIP)) {
+            return new BackgroundsLevel3().getAssetIds();
+        }
+        if(levelId.equals(OCEAN)) {
+            return new BackgroundsLevel4().getAssetIds();
+        }
+        if(levelId.equals(UTREG)) {
+            return new BackgroundsLevel5().getAssetIds();
+        }
+        return new ArrayList<>();
+    }
+
+    private String getLevelId() {
+        return prefs.getString(LEVEL, "");
+    }
+
+    private List<Integer> getVillainAssetIds() {
+        int numVillains = getNumVillains();
         List<Integer> assetIds = new ArrayList<>();
-        for(int id = 0; id < numBackgrounds; id++) {
-            assetIds.add(prefs.getInt(BACKGROUND + id, 0));
+        for(int backgroundId = 0; backgroundId < numVillains; backgroundId++) {
+            assetIds.add(getVillainAssetId(backgroundId));
         }
 
         return assetIds;
+    }
+
+    private int getVillainAssetId(int villainId) {
+        return prefs.getInt(VILLAIN + villainId, 0);
+    }
+
+    private int getNumBackgrounds() {
+        return prefs.getInt(NUM_BACKGROUNDS, 0);
+    }
+
+    private int getBackgroundAssetId(int backgroundId) {
+        return prefs.getInt(BACKGROUND + backgroundId, 0);
     }
 
     private Background createBackground(int assetId, String backgroundId) {
@@ -341,8 +385,9 @@ public class Model {
     }
 
     private float getStartPositionBackground(String backgroundId) {
+        String levelId = getLevelId();
         if(isActiveSession()) {
-            return gameState.getLoadGameState().getBackgroundPosition(POSITION_X, backgroundId);
+            return gameState.getLoadGameState().getBackgroundPosition(levelId, POSITION_X, backgroundId);
         }
 
         return 0;

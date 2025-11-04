@@ -1,5 +1,12 @@
 package com.main.guapogame;
 
+import static com.main.guapogame.Keys.ARUBA;
+import static com.main.guapogame.Keys.BEACH;
+import static com.main.guapogame.Keys.LEVEL;
+import static com.main.guapogame.Keys.OCEAN;
+import static com.main.guapogame.Keys.TRIP;
+import static com.main.guapogame.Keys.UTREG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -31,11 +38,11 @@ public class LevelActivity extends AppCompatActivity {
         setHighScore(prefs, "high_score_level4", R.id.high_score_id_level_4);
         setHighScore(prefs, "high_score_level5", R.id.high_score_id_level_5);
 
-        setLevelButton(R.id.level1_id);
-        setLevelButton(prefs, "high_score", R.id.second_level2_id);
-        setLevelButton(prefs, "high_score_level2", R.id.trip_id);
-        setLevelButton(prefs, "high_score_level3", R.id.trip_id);
-        setLevelButton(prefs, "high_score_level3", R.id.utreg_id);
+        setLevelButton(prefs, R.id.level1_id, ARUBA);
+        setLevelButton(prefs, "high_score", R.id.second_level2_id, BEACH);
+        setLevelButton(prefs, "high_score_level2", R.id.trip_id, TRIP);
+        setLevelButton(prefs, "high_score_level3", R.id.ocean_id, OCEAN);
+        setLevelButton(prefs, "high_score_level3", R.id.utreg_id, UTREG);
 
         setButton(R.id.choose_level_id3, ChooseCharacterActivity.class);
         setButton(R.id.main_menu_button3, MainActivity.class);
@@ -70,7 +77,7 @@ public class LevelActivity extends AppCompatActivity {
         textView.setText(highScore);
     }
 
-    private void setLevelButton(SharedPreferences prefs, String scoreCap, int buttonId) {
+    private void setLevelButton(SharedPreferences prefs, String scoreCap, int buttonId, String levelId) {
         int score = prefs.getInt(scoreCap, 0);
         if(score < Parameters.LEVEL_UNLOCK_SCORE) {
             TextView textView = findViewById(buttonId);
@@ -80,17 +87,25 @@ public class LevelActivity extends AppCompatActivity {
             findViewById(buttonId).setOnClickListener(_ -> {
                 TextView textView = findViewById(buttonId);
                 textView.setTextColor(Color.WHITE);
+                setLevelId(prefs, levelId);
                 startActivity(new Intent(LevelActivity.this, GameActivity.class));
             });
         }
     }
 
-    private void setLevelButton(int buttonId) {
+    private void setLevelButton(SharedPreferences prefs, int buttonId, String levelId) {
         findViewById(buttonId).setOnClickListener(_ -> {
             TextView textView = findViewById(buttonId);
             textView.setTextColor(Color.WHITE);
+            setLevelId(prefs, levelId);
             startActivity(new Intent(LevelActivity.this, GameActivity.class));
         });
+    }
+
+    private void setLevelId(SharedPreferences prefs, String levelId) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(LEVEL, levelId);
+        editor.apply();
     }
 
     private <T extends AppCompatActivity> void setButton(int buttonId, Class<T> clazz) {

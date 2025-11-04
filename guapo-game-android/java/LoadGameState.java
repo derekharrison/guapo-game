@@ -3,6 +3,7 @@ package com.main.guapogame;
 import static com.main.guapogame.Keys.BACKGROUND;
 import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
+import static com.main.guapogame.Keys.LEVEL;
 import static com.main.guapogame.Keys.NUM_VILLAINS;
 import static com.main.guapogame.Keys.SNACK;
 import static com.main.guapogame.Keys.VILLAIN;
@@ -36,8 +37,8 @@ public class LoadGameState {
         return getPosition(getKey(SNACK, key, snackId));
     }
 
-    public float getBackgroundPosition(String key, String backgroundId) {
-        return prefs.getFloat(getKey(BACKGROUND, key, backgroundId), 0);
+    public float getBackgroundPosition(String levelId, String key, String backgroundId) {
+        return prefs.getFloat(getKey(BACKGROUND, levelId, key, backgroundId), 0);
     }
 
     public int getHeroFrameCounter() {
