@@ -1,5 +1,6 @@
 package com.main.guapogame;
 
+import static com.main.guapogame.Constants.FPS;
 import static com.main.guapogame.Keys.BACKGROUND;
 import static com.main.guapogame.Keys.GAMESTATE;
 import static com.main.guapogame.Keys.NUM_BACKGROUNDS;
@@ -56,6 +57,7 @@ public class Model {
     private final GameState gameState;
     private final Context context;
     private int checkpoint = 0;
+    private Popup checkpointPopup;
 
     public Model(Context context, Resources resources) {
         this.resources = resources;
@@ -67,6 +69,8 @@ public class Model {
         paint.setColor(Color.BLACK);
 
         createModelData();
+
+        setSessionIsActive(false);
     }
 
     private void createModelData() {
@@ -80,6 +84,7 @@ public class Model {
         createHero();
         createVillains();
         createBackgrounds();
+        createPopups();
 
         getPauseRegion();
         getScore();
@@ -102,6 +107,7 @@ public class Model {
         updateVillains();
         updateHero();
         updateSnacks();
+        updateCheckpointPopup();
         saveGame();
     }
 
@@ -113,6 +119,7 @@ public class Model {
         drawPauseButton(canvas);
         drawVillains(canvas);
         drawHero(canvas);
+        drawPopUp(canvas);
     }
 
     private void saveGame() {
@@ -121,6 +128,35 @@ public class Model {
             thread.start();
             advanceCheckpoint();
         }
+    }
+
+    private void updateCheckpointPopup() {
+        if(reachedCheckpoint()) {
+            checkpointPopup = createCheckpointPopup(2 * FPS);
+            checkpointPopup.playSoundCheckpoint(sounds);
+        }
+
+        checkpointPopup.update();
+    }
+
+    private void createPopups() {
+        checkpointPopup = createCheckpointPopup(0);
+    }
+
+    private Popup createCheckpointPopup(int duration) {
+        int width = (int) (screenWidth / 10.0);
+        int height = (int) (screenHeight / 5.0);
+        Bitmap image = getBitmapScaled(width, height, R.drawable.flag_aruba_bitmap_cropped);
+        return new Popup.Builder()
+                .duration(duration)
+                .positionX(screenWidth - screenWidth / 4)
+                .positionY(image.getHeight() + screenHeight / 10)
+                .image(image)
+                .build();
+    }
+
+    private void drawPopUp(Canvas canvas) {
+        checkpointPopup.draw(canvas);
     }
 
     private void save() {
@@ -133,6 +169,7 @@ public class Model {
     }
 
     private void getCheckpoint() {
+        // TODO : implement
         if(isActiveSession()) {
             checkpoint = gameState.getLoadGameState().getCheckpoint();
         }
@@ -145,7 +182,7 @@ public class Model {
     }
 
     private boolean reachedCheckpoint() {
-        return score >= checkpoint * CHECK_POINT_INTERVAL;
+        return score >= (checkpoint + 1) * CHECK_POINT_INTERVAL;
     }
 
     private void advanceCheckpoint() {
@@ -615,5 +652,4 @@ public class Model {
             save();
         }
     }
-
 }

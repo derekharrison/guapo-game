@@ -24,40 +24,10 @@ public class Sounds {
     private int brownieHit;
     private int mistyHit;
 
-    public Sounds(Context activity) {
-        SharedPreferences prefs = activity.getSharedPreferences("game", Context.MODE_PRIVATE);
+    public Sounds(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("game", Context.MODE_PRIVATE);
         isMute = prefs.getBoolean("is_mute", false);
-        createSoundPool(activity);
-    }
-
-    private void createSoundPool(Context context) {
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .setUsage(AudioAttributes.USAGE_GAME)
-                .build();
-
-        soundPool = new SoundPool.Builder()
-                .setMaxStreams(30)
-                .setAudioAttributes(audioAttributes)
-                .build();
-
-        loadSounds(context);
-    }
-
-    private void loadSounds(Context context) {
-        soundHitVillain = soundPool.load(context, R.raw.tutti_0, 0);
-        tuttiEatingKnaagstok = soundPool.load(context, R.raw.tutti_eating_knaagstok, 0);
-        tuttiEatingPathe = soundPool.load(context, R.raw.tuttu_eating_pathe, 0);
-        tuttiEatingTosti = soundPool.load(context, R.raw.tutti_eating_tosti, 0);
-        bubbleSounds = soundPool.load(context, R.raw.bubble_sounds, 0);
-        barkHit = soundPool.load(context, R.raw.tutti_0, 0);
-        catAppearing = soundPool.load(context, R.raw.cat_sound1, 0);
-        brownieAppearing = soundPool.load(context, R.raw.tutti_6, 0);
-        mistyAppearing = soundPool.load(context, R.raw.misty_sounds, 0);
-        sunPopUp = soundPool.load(context, R.raw.sun_popup_sound, 0);
-        fritoHit = soundPool.load(context, R.raw.tutti_4, 0);
-        brownieHit = soundPool.load(context, R.raw.tutti_5, 0);
-        mistyHit = soundPool.load(context, R.raw.tutti_1, 0);
+        createSoundPool(context);
     }
 
     public void playBubbles() {
@@ -128,5 +98,41 @@ public class Sounds {
         if(!isMute) {
             soundPool.play(mistyHit, 1, 1, 0, 0, 1);
         }
+    }
+
+    public void playSoundCheckpoint() {
+        if(!isMute) {
+            soundPool.play(sunPopUp, 1, 1, 0, 0, 1);
+        }
+    }
+
+    private void createSoundPool(Context context) {
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(30)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        loadSounds(context);
+    }
+
+    private void loadSounds(Context context) {
+        soundHitVillain = soundPool.load(context, R.raw.tutti_0, 0);
+        tuttiEatingKnaagstok = soundPool.load(context, R.raw.tutti_eating_knaagstok, 0);
+        tuttiEatingPathe = soundPool.load(context, R.raw.tuttu_eating_pathe, 0);
+        tuttiEatingTosti = soundPool.load(context, R.raw.tutti_eating_tosti, 0);
+        bubbleSounds = soundPool.load(context, R.raw.bubble_sounds, 0);
+        barkHit = soundPool.load(context, R.raw.tutti_0, 0);
+        catAppearing = soundPool.load(context, R.raw.cat_sound1, 0);
+        brownieAppearing = soundPool.load(context, R.raw.tutti_6, 0);
+        mistyAppearing = soundPool.load(context, R.raw.misty_sounds, 0);
+        sunPopUp = soundPool.load(context, R.raw.sun_popup_sound, 0);
+        fritoHit = soundPool.load(context, R.raw.tutti_4, 0);
+        brownieHit = soundPool.load(context, R.raw.tutti_5, 0);
+        mistyHit = soundPool.load(context, R.raw.tutti_1, 0);
     }
 }
