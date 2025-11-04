@@ -20,6 +20,7 @@ public class Keys {
     public static String TRIP = "trip";
     public static String OCEAN = "ocean";
     public static String UTREG = "utrecht";
+    public static String SCORE = "highScore";
 
     public static String getKey(String...key) {
         StringBuilder stringBuilder = new StringBuilder();

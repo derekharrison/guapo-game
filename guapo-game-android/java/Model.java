@@ -10,6 +10,7 @@ import static com.main.guapogame.Keys.NUM_BACKGROUNDS;
 import static com.main.guapogame.Keys.OCEAN;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
+import static com.main.guapogame.Keys.SCORE;
 import static com.main.guapogame.Keys.SNACK;
 import static com.main.guapogame.Keys.TRIP;
 import static com.main.guapogame.Keys.UTREG;
@@ -103,11 +104,16 @@ public class Model {
     }
 
     public void saveHighScore() {
-        if (prefs.getInt("high_score", 0) < score) {
+        String levelId = getLevelId();
+        if (getHighScore(levelId) < score) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("high_score", score);
+            editor.putInt(getKey(levelId, SCORE), score);
             editor.apply();
         }
+    }
+
+    private int getHighScore(String levelId) {
+        return prefs.getInt(getKey(levelId, SCORE), 0);
     }
 
     public void update() {
@@ -577,7 +583,24 @@ public class Model {
         return gameState.getLoadGameState().getVillainVelocity(VELOCITY_X, villainId);
     }
 
-    private List<Bitmap> createVillainImages() {
+    private List<Bitmap> createSeagullImages() {
+        List<Bitmap> images = new ArrayList<>();
+
+        int width =  (int) (((float) screenWidth) / 10);
+        int height = (int) (((float) screenHeight) / 5);
+
+        Bitmap bird_image1 = getBitmapScaled(width, height, R.drawable.seagull1_bitmap_cropped_new);
+        Bitmap bird_image2 = getBitmapScaled(width, height, R.drawable.seagull2_bitmap_cropped_new);
+        Bitmap bird_image3 = getBitmapScaled(width, height, R.drawable.seagull3_bitmap_cropped_new);
+
+        images.add(bird_image1);
+        images.add(bird_image2);
+        images.add(bird_image3);
+
+        return images;
+    }
+
+    private List<Bitmap> createWaraWaraImages() {
         List<Bitmap> images = new ArrayList<>();
 
         int width =  (int) (((float) screenWidth) / 10);
@@ -592,6 +615,14 @@ public class Model {
         images.add(bird_image3);
 
         return images;
+    }
+
+    private List<Bitmap> createVillainImages() {
+        if(getLevelId().equals(BEACH) || getLevelId().equals(OCEAN)) {
+            return createSeagullImages();
+        }
+
+        return createWaraWaraImages();
     }
 
     private void addVillain(Villain villain) {

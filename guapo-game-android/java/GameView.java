@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
@@ -31,16 +32,16 @@ public class GameView extends SurfaceView implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                handleClick(event);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                handleMove(event);
-                break;
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            handleClick(event);
+            return true;
+        }
+        if(event.getAction() == MotionEvent.ACTION_MOVE) {
+            handleMove(event);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
