@@ -1,0 +1,439 @@
+package com.main.guapogame.model;
+
+import static com.main.guapogame.resources.Keys.GAME;
+import static com.main.guapogame.resources.Parameters.FPS;
+import static com.main.guapogame.resources.Keys.BEACH;
+import static com.main.guapogame.resources.Keys.GAMESTATE;
+import static com.main.guapogame.resources.Keys.LEVEL;
+import static com.main.guapogame.resources.Keys.OCEAN;
+import static com.main.guapogame.resources.Keys.HIGH_SCORE;
+import static com.main.guapogame.resources.Keys.getKey;
+import static com.main.guapogame.resources.Parameters.CHECK_POINT_INTERVAL;
+import static com.main.guapogame.resources.Parameters.setBackgroundSpeed;
+import static com.main.guapogame.resources.Parameters.setScreenHeight;
+import static com.main.guapogame.resources.Parameters.setScreenWidth;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+
+import com.main.guapogame.graphic_types.GraphicObjectsBuilder;
+import com.main.guapogame.resources.Parameters;
+import com.main.guapogame.graphic_types.Popup;
+import com.main.guapogame.R;
+import com.main.guapogame.graphic_types.Snack;
+import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.graphic_types.Villain;
+import com.main.guapogame.graphic_types.GraphicObjects;
+import com.main.guapogame.graphic_types.Hero;
+import com.main.guapogame.graphic_types.Background;
+import com.main.guapogame.resources.GameState;
+import com.main.guapogame.resources.State;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Model {
+    private GraphicObjects graphicObjects;
+    private int difficultyLevel = 0;
+    private int score = 0;
+    private Sounds sounds;
+    private final Resources resources;
+    private final GameState gameState;
+    private final Context context;
+    private int checkpoint = 0;
+
+    public Model(Context context, Resources resources) {
+        this.resources = resources;
+        this.context = context;
+        this.gameState = new GameState(context);
+
+        createModelData();
+    }
+
+    public void saveHighScore() {
+        String levelId = getLevelId();
+        if (getHighScore(levelId) < score) {
+            SharedPreferences.Editor editor = getSharedPreferences().edit();
+            editor.putInt(getKey(levelId, HIGH_SCORE), score);
+            editor.apply();
+        }
+    }
+
+    public void update() {
+        updateBackground();
+        updateVillains();
+        updateHero();
+        updateSnacks();
+        updateCheckpointPopup();
+        saveGame();
+    }
+
+    public void draw(Canvas canvas) {
+        drawBackgrounds(canvas);
+        drawLives(canvas);
+        drawSnacks(canvas);
+        drawScore(canvas);
+        drawPauseButton(canvas);
+        drawVillains(canvas);
+        drawHero(canvas);
+        drawPopUp(canvas);
+    }
+
+    public Hero getHero() {
+        return graphicObjects.getHero();
+    }
+
+    private void saveGame() {
+        if(reachedCheckpoint()) {
+            Thread thread = new Thread(new SaveState());
+            thread.start();
+            advanceCheckpoint();
+        }
+    }
+
+    private void createModelData() {
+        getSharedPreferences();
+        getScreenParameters();
+
+        createSounds();
+        createGameObjects();
+
+        getScore();
+        getCheckpoint();
+    }
+
+    private void createGameObjects() {
+        graphicObjects = new GraphicObjectsBuilder()
+                .gameState(gameState)
+                .context(context)
+                .resources(getResources())
+                .build();
+    }
+    
+    private int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    private int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    private int getHighScore(String levelId) {
+        return getSharedPreferences().getInt(getKey(levelId, HIGH_SCORE), 0);
+    }
+
+    private void updateCheckpointPopup() {
+        if(reachedCheckpoint() && isNotFirstCheckpoint()) {
+            graphicObjects.setCheckpointPopup(createCheckpointPopup());
+            graphicObjects.getCheckpointPopup().playSoundCheckpoint(sounds);
+        }
+
+        graphicObjects.getCheckpointPopup().update();
+    }
+
+    private Popup createCheckpointPopup() {
+        int width = (int) (getScreenWidth() / 10.0);
+        int height = (int) (getScreenHeight() / 5.0);
+        Bitmap image = getBitmapScaled(width, height, R.drawable.flag_aruba_bitmap_cropped);
+        return new Popup.Builder()
+                .duration(2 * FPS)
+                .positionX(getScreenWidth() - getScreenWidth() / 4)
+                .positionY(image.getHeight() + getScreenHeight() / 10)
+                .image(image)
+                .build();
+    }
+
+    private boolean isNotFirstCheckpoint() {
+        return checkpoint > 0;
+    }
+
+
+    private void drawPopUp(Canvas canvas) {
+        graphicObjects.getCheckpointPopup().draw(canvas);
+    }
+
+    private void save() {
+        gameState.saveGame().saveHero(graphicObjects.getHero());
+        gameState.saveGame().saveSnacks(graphicObjects.getSnacks());
+        gameState.saveGame().saveVillains(graphicObjects.getVillains());
+        gameState.saveGame().saveBackgrounds(graphicObjects.getBackgrounds());
+        gameState.saveGame().saveScore(score);
+        gameState.saveGame().saveNumLives(graphicObjects.getLives().size());
+        gameState.saveGame().saveCheckpoint(checkpoint);
+    }
+
+    private void getCheckpoint() {
+        if(isActiveSession())
+            checkpoint = gameState.loadGame().getCheckpoint();
+    }
+
+    private void getScore() {
+        if(isActiveSession())
+            score = gameState.loadGame().getScore();
+    }
+
+    private boolean reachedCheckpoint() {
+        return score >= checkpoint * CHECK_POINT_INTERVAL;
+    }
+
+    private void advanceCheckpoint() {
+        checkpoint++;
+    }
+
+    private void updateSnack(Snack snack) {
+        snack.update();
+        if(heroInteractsWithSnack(graphicObjects.getHero(), snack)) {
+            score += snack.getPointsForSnack();
+            snack.setPositionX(-500);
+            snack.playSoundEat(sounds);
+        }
+    }
+
+    private void updateHero() {
+        graphicObjects.getHero().update();
+    }
+
+    private void updateBackground() {
+        int backgroundId = 1;
+        for(Background background : graphicObjects.getBackgrounds()) {
+            background.update();
+            if(background.getPositionX() <= 0) {
+                graphicObjects.getBackgrounds()
+                        .get(getFollowingBackground(backgroundId))
+                        .setPositionX(background.getPositionX() + background.getBackground().getWidth() - 10);
+            }
+            backgroundId++;
+        }
+    }
+
+    private void updateVillains() {
+        updateNumberOfVillains();
+        for(Villain villain : graphicObjects.getVillains()) {
+            villain.update();
+            if(heroInteractsWithVillain(graphicObjects.getHero(), villain)) {
+                graphicObjects.getHero().playSoundInteractingWithVillain(sounds);
+                setGameStateToGameOver();
+                gameState.saveGame().saveNumLives(graphicObjects.getLives().size() - 1);
+            }
+        }
+    }
+
+    private void updateSnacks() {
+        for(Snack snack : graphicObjects.getSnacks())
+            updateSnack(snack);
+    }
+
+    private void updateNumberOfVillains() {
+        if (timeToIncreaseVillains()) {
+            addVillain(createVillain());
+            advanceDifficultyLevel();
+        }
+    }
+
+    private Villain createVillain() {
+        return new Villain.Builder()
+                .positionX(-500)
+                .images(createVillainImages())
+                .build();
+    }
+
+    private List<Bitmap> createVillainImages() {
+        if(getLevelId().equals(BEACH) || getLevelId().equals(OCEAN))
+            return createSeagullImages();
+
+        return createWaraWaraImages();
+    }
+
+    private List<Bitmap> createSeagullImages() {
+        List<Bitmap> images = new ArrayList<>();
+
+        int width =  (int) (((float) getScreenWidth()) / 10);
+        int height = (int) (((float) getScreenHeight()) / 5);
+
+        Bitmap bird_image1 = getBitmapScaled(width, height, R.drawable.seagull1_bitmap_cropped_new);
+        Bitmap bird_image2 = getBitmapScaled(width, height, R.drawable.seagull2_bitmap_cropped_new);
+        Bitmap bird_image3 = getBitmapScaled(width, height, R.drawable.seagull3_bitmap_cropped_new);
+
+        images.add(bird_image1);
+        images.add(bird_image2);
+        images.add(bird_image3);
+
+        return images;
+    }
+
+    private List<Bitmap> createWaraWaraImages() {
+        List<Bitmap> images = new ArrayList<>();
+
+        int width =  (int) (((float) getScreenWidth()) / 10);
+        int height = (int) (((float) getScreenHeight()) / 5);
+
+        Bitmap bird_image1 = getBitmapScaled(width, height, R.drawable.warawara1_bitmap_custom_mod_cropped);
+        Bitmap bird_image2 = getBitmapScaled(width, height, R.drawable.warawara2_bitmap_custom_mod_cropped);
+        Bitmap bird_image3 = getBitmapScaled(width, height, R.drawable.warawara3_bitmap_custom_mod_cropped);
+
+        images.add(bird_image1);
+        images.add(bird_image2);
+        images.add(bird_image3);
+
+        return images;
+    }
+
+    private void addVillain(Villain villain) {
+        this.graphicObjects.getVillains().add(villain);
+    }
+
+    private void advanceDifficultyLevel() {
+        difficultyLevel++;
+    }
+
+    private boolean lessThanMaxVillains() {
+        return graphicObjects.getVillains().size() < Parameters.MAX_VILLAINS;
+    }
+    private boolean timeToIncreaseVillains() {
+        return score >= difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL && lessThanMaxVillains();
+    }
+
+    private void drawBackgrounds(Canvas canvas) {
+        for(Background background : graphicObjects.getBackgrounds())
+            background.draw(canvas);
+    }
+
+    private void drawSnacks(Canvas canvas) {
+        for (Snack snack : graphicObjects.getSnacks())
+            snack.draw(canvas);
+    }
+
+    private void drawScore(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setTextSize(128);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(" " + score, 30, (float) getScreenHeight() / 6, paint);
+    }
+
+    private void drawVillains(Canvas canvas) {
+        for(Villain villain : graphicObjects.getVillains())
+            villain.draw(canvas);
+    }
+
+    private void drawLives(Canvas canvas) {
+        int lifeLocation = getScreenWidth() / 2 - 20;
+        for (Bitmap life : graphicObjects.getLives()) {
+            canvas.drawBitmap(life, lifeLocation, 20, null);
+            lifeLocation += life.getWidth() + 5;
+        }
+    }
+
+    private void drawPauseButton(Canvas canvas) {
+        int pauseRegionMaxX = getScreenWidth() - getScreenWidth() / 30;
+        int pauseRegionMinY = getScreenHeight() / 15;
+
+        if(gameIsPaused())
+            canvas.drawBitmap(graphicObjects.getPlayButton(), pauseRegionMaxX - graphicObjects.getPlayButton().getWidth(), pauseRegionMinY, null);
+        else
+            canvas.drawBitmap(graphicObjects.getPauseButton(), pauseRegionMaxX - graphicObjects.getPauseButton().getWidth(), pauseRegionMinY, null);
+    }
+
+    private void drawHero(Canvas canvas) {
+        graphicObjects.getHero().draw(canvas);
+    }
+
+    private boolean heroInteractsWithVillain(Hero hero, Villain villain) {
+        Rect heroArea = getHeroArea(hero.getImage(), (int) hero.getPositionX(),
+                (int) hero.getPositionY());
+        Rect villainArea = getVillainArea(villain.getImage(), (int) villain.getPositionX(),
+                (int) villain.getPositionY());
+
+        return Rect.intersects(heroArea, villainArea);
+    }
+
+    private boolean heroInteractsWithSnack(Hero hero, Snack snack) {
+        Rect heroArea = getHeroArea(hero.getImage(), (int) hero.getPositionX(),
+                (int) hero.getPositionY());
+        Rect snackArea = getSnackArea(snack.getImage(), (int) snack.getPositionX(),
+                (int) snack.getPositionY());
+
+        return Rect.intersects(heroArea, snackArea);
+    }
+
+    private String getLevelId() {
+        return getSharedPreferences().getString(LEVEL, "");
+    }
+
+    private void createSounds() {
+        sounds = new Sounds(context);
+    }
+
+    private boolean isActiveSession() {
+        return getSharedPreferences().getBoolean(getKey(getLevelId(), GAMESTATE), false);
+    }
+
+    private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableIdentification);
+        return Bitmap.createScaledBitmap(bitmap, scaleX, scaleY, false);
+    }
+
+    private void getScreenParameters() {
+        int backgroundSpeed = (int) (getScreenWidth() / 400.0);
+
+        setScreenWidth(getScreenWidth());
+        setScreenHeight(getScreenHeight());
+        setBackgroundSpeed(backgroundSpeed);
+    }
+
+    private Resources getResources() {
+        return resources;
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return context.getSharedPreferences(GAME, Context.MODE_PRIVATE);
+    }
+
+    private void setGameStateToGameOver() {
+        GameState.setGameStateToGameOver();
+    }
+
+    private boolean gameIsPaused() {
+        return GameState.getGameState().equals(State.PAUSED);
+    }
+
+    private Rect getHeroArea(Bitmap image, int x, int y) {
+        return new Rect(x, y, x + image.getWidth(), y + image.getHeight());
+    }
+
+    private Rect getVillainArea(Bitmap image, int x, int y) {
+        return new Rect(
+                (int) (x + image.getWidth() * 45.0 / 100.0),
+                (int) (y + image.getHeight() * 45.0 / 100.0),
+                (int) (x + image.getWidth() * 55.0 / 100.0),
+                (int) (y + image.getHeight() * 55.0 / 100.0)
+        );
+    }
+
+    private Rect getSnackArea(Bitmap image, int x, int y) {
+        return new Rect(
+                x + image.getWidth(),
+                y + image.getHeight(),
+                x + image.getWidth(),
+                y + image.getHeight()
+        );
+    }
+
+    private int getFollowingBackground(int id) {
+        return id % graphicObjects.getBackgrounds().size();
+    }
+
+    private class SaveState implements Runnable {
+
+        @Override
+        public void run() {
+            save();
+        }
+    }
+}
