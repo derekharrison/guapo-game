@@ -17,29 +17,23 @@ public class GameState {
         state = State.GAME_OVER;
     }
 
-    public static void setGameStateToContinue() {
-        state = State.CONTINUE;
-    }
-
     public static State getGameState() {
         return state;
     }
 
-    private LoadGameState loadGameState;
-    private SaveGameState saveGameState;
+    private final LoadGame loadGame;
+    private final SaveGame saveGame;
 
     public GameState(Context context) {
-        loadGameState = new LoadGameState(context);
-        saveGameState = new SaveGameState(context);
+        loadGame = new LoadGame(context);
+        saveGame = new SaveGame(context);
     }
 
-    public LoadGameState getLoadGameState() {
-        return this.loadGameState;
+    public LoadGame loadGame() {
+        return this.loadGame;
     }
 
-    public SaveGameState saveGameState() {
-        return saveGameState;
+    public SaveGame saveGame() {
+        return saveGame;
     }
-
-
 }

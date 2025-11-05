@@ -21,7 +21,7 @@ public class ContinueActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_continue_restart);
+        setContentView(R.layout.activity_continue);
         setUpScreenApiVersionGreaterOrEqualTo30();
         setUpScreenApiVersionLessThan30();
 
