@@ -1,5 +1,10 @@
 package com.main.guapogame;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.main.guapogame.Keys.GAME;
+import static com.main.guapogame.Keys.LEVEL;
+import static com.main.guapogame.Keys.LIVES;
+import static com.main.guapogame.Keys.getKey;
 import static com.main.guapogame.Parameters.FPS;
 
 import android.annotation.SuppressLint;
@@ -17,7 +22,6 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private final Lives lives1 = new Lives();
     private final AppCompatActivity gameActivity;
     private final Model model;
 
@@ -101,11 +105,11 @@ public class GameView extends SurfaceView implements Runnable {
     private Bitmap getPauseButton() {
         int screenFactorX = (int) (screenWidth / 10.0);
         int screenFactorY = (int) (screenHeight / 5.0);
-        return getBitmapScaled((int) (screenFactorX / 3.0), (int) (screenFactorY / 3.0), R.drawable.pause_button_bitmap_cropped);
-    }
-
-    private int getLives() {
-        return lives1.getLives();
+        return getBitmapScaled(
+                (int) (screenFactorX / 3.0),
+                (int) (screenFactorY / 3.0),
+                R.drawable.pause_button_bitmap_cropped
+        );
     }
 
     private void setGameStateToPaused() {
@@ -138,19 +142,17 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void handleMove(MotionEvent event) {
-        if(gameIsPlaying() && !touchInPauseArea(event)) {
+        if(gameIsPlaying() && !touchInPauseArea(event))
             updateVelocityHero(event);
-        }
     }
 
     private void handlePause(MotionEvent event) {
         if(touchInPauseArea(event)) {
-            if(gameIsPlaying()) {
+            if(gameIsPlaying())
                 setGameStateToPaused();
-            }
-            else if(gameIsPaused()) {
+
+            else if(gameIsPaused())
                 setGameStateToPlay();
-            }
         }
     }
 
@@ -222,11 +224,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void handleGameOver() {
-        if(getLives() <= 0) {
+        if(getLives() < 0) {
             model.saveHighScore();
             transitionToActivity(LevelActivity.class);
         }
-        if(getLives() > 0) {
+        if(getLives() >= 0) {
             model.saveHighScore();
             transitionToActivity(ContinueActivity.class);
         }
@@ -239,5 +241,13 @@ public class GameView extends SurfaceView implements Runnable {
             getGameActivity().finish();
         } catch (Exception _) {
         }
+    }
+
+    private int getLives() {
+        return gameActivity.getSharedPreferences(GAME, MODE_PRIVATE).getInt(getKey(getLevelId(), LIVES), 0);
+    }
+
+    private String getLevelId() {
+        return gameActivity.getSharedPreferences(GAME, MODE_PRIVATE).getString(LEVEL, "");
     }
 }

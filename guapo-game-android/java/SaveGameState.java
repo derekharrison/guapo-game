@@ -5,11 +5,14 @@ import static com.main.guapogame.Keys.CHECKPOINT;
 import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
 import static com.main.guapogame.Keys.LEVEL;
+import static com.main.guapogame.Keys.LIVES;
+import static com.main.guapogame.Keys.NUM_SNACKS;
 import static com.main.guapogame.Keys.NUM_VILLAINS;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
 import static com.main.guapogame.Keys.SCORE;
 import static com.main.guapogame.Keys.SNACK;
+import static com.main.guapogame.Keys.SNACK_ASSET_ID;
 import static com.main.guapogame.Keys.SNACK_POINTS;
 import static com.main.guapogame.Keys.VELOCITY_X;
 import static com.main.guapogame.Keys.VELOCITY_Y;
@@ -43,10 +46,11 @@ public class SaveGameState {
             saveVillain(villain, String.valueOf(villainId));
             villainId++;
         }
-        saveNum(getKey(VILLAIN, NUM_VILLAINS), villains.size());
+        saveNum(getKey(getLevelId(), VILLAIN, NUM_VILLAINS), villains.size());
     }
 
     public void saveSnacks(List<Snack> snacks) {
+        saveNum(getKey(getLevelId(), SNACK, NUM_SNACKS), snacks.size());
         int snackId = 0;
         for(Snack snack : snacks) {
             saveSnack(snack, String.valueOf(snackId));
@@ -62,16 +66,6 @@ public class SaveGameState {
         }
     }
 
-    public void saveLives() {
-        // TODO
-    }
-
-    public void saveLevel(String levelId) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(LEVEL, levelId);
-        editor.apply();
-    }
-
     public void saveScore(int score) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(getKey(getLevelId(), SCORE), score);
@@ -84,8 +78,10 @@ public class SaveGameState {
         editor.apply();
     }
 
-    public void saveOther() {
-        // TODO
+    public void saveNumLives(int numLives) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(getKey(getLevelId(), LIVES), numLives);
+        editor.apply();
     }
 
     private void saveBackground(Background background, String backgroundId) {
@@ -98,19 +94,20 @@ public class SaveGameState {
     }
 
     private void saveSnack(Snack snack, String snackId) {
-        savePosition(getKey(SNACK, POSITION_X, snackId), snack.getPositionX());
-        savePosition(getKey(SNACK, POSITION_Y, snackId), snack.getPositionY());
-        savePosition(getKey(SNACK, VELOCITY_X, snackId), snack.getVelocityX());
-        savePosition(getKey(SNACK, VELOCITY_Y, snackId), snack.getVelocityY());
-        saveSnackPoints(getKey(SNACK, SNACK_POINTS, snackId), snack.getPointsForSnack());
+        savePosition(getKey(getLevelId(), SNACK, POSITION_X, snackId), snack.getPositionX());
+        savePosition(getKey(getLevelId(), SNACK, POSITION_Y, snackId), snack.getPositionY());
+        savePosition(getKey(getLevelId(), SNACK, VELOCITY_X, snackId), snack.getVelocityX());
+        savePosition(getKey(getLevelId(), SNACK, VELOCITY_Y, snackId), snack.getVelocityY());
+        saveSnackPoints(getKey(getLevelId(), SNACK, SNACK_POINTS, snackId), snack.getPointsForSnack());
+        saveSnackAssetId(getKey(getLevelId(), SNACK, SNACK_ASSET_ID, snackId), snack.getAssetId());
     }
 
     private void saveVillain(Villain villain, String villainId) {
-        savePosition(getKey(VILLAIN, POSITION_X, villainId), villain.getPositionX());
-        savePosition(getKey(VILLAIN, POSITION_Y, villainId), villain.getPositionY());
-        savePosition(getKey(VILLAIN, VELOCITY_X, villainId), villain.getVelocityX());
-        savePosition(getKey(VILLAIN, VELOCITY_Y, villainId), villain.getVelocityY());
-        saveFrameCounter(getKey(VILLAIN, FRAME_COUNTER, villainId), villain.getFrameCounter());
+        savePosition(getKey(getLevelId(), VILLAIN, POSITION_X, villainId), villain.getPositionX());
+        savePosition(getKey(getLevelId(), VILLAIN, POSITION_Y, villainId), villain.getPositionY());
+        savePosition(getKey(getLevelId(), VILLAIN, VELOCITY_X, villainId), villain.getVelocityX());
+        savePosition(getKey(getLevelId(), VILLAIN, VELOCITY_Y, villainId), villain.getVelocityY());
+        saveFrameCounter(getKey(getLevelId(), VILLAIN, FRAME_COUNTER, villainId), villain.getFrameCounter());
     }
 
     private void savePosition(String key, float position) {
@@ -128,6 +125,12 @@ public class SaveGameState {
     private void saveSnackPoints(String key, int snackPoints) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(key, snackPoints);
+        editor.apply();
+    }
+
+    private void saveSnackAssetId(String key, int snackId) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(key, snackId);
         editor.apply();
     }
 

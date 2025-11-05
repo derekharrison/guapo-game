@@ -5,8 +5,10 @@ public class Keys {
     public static String SNACK = "snack";
     public static String VILLAIN = "villain";
     public static String NUM_VILLAINS = "numVillains";
+    public static String NUM_SNACKS = "numSnacks";
     public static String BACKGROUND = "background";
     public static String SNACK_POINTS = "snackPoints";
+    public static String SNACK_ASSET_ID = "snackAssetId";
     public static String FRAME_COUNTER = "frameCounter";
     public static String POSITION_X = "positionX";
     public static String POSITION_Y = "positionY";
@@ -23,6 +25,7 @@ public class Keys {
     public static String SCORE = "score";
     public static String CHECKPOINT = "checkpoint";
     public static String GAME = "game";
+    public static String LIVES = "lives";
 
     public static String getKey(String...key) {
         StringBuilder stringBuilder = new StringBuilder();

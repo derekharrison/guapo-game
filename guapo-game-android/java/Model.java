@@ -9,7 +9,6 @@ import static com.main.guapogame.Keys.OCEAN;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
 import static com.main.guapogame.Keys.HIGH_SCORE;
-import static com.main.guapogame.Keys.SNACK;
 import static com.main.guapogame.Keys.TRIP;
 import static com.main.guapogame.Keys.UTREG;
 import static com.main.guapogame.Keys.VELOCITY_X;
@@ -37,8 +36,6 @@ import java.util.List;
 import java.util.Random;
 
 // TODO : create characters
-// TODO : implement checkpoints
-// TODO : inject game objects
 // TODO : create model builder
 
 public class Model {
@@ -54,8 +51,8 @@ public class Model {
     private Bitmap pauseButton;
     private SharedPreferences prefs;
     private int score = 0;
-    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     private float screenFactorX, screenFactorY;
     private Hero hero;
     private Sounds sounds;
@@ -133,6 +130,7 @@ public class Model {
 
         getPauseRegion();
         getScore();
+        getCheckpoint();
     }
 
     private int getHighScore(String levelId) {
@@ -140,7 +138,7 @@ public class Model {
     }
 
     private void updateCheckpointPopup() {
-        if(reachedCheckpoint()) {
+        if(reachedFirstCheckpoint()) {
             checkpointPopup = createCheckpointPopup(2 * FPS);
             checkpointPopup.playSoundCheckpoint(sounds);
         }
@@ -174,11 +172,11 @@ public class Model {
         gameState.saveGameState().saveVillains(villains);
         gameState.saveGameState().saveBackgrounds(backgrounds);
         gameState.saveGameState().saveScore(score);
+        gameState.saveGameState().saveNumLives(lives.size());
         gameState.saveGameState().saveCheckpoint(checkpoint);
     }
 
     private void getCheckpoint() {
-        // TODO : implement
         if(isActiveSession()) {
             checkpoint = gameState.getLoadGameState().getCheckpoint();
         }
@@ -191,6 +189,10 @@ public class Model {
     }
 
     private boolean reachedCheckpoint() {
+        return score >= checkpoint * CHECK_POINT_INTERVAL;
+    }
+
+    private boolean reachedFirstCheckpoint() {
         return score >= (checkpoint + 1) * CHECK_POINT_INTERVAL;
     }
 
@@ -231,6 +233,7 @@ public class Model {
             if(heroInteractsWithVillain(hero, villain)) {
                 hero.playSoundInteractingWithVillain(sounds);
                 setGameStateToGameOver();
+                gameState.saveGameState().saveNumLives(lives.size() - 1);
             }
         }
     }
@@ -354,8 +357,6 @@ public class Model {
     }
 
     private Background createBackground(int assetId, String backgroundId) {
-        int screenHeight = getResources().getDisplayMetrics().heightPixels;
-        int screenWidth = getResources().getDisplayMetrics().widthPixels;
         return new Background.Builder()
                 .positionX(getStartPositionBackground(backgroundId))
                 .velocityX(-getBackgroundSpeed())
@@ -364,9 +365,8 @@ public class Model {
     }
 
     private float getStartPositionBackground(String backgroundId) {
-        String levelId = getLevelId();
-        if(isActiveSession()) {
-            return gameState.getLoadGameState().getBackgroundPosition(levelId, POSITION_X, backgroundId);
+         if(isActiveSession()) {
+            return gameState.getLoadGameState().getBackgroundPosition(POSITION_X, backgroundId);
         }
 
         return 0;
@@ -377,8 +377,7 @@ public class Model {
     }
 
     private void createLives() {
-        int numLives = prefs.getInt("num_lives", Parameters.NUM_LIVES);
-        for(int i = 0; i < numLives; i++) {
+        for(int id = 0; id < getNumLives(); id++) {
             Bitmap life = getBitmapScaled(
                     (int) screenFactorX / 4,
                     (int) screenFactorY / 4,
@@ -387,17 +386,52 @@ public class Model {
         }
     }
 
+    private int getNumLives() {
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getNumLives();
+        }
+
+        return Parameters.NUM_LIVES;
+    }
+
     private void createPauseAndPlayButtons() {
         playButton = getBitmapScaled((int) ((int) screenFactorX / 3.0), (int) ((int) screenFactorY / 3.0), R.drawable.play_button_bitmap_cropped);
         pauseButton = getBitmapScaled((int) ((int) screenFactorX / 3.0), (int) ((int) screenFactorY / 3.0), R.drawable.pause_button_bitmap_cropped);
     }
 
     private void createSnacks() {
+        if(!isActiveSession())
+            getSnacks();
+
+        if(isActiveSession())
+            getSnacksFromActiveSession();
+    }
+
+    private void getSnacks() {
         snacks.addAll(createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized));
         snacks.addAll(createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
         snacks.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
         snacks.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
         snacks.addAll(createSnacks(1, POINTS_BEGGIN_STRIPS, R.drawable.beggin_strip_cropped));
+    }
+
+    private void getSnacksFromActiveSession() {
+        int numSnacks = getNumSnacks();
+        int width = (int) (screenFactorX - screenFactorX / 3.0);
+        int height = (int) (screenFactorY - screenFactorY / 3.0);
+        for(int snackId = 0; snackId < numSnacks; snackId++) {
+            int assetId = gameState.getLoadGameState().getSnackAssetId(String.valueOf(snackId));
+            snacks.add(
+                    new Snack.Builder()
+                            .positionX((int) gameState.getLoadGameState().getSnackPosition(POSITION_X, String.valueOf(snackId)))
+                            .positionY((int) gameState.getLoadGameState().getSnackPosition(POSITION_Y, String.valueOf(snackId)))
+                            .velocityX(-getBackgroundSpeed())
+                            .pointsForSnack(gameState.getLoadGameState().getSnackPoints(String.valueOf(snackId)))
+                            .snackImage(getBitmapScaled(width, height, assetId))
+                            .assetId(assetId)
+                            .build()
+            );
+        }
     }
 
     private void createHero() {
@@ -476,14 +510,15 @@ public class Model {
         int width = (int) (screenFactorX - screenFactorX / 3.0);
         int height = (int) (screenFactorY - screenFactorY / 3.0);
         Bitmap snackImage = getBitmapScaled(width, height, assetId);
-        for (int snackId = 0; snackId < numSnacks; snackId++) {
+        for (int snack = 0; snack < numSnacks; snack++) {
             snacks.add(
                     new Snack.Builder()
-                            .positionX((int) getSnackPositionX(String.valueOf(snackId), snackImage))
-                            .positionY((int) getSnackPositionY(String.valueOf(snackId), snackImage))
+                            .positionX((int) getSnackPositionX(snackImage))
+                            .positionY((int) getSnackPositionY(snackImage))
                             .velocityX(-getBackgroundSpeed())
                             .pointsForSnack(pointsForSnack)
                             .snackImage(snackImage)
+                            .assetId(assetId)
                             .build()
             );
         }
@@ -491,19 +526,13 @@ public class Model {
         return snacks;
     }
 
-    private float getSnackPositionX(String snackId, Bitmap snackImage) {
+    private float getSnackPositionX(Bitmap snackImage) {
         Random random = new Random();
-        if(isActiveSession())
-            return gameState.getLoadGameState().getSnackPosition(SNACK, snackId);
-
         return random.nextInt(2 * screenWidth - snackImage.getWidth() / 2);
     }
 
-    private float getSnackPositionY(String snackId, Bitmap snackImage) {
+    private float getSnackPositionY(Bitmap snackImage) {
         Random random = new Random();
-        if(isActiveSession())
-            return gameState.getLoadGameState().getSnackPosition(SNACK, snackId);
-
         return random.nextInt(screenHeight - snackImage.getHeight() / 2);
     }
 
@@ -598,7 +627,7 @@ public class Model {
     }
 
     private boolean isActiveSession() {
-        return prefs.getBoolean(getKey(LEVEL, GAMESTATE), false);
+        return prefs.getBoolean(getKey(getLevelId(), GAMESTATE), false);
     }
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
@@ -607,8 +636,6 @@ public class Model {
     }
 
     private void getScreenParameters() {
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         screenFactorX = (int) (screenWidth / 10.0);
         screenFactorY = (int) (screenHeight / 5.0);
         int backgroundSpeed = (int) (screenWidth / 400.0);
@@ -636,6 +663,14 @@ public class Model {
             return gameState.getLoadGameState().getNumVillains();
 
         return START_NUM_OF_VILLAINS;
+    }
+
+    private int getNumSnacks() {
+        if(isActiveSession()) {
+            return gameState.getLoadGameState().getNumSnacks();
+        }
+
+        return 1;
     }
 
     private void setGameStateToGameOver() {

@@ -3,6 +3,7 @@ package com.main.guapogame;
 import static com.main.guapogame.Keys.ARUBA;
 import static com.main.guapogame.Keys.BEACH;
 import static com.main.guapogame.Keys.GAME;
+import static com.main.guapogame.Keys.GAMESTATE;
 import static com.main.guapogame.Keys.LEVEL;
 import static com.main.guapogame.Keys.OCEAN;
 import static com.main.guapogame.Keys.HIGH_SCORE;
@@ -127,6 +128,7 @@ public class LevelActivity extends AppCompatActivity {
                 TextView textView = findViewById(buttonId);
                 textView.setTextColor(Color.WHITE);
                 setLevelId(prefs, levelId);
+                setSessionIsActive(false);
                 startActivity(new Intent(LevelActivity.this, GameActivity.class));
             });
         }
@@ -138,6 +140,7 @@ public class LevelActivity extends AppCompatActivity {
             TextView textView = findViewById(R.id.level1_id);
             textView.setTextColor(Color.WHITE);
             setLevelId(prefs, levelId);
+            setSessionIsActive(false);
             startActivity(new Intent(LevelActivity.this, GameActivity.class));
         });
     }
@@ -183,5 +186,16 @@ public class LevelActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("is_mute", isMute);
         editor.apply();
+    }
+
+    private void setSessionIsActive(boolean isActive) {
+        SharedPreferences prefs = getSharedPreferences(GAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(getKey(getLevelId(), GAMESTATE), isActive);
+        editor.apply();
+    }
+
+    private String getLevelId() {
+        return getSharedPreferences(GAME, MODE_PRIVATE).getString(LEVEL, "");
     }
 }

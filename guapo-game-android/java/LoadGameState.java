@@ -1,12 +1,17 @@
 package com.main.guapogame;
 
 import static com.main.guapogame.Keys.BACKGROUND;
+import static com.main.guapogame.Keys.CHECKPOINT;
 import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
 import static com.main.guapogame.Keys.LEVEL;
+import static com.main.guapogame.Keys.LIVES;
+import static com.main.guapogame.Keys.NUM_SNACKS;
 import static com.main.guapogame.Keys.NUM_VILLAINS;
 import static com.main.guapogame.Keys.SCORE;
 import static com.main.guapogame.Keys.SNACK;
+import static com.main.guapogame.Keys.SNACK_ASSET_ID;
+import static com.main.guapogame.Keys.SNACK_POINTS;
 import static com.main.guapogame.Keys.VILLAIN;
 import static com.main.guapogame.Keys.getKey;
 
@@ -23,31 +28,43 @@ public class LoadGameState {
     }
 
     public float getHeroPosition(String key) {
-        return getPosition(getKey(HERO, key));
+        return getPosition(getKey(getLevelId(), HERO, key));
     }
 
     public float getVillainPosition(String key, String villainId) {
-        return getPosition(getKey(VILLAIN, key, villainId));
+        return getPosition(getKey(getLevelId(), VILLAIN, key, villainId));
     }
 
     public float getVillainVelocity(String key, String villainId) {
-        return getVelocity(getKey(VILLAIN, key, villainId));
+        return getVelocity(getKey(getLevelId(), VILLAIN, key, villainId));
     }
 
     public float getSnackPosition(String key, String snackId) {
-        return getPosition(getKey(SNACK, key, snackId));
+        return getPosition(getKey(getLevelId(), SNACK, key, snackId));
     }
 
-    public float getBackgroundPosition(String levelId, String key, String backgroundId) {
-        return prefs.getFloat(getKey(BACKGROUND, levelId, key, backgroundId), 0);
+    public int getSnackAssetId(String snackId) {
+        return prefs.getInt(getKey(getLevelId(), SNACK, SNACK_ASSET_ID, snackId), 1);
+    }
+
+    public int getSnackPoints(String snackId) {
+        return prefs.getInt(getKey(getLevelId(), SNACK, SNACK_POINTS, snackId), 0);
+    }
+
+    public float getBackgroundPosition(String key, String backgroundId) {
+        return prefs.getFloat(getKey(BACKGROUND, getLevelId(), key, backgroundId), 0);
     }
 
     public int getHeroFrameCounter() {
-        return prefs.getInt(getKey(HERO, FRAME_COUNTER), 0);
+        return prefs.getInt(getKey(getLevelId(), HERO, FRAME_COUNTER), 0);
     }
 
     public int getScore() {
         return prefs.getInt(getKey(getLevelId(), SCORE), 0);
+    }
+
+    public int getNumLives() {
+        return prefs.getInt(getKey(getLevelId(), LIVES), 0);
     }
 
     private String getLevelId() {
@@ -55,16 +72,20 @@ public class LoadGameState {
     }
 
     public int getCheckpoint() {
-        return prefs.getInt("checkpoint", 0);
+        return prefs.getInt(getKey(getLevelId(), CHECKPOINT), 0);
     }
 
 
     public int getNumVillains() {
-        return prefs.getInt(getKey(VILLAIN, NUM_VILLAINS), 3);
+        return prefs.getInt(getKey(getLevelId(), VILLAIN, NUM_VILLAINS), 3);
+    }
+
+    public int getNumSnacks() {
+        return prefs.getInt(getKey(getLevelId(), SNACK, NUM_SNACKS), 1);
     }
 
     public int getVillainFrameCounter(String villainId) {
-        return prefs.getInt(getKey(VILLAIN, FRAME_COUNTER, villainId), 0);
+        return prefs.getInt(getKey(getLevelId(), VILLAIN, FRAME_COUNTER, villainId), 0);
     }
 
     private float getPosition(String key) {

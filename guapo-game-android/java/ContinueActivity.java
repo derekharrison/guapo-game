@@ -64,7 +64,7 @@ public class ContinueActivity extends AppCompatActivity {
             TextView textView = findViewById(R.id.game_restart_id);
             textView.setTextColor(Color.WHITE);
             setSessionIsActive(false);
-            startActivity(new Intent(ContinueActivity.this, MainActivity.class));
+            startActivity(new Intent(ContinueActivity.this, LevelActivity.class));
         });
     }
 
@@ -72,7 +72,11 @@ public class ContinueActivity extends AppCompatActivity {
     private void setSessionIsActive(boolean isActive) {
         SharedPreferences prefs = getSharedPreferences(GAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(getKey(LEVEL, GAMESTATE), isActive);
+        editor.putBoolean(getKey(getLevelId(), GAMESTATE), isActive);
         editor.apply();
+    }
+
+    private String getLevelId() {
+        return getSharedPreferences(GAME, MODE_PRIVATE).getString(LEVEL, "");
     }
 }

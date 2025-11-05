@@ -13,6 +13,7 @@ public class Snack implements Position, Velocity, Update, GameImage {
     private int positionY;
     private int velocityX;
     private final Bitmap snackImage;
+    private final int assetId;
     private boolean playSound = true;
     private final int pointsSnack;
 
@@ -22,6 +23,7 @@ public class Snack implements Position, Velocity, Update, GameImage {
         this.snackImage = builder.snackImage;
         this.pointsSnack = builder.pointsSnack;
         this.velocityX = builder.velocityX;
+        this.assetId = builder.assetId;
     }
 
     public static class Builder {
@@ -30,6 +32,7 @@ public class Snack implements Position, Velocity, Update, GameImage {
         private int positionY;
         private Bitmap snackImage;
         private int pointsSnack;
+        private int assetId;
 
         public Builder positionX(int positionX) {
             this.positionX = positionX;
@@ -51,6 +54,11 @@ public class Snack implements Position, Velocity, Update, GameImage {
             return this;
         }
 
+        public Builder assetId(int assetId) {
+            this.assetId = assetId;
+            return this;
+        }
+
         public Builder pointsForSnack(int pointsSnack) {
             this.pointsSnack = pointsSnack;
             return this;
@@ -66,6 +74,10 @@ public class Snack implements Position, Velocity, Update, GameImage {
     }
 
     public void setPositionX(int x) { this.positionX = x; }
+
+    public int getAssetId() {
+        return assetId;
+    }
 
     @Override
     public Bitmap getImage() {
