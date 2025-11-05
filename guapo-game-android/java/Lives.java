@@ -1,6 +1,6 @@
 package com.main.guapogame;
 
-import static com.main.guapogame.Constants.NUM_LIVES;
+import static com.main.guapogame.Parameters.NUM_LIVES;
 
 public class Lives {
     private int lives = NUM_LIVES;

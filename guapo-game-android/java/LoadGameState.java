@@ -5,6 +5,7 @@ import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
 import static com.main.guapogame.Keys.LEVEL;
 import static com.main.guapogame.Keys.NUM_VILLAINS;
+import static com.main.guapogame.Keys.SCORE;
 import static com.main.guapogame.Keys.SNACK;
 import static com.main.guapogame.Keys.VILLAIN;
 import static com.main.guapogame.Keys.getKey;
@@ -46,7 +47,11 @@ public class LoadGameState {
     }
 
     public int getScore() {
-        return prefs.getInt("score", 0);
+        return prefs.getInt(getKey(getLevelId(), SCORE), 0);
+    }
+
+    private String getLevelId() {
+        return prefs.getString(LEVEL, "");
     }
 
     public int getCheckpoint() {
@@ -69,6 +74,4 @@ public class LoadGameState {
     private float getVelocity(String key) {
         return prefs.getFloat(key, 0);
     }
-
-    // TODO getGameState of remaining parameters, e.g. fish
 }

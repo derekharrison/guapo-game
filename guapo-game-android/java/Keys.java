@@ -6,7 +6,6 @@ public class Keys {
     public static String VILLAIN = "villain";
     public static String NUM_VILLAINS = "numVillains";
     public static String BACKGROUND = "background";
-    public static String NUM_BACKGROUNDS = "numBackgrounds";
     public static String SNACK_POINTS = "snackPoints";
     public static String FRAME_COUNTER = "frameCounter";
     public static String POSITION_X = "positionX";
@@ -20,7 +19,10 @@ public class Keys {
     public static String TRIP = "trip";
     public static String OCEAN = "ocean";
     public static String UTREG = "utrecht";
-    public static String SCORE = "highScore";
+    public static String HIGH_SCORE = "highScore";
+    public static String SCORE = "score";
+    public static String CHECKPOINT = "checkpoint";
+    public static String GAME = "game";
 
     public static String getKey(String...key) {
         StringBuilder stringBuilder = new StringBuilder();

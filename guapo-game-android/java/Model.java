@@ -1,24 +1,22 @@
 package com.main.guapogame;
 
-import static com.main.guapogame.Constants.FPS;
+import static com.main.guapogame.Parameters.FPS;
 import static com.main.guapogame.Keys.ARUBA;
-import static com.main.guapogame.Keys.BACKGROUND;
 import static com.main.guapogame.Keys.BEACH;
 import static com.main.guapogame.Keys.GAMESTATE;
 import static com.main.guapogame.Keys.LEVEL;
-import static com.main.guapogame.Keys.NUM_BACKGROUNDS;
 import static com.main.guapogame.Keys.OCEAN;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
-import static com.main.guapogame.Keys.SCORE;
+import static com.main.guapogame.Keys.HIGH_SCORE;
 import static com.main.guapogame.Keys.SNACK;
 import static com.main.guapogame.Keys.TRIP;
 import static com.main.guapogame.Keys.UTREG;
 import static com.main.guapogame.Keys.VELOCITY_X;
-import static com.main.guapogame.Keys.VILLAIN;
 import static com.main.guapogame.Keys.getKey;
 import static com.main.guapogame.Parameters.CHECK_POINT_INTERVAL;
 import static com.main.guapogame.Parameters.POINTS_BEGGIN_STRIPS;
+import static com.main.guapogame.Parameters.START_NUM_OF_VILLAINS;
 import static com.main.guapogame.Parameters.getBackgroundSpeed;
 import static com.main.guapogame.Parameters.setBackgroundSpeed;
 import static com.main.guapogame.Parameters.setScreenHeight;
@@ -39,7 +37,6 @@ import java.util.List;
 import java.util.Random;
 
 // TODO : create characters
-// TODO : create beggin strip
 // TODO : implement checkpoints
 // TODO : inject game objects
 // TODO : create model builder
@@ -78,25 +75,6 @@ public class Model {
         paint.setColor(Color.BLACK);
 
         createModelData();
-
-        setSessionIsActive(false);
-    }
-
-    private void createModelData() {
-        getSharedPreferences();
-        getScreenParameters();
-
-        createSounds();
-        createPauseAndPlayButtons();
-        createSnacks();
-        createLives();
-        createHero();
-        createVillains();
-        createBackgrounds();
-        createPopups();
-
-        getPauseRegion();
-        getScore();
     }
 
     public Hero getHero() {
@@ -107,13 +85,9 @@ public class Model {
         String levelId = getLevelId();
         if (getHighScore(levelId) < score) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(getKey(levelId, SCORE), score);
+            editor.putInt(getKey(levelId, HIGH_SCORE), score);
             editor.apply();
         }
-    }
-
-    private int getHighScore(String levelId) {
-        return prefs.getInt(getKey(levelId, SCORE), 0);
     }
 
     public void update() {
@@ -142,6 +116,27 @@ public class Model {
             thread.start();
             advanceCheckpoint();
         }
+    }
+
+    private void createModelData() {
+        getSharedPreferences();
+        getScreenParameters();
+
+        createSounds();
+        createPauseAndPlayButtons();
+        createSnacks();
+        createLives();
+        createHero();
+        createVillains();
+        createBackgrounds();
+        createPopups();
+
+        getPauseRegion();
+        getScore();
+    }
+
+    private int getHighScore(String levelId) {
+        return prefs.getInt(getKey(levelId, HIGH_SCORE), 0);
     }
 
     private void updateCheckpointPopup() {
@@ -247,7 +242,7 @@ public class Model {
     }
 
     private void updateNumberOfVillains() {
-        if (needToIncreaseVillains() && lessThanMaxVillains()) {
+        if (timeToIncreaseVillains()) {
             addVillain(createVillain());
             advanceDifficultyLevel();
         }
@@ -260,8 +255,8 @@ public class Model {
     private boolean lessThanMaxVillains() {
         return villains.size() < Parameters.MAX_VILLAINS;
     }
-    private boolean needToIncreaseVillains() {
-        return score >= difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL;
+    private boolean timeToIncreaseVillains() {
+        return score >= difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL && lessThanMaxVillains();
     }
 
     private void drawBackgrounds(Canvas canvas) {
@@ -356,28 +351,6 @@ public class Model {
 
     private String getLevelId() {
         return prefs.getString(LEVEL, "");
-    }
-
-    private List<Integer> getVillainAssetIds() {
-        int numVillains = getNumVillains();
-        List<Integer> assetIds = new ArrayList<>();
-        for(int backgroundId = 0; backgroundId < numVillains; backgroundId++) {
-            assetIds.add(getVillainAssetId(backgroundId));
-        }
-
-        return assetIds;
-    }
-
-    private int getVillainAssetId(int villainId) {
-        return prefs.getInt(VILLAIN + villainId, 0);
-    }
-
-    private int getNumBackgrounds() {
-        return prefs.getInt(NUM_BACKGROUNDS, 0);
-    }
-
-    private int getBackgroundAssetId(int backgroundId) {
-        return prefs.getInt(BACKGROUND + backgroundId, 0);
     }
 
     private Background createBackground(int assetId, String backgroundId) {
@@ -520,18 +493,16 @@ public class Model {
 
     private float getSnackPositionX(String snackId, Bitmap snackImage) {
         Random random = new Random();
-        if(isActiveSession()) {
+        if(isActiveSession())
             return gameState.getLoadGameState().getSnackPosition(SNACK, snackId);
-        }
 
         return random.nextInt(2 * screenWidth - snackImage.getWidth() / 2);
     }
 
     private float getSnackPositionY(String snackId, Bitmap snackImage) {
         Random random = new Random();
-        if(isActiveSession()) {
+        if(isActiveSession())
             return gameState.getLoadGameState().getSnackPosition(SNACK, snackId);
-        }
 
         return random.nextInt(screenHeight - snackImage.getHeight() / 2);
     }
@@ -539,12 +510,10 @@ public class Model {
     private void createVillains() {
         int numVillains = getNumVillains();
         for(int villainId = 0; villainId < numVillains; villainId++) {
-            if(isActiveSession()) {
+            if(isActiveSession())
                 createVillain(String.valueOf(villainId));
-            }
-            else {
+            else
                 addVillain(createVillain());
-            }
         }
     }
 
@@ -618,9 +587,8 @@ public class Model {
     }
 
     private List<Bitmap> createVillainImages() {
-        if(getLevelId().equals(BEACH) || getLevelId().equals(OCEAN)) {
+        if(getLevelId().equals(BEACH) || getLevelId().equals(OCEAN))
             return createSeagullImages();
-        }
 
         return createWaraWaraImages();
     }
@@ -630,14 +598,7 @@ public class Model {
     }
 
     private boolean isActiveSession() {
-        return prefs.getBoolean(GAMESTATE, false);
-    }
-
-    private void setSessionIsActive(boolean isActive) {
-        // TODO : Implement
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(GAMESTATE, isActive);
-        editor.apply();
+        return prefs.getBoolean(getKey(LEVEL, GAMESTATE), false);
     }
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
@@ -671,11 +632,10 @@ public class Model {
     }
 
     private int getNumVillains() {
-        if(isActiveSession()) {
+        if(isActiveSession())
             return gameState.getLoadGameState().getNumVillains();
-        }
 
-        return 3;// TODO : Create constant
+        return START_NUM_OF_VILLAINS;
     }
 
     private void setGameStateToGameOver() {
@@ -688,9 +648,8 @@ public class Model {
 
     private Heros getHeroId() {
         int heroId = prefs.getInt("choose_character", 0);
-        if(heroId == 1) {
+        if(heroId == 1)
             return Heros.TUTTI;
-        }
 
         return Heros.GUAPO;
     }

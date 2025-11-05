@@ -2,9 +2,10 @@ package com.main.guapogame;
 
 import static com.main.guapogame.Keys.ARUBA;
 import static com.main.guapogame.Keys.BEACH;
+import static com.main.guapogame.Keys.GAME;
 import static com.main.guapogame.Keys.LEVEL;
 import static com.main.guapogame.Keys.OCEAN;
-import static com.main.guapogame.Keys.SCORE;
+import static com.main.guapogame.Keys.HIGH_SCORE;
 import static com.main.guapogame.Keys.TRIP;
 import static com.main.guapogame.Keys.UTREG;
 import static com.main.guapogame.Keys.getKey;
@@ -32,14 +33,13 @@ public class LevelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_level);
         setUpScreenApiVersionGreaterOrEqualTo30();
         setUpScreenApiVersionLessThan30();
         createLevelIdRelations();
         createPreviousLevelRelations();
 
-        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+        final SharedPreferences prefs = getSharedPreferences(GAME, MODE_PRIVATE);
 
         setHighScore(prefs, R.id.high_score_id_level1);
         setHighScore(prefs, R.id.high_score_id_level2);
@@ -47,7 +47,7 @@ public class LevelActivity extends AppCompatActivity {
         setHighScore(prefs, R.id.high_score_id_level_4);
         setHighScore(prefs, R.id.high_score_id_level_5);
 
-        setFirstLevelButton(prefs, R.id.level1_id);
+        setFirstLevelButton(prefs);
         setLevelButton(prefs, R.id.second_level2_id);
         setLevelButton(prefs, R.id.trip_id);
         setLevelButton(prefs, R.id.ocean_id);
@@ -57,6 +57,7 @@ public class LevelActivity extends AppCompatActivity {
         setButton(R.id.main_menu_button3, MainActivity.class);
 
         setMuteButton(prefs);
+        handleMuteAction(prefs);
     }
 
     private void createLevelIdRelations() {
@@ -104,19 +105,19 @@ public class LevelActivity extends AppCompatActivity {
 
     private void setHighScore(SharedPreferences prefs, int assetId) {
         TextView textView = findViewById(assetId);
-        String levelId = levelIds.getOrDefault(assetId, "");
+        String levelId = levelIds.get(assetId);
         String highScore = "" + getHighScore(prefs, levelId);
         textView.setText(highScore);
     }
 
     private int getHighScore(SharedPreferences prefs, String levelId) {
-        return prefs.getInt(getKey(levelId, SCORE), 0);
+        return prefs.getInt(getKey(levelId, HIGH_SCORE), 0);
     }
 
     private void setLevelButton(SharedPreferences prefs, int buttonId) {
-        String levelId = levelIds.getOrDefault(buttonId, "");
-        String previousLevelId = previousLevel.getOrDefault(levelId, "");
-        int score = prefs.getInt(getKey(previousLevelId, SCORE), 0);
+        String levelId = levelIds.get(buttonId);
+        String previousLevelId = previousLevel.get(levelId);
+        int score = prefs.getInt(getKey(previousLevelId, HIGH_SCORE), 0);
         if(score < Parameters.LEVEL_UNLOCK_SCORE) {
             TextView textView = findViewById(buttonId);
             textView.setTextColor(Color.parseColor("#00a8f3"));
@@ -131,10 +132,10 @@ public class LevelActivity extends AppCompatActivity {
         }
     }
 
-    private void setFirstLevelButton(SharedPreferences prefs, int buttonId) {
-        String levelId = levelIds.getOrDefault(buttonId, "");
-        findViewById(buttonId).setOnClickListener(_ -> {
-            TextView textView = findViewById(buttonId);
+    private void setFirstLevelButton(SharedPreferences prefs) {
+        String levelId = levelIds.get(R.id.level1_id);
+        findViewById(R.id.level1_id).setOnClickListener(_ -> {
+            TextView textView = findViewById(R.id.level1_id);
             textView.setTextColor(Color.WHITE);
             setLevelId(prefs, levelId);
             startActivity(new Intent(LevelActivity.this, GameActivity.class));
@@ -157,31 +158,30 @@ public class LevelActivity extends AppCompatActivity {
 
     private void setMuteButton(SharedPreferences prefs) {
         isMute = prefs.getBoolean("is_mute", false);
-        final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
-        if (isMute) {
-            volumeCtrl.setImageResource(R.drawable.volume_off);
-        }
-        else {
-            volumeCtrl.setImageResource(R.drawable.volume_on);
-        }
-
-        handleMute(prefs, volumeCtrl);
+        showMuteButton();
     }
 
-    private void handleMute(SharedPreferences prefs, ImageView volumeCtrl) {
+    private void showMuteButton() {
+        final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
+
+        if (isMute)
+            volumeCtrl.setImageResource(R.drawable.volume_off);
+        if(!isMute)
+            volumeCtrl.setImageResource(R.drawable.volume_on);
+    }
+
+    private void handleMuteAction(SharedPreferences prefs) {
+        final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
         volumeCtrl.setOnClickListener(_ -> {
-            isMute = !isMute;
-
-            if (isMute) {
-                volumeCtrl.setImageResource(R.drawable.volume_off);
-            }
-            else {
-                volumeCtrl.setImageResource(R.drawable.volume_on);
-            }
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("is_mute", isMute);
-            editor.apply();
+            mute(prefs);
+            showMuteButton();
         });
+    }
+
+    private void mute(SharedPreferences prefs) {
+        isMute = !isMute;
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("is_mute", isMute);
+        editor.apply();
     }
 }

@@ -1,6 +1,6 @@
 package com.main.guapogame;
 
-import static com.main.guapogame.Constants.FPS;
+import static com.main.guapogame.Parameters.FPS;
 
 import android.graphics.Bitmap;
 

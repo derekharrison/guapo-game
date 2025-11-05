@@ -1,6 +1,6 @@
 package com.main.guapogame;
 
-import static com.main.guapogame.Constants.FPS;
+import static com.main.guapogame.Parameters.FPS;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
@@ -225,11 +224,11 @@ public class GameView extends SurfaceView implements Runnable {
     private void handleGameOver() {
         if(getLives() <= 0) {
             model.saveHighScore();
-            transitionToActivity(MainActivity.class);
+            transitionToActivity(LevelActivity.class);
         }
         if(getLives() > 0) {
             model.saveHighScore();
-            transitionToActivity(LevelActivity.class);
+            transitionToActivity(ContinueActivity.class);
         }
     }
 

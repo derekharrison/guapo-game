@@ -1,12 +1,14 @@
 package com.main.guapogame;
 
 import static com.main.guapogame.Keys.BACKGROUND;
+import static com.main.guapogame.Keys.CHECKPOINT;
 import static com.main.guapogame.Keys.FRAME_COUNTER;
 import static com.main.guapogame.Keys.HERO;
 import static com.main.guapogame.Keys.LEVEL;
 import static com.main.guapogame.Keys.NUM_VILLAINS;
 import static com.main.guapogame.Keys.POSITION_X;
 import static com.main.guapogame.Keys.POSITION_Y;
+import static com.main.guapogame.Keys.SCORE;
 import static com.main.guapogame.Keys.SNACK;
 import static com.main.guapogame.Keys.SNACK_POINTS;
 import static com.main.guapogame.Keys.VELOCITY_X;
@@ -72,13 +74,13 @@ public class SaveGameState {
 
     public void saveScore(int score) {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("score", score);
+        editor.putInt(getKey(getLevelId(), SCORE), score);
         editor.apply();
     }
 
     public void saveCheckpoint(int checkpoint) {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("checkpoint", checkpoint);
+        editor.putInt(getKey(getLevelId(), CHECKPOINT), checkpoint);
         editor.apply();
     }
 
