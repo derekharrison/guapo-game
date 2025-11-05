@@ -33,11 +33,11 @@ public class SaveGameState {
     }
 
     public void saveHero(Hero hero) {
-        savePosition(getKey(HERO, POSITION_X), hero.getPositionX());
-        savePosition(getKey(HERO, POSITION_Y), hero.getPositionY());
-        savePosition(getKey(HERO, VELOCITY_X), hero.getVelocityX());
-        savePosition(getKey(HERO, VELOCITY_Y), hero.getVelocityY());
-        saveFrameCounter(getKey(HERO, FRAME_COUNTER), hero.getFrameCounter());
+        savePosition(getKey(getLevelId(), HERO, POSITION_X), hero.getPositionX());
+        savePosition(getKey(getLevelId(), HERO, POSITION_Y), hero.getPositionY());
+        savePosition(getKey(getLevelId(), HERO, VELOCITY_X), hero.getVelocityX());
+        savePosition(getKey(getLevelId(), HERO, VELOCITY_Y), hero.getVelocityY());
+        saveFrameCounter(getKey(getLevelId(), HERO, FRAME_COUNTER), hero.getFrameCounter());
     }
 
     public void saveVillains(List<Villain> villains) {

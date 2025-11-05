@@ -138,12 +138,16 @@ public class Model {
     }
 
     private void updateCheckpointPopup() {
-        if(reachedFirstCheckpoint()) {
+        if(reachedCheckpoint() && isNotFirstCheckpoint()) {
             checkpointPopup = createCheckpointPopup(2 * FPS);
             checkpointPopup.playSoundCheckpoint(sounds);
         }
 
         checkpointPopup.update();
+    }
+
+    private boolean isNotFirstCheckpoint() {
+        return checkpoint > 0;
     }
 
     private void createPopups() {
@@ -190,10 +194,6 @@ public class Model {
 
     private boolean reachedCheckpoint() {
         return score >= checkpoint * CHECK_POINT_INTERVAL;
-    }
-
-    private boolean reachedFirstCheckpoint() {
-        return score >= (checkpoint + 1) * CHECK_POINT_INTERVAL;
     }
 
     private void advanceCheckpoint() {
