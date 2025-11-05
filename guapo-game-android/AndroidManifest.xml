@@ -21,6 +21,10 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.noActionBar" />
         <activity
+            android:name=".ContinueActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.noActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="landscape"
