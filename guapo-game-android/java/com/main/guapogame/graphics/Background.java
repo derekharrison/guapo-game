@@ -44,7 +44,7 @@ public class Background implements Position, Velocity, Update, Image {
             return this;
         }
 
-        Background build() {
+        public Background build() {
             return new Background(this);
         }
     }

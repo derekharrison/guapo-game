@@ -23,7 +23,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.main.guapogame.graphics.GraphicObjectsBuilder;
 import com.main.guapogame.definitions.Parameters;
 import com.main.guapogame.graphics.Popup;
 import com.main.guapogame.R;
@@ -112,7 +111,7 @@ public class Model {
 
     private void createGameObjects() {
         graphicObjects = new GraphicObjectsBuilder()
-                .gameState(storage)
+                .storage(storage)
                 .context(context)
                 .resources(getResources())
                 .build();
