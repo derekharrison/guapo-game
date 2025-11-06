@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LivesBuilder {
-
-    private final List<Bitmap> lives = new ArrayList<>();
     private Context context;
     private Storage storage;
     private Resources resources;
@@ -40,22 +38,24 @@ public class LivesBuilder {
     }
 
     public List<Bitmap> build() {
-        createLives();
-        return lives;
+        return createLives();
     }
 
-    private void createLives() {
+    private List<Bitmap> createLives() {
+        List<Bitmap> lives = new ArrayList<>();
         for(int id = 0; id < getNumLives(); id++) {
             Bitmap life = getBitmapScaled(
                     getScreenFactorX() / 4,
-                    getScreenFactorY() / 4,
-                    R.drawable.heart1_bitmap_cropped);
+                    getScreenFactorY() / 4
+                    );
             lives.add(life);
         }
+
+        return lives;
     }
 
-    private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
-        Bitmap bitmap = BitmapFactory.decodeResource(resources, drawableIdentification);
+    private Bitmap getBitmapScaled(int scaleX, int scaleY) {
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.heart1_bitmap_cropped);
         return Bitmap.createScaledBitmap(bitmap, scaleX, scaleY, false);
     }
 

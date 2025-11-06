@@ -12,7 +12,6 @@ import com.main.guapogame.graphics.Snack;
 import com.main.guapogame.graphics.Villain;
 import com.main.guapogame.storage.Storage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GraphicObjectsBuilder {

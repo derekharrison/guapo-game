@@ -21,8 +21,6 @@ import com.main.guapogame.storage.Storage;
 import com.main.guapogame.types.Heros;
 
 public class HeroBuilder {
-
-    private Hero hero;
     private Context context;
     private Storage storage;
     private Resources resources;
@@ -43,16 +41,15 @@ public class HeroBuilder {
     }
 
     public Hero build() {
-        createHero();
-        return hero;
+        return createHero();
     }
 
-    private void createHero() {
+    private Hero createHero() {
         if(getHeroId().equals(TUTTI)) {
-            hero = createTutti();
+            return createTutti();
         }
         else {
-            hero = createGuapo();
+            return createGuapo();
         }
     }
 

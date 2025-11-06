@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Random;
 
 public class SnacksBuilder {
-    List<Snack> snacks = new ArrayList<>();
     private Context context;
     private Storage storage;
     private Resources resources;
@@ -46,33 +45,38 @@ public class SnacksBuilder {
     }
 
     public List<Snack> build() {
-        createSnacks();
-        return snacks;
+        return  createSnacks();
     }
 
-    private void createSnacks() {
+    private List<Snack> createSnacks() {
         if(!isActiveSession())
-            getSnacks();
+            return getSnacks();
 
         if(isActiveSession())
-            getSnacksFromActiveSession();
+            return getSnacksFromActiveSession();
+
+        return new ArrayList<>();
     }
 
-    private void getSnacks() {
-        snacks.addAll(createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized));
-        snacks.addAll(createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
-        snacks.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
-        snacks.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
-        snacks.addAll(createSnacks(1, POINTS_BEGGIN_STRIPS, R.drawable.beggin_strip_cropped));
+    private List<Snack> getSnacks() {
+        List<Snack> snacks1 = new ArrayList<>();
+        snacks1.addAll(createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized));
+        snacks1.addAll(createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
+        snacks1.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
+        snacks1.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
+        snacks1.addAll(createSnacks(1, POINTS_BEGGIN_STRIPS, R.drawable.beggin_strip_cropped));
+
+        return snacks1;
     }
 
-    private void getSnacksFromActiveSession() {
+    private List<Snack> getSnacksFromActiveSession() {
         int numSnacks = getNumSnacks();
         int width = (int) (getScreenFactorX() - getScreenFactorX() / 3.0);
         int height = (int) (getScreenFactorY() - getScreenFactorY() / 3.0);
+        List<Snack> snacks1 = new ArrayList<>();
         for(int snackId = 0; snackId < numSnacks; snackId++) {
             int assetId = storage.loadGame().getSnackAssetId(String.valueOf(snackId));
-            snacks.add(
+            snacks1.add(
                     new Snack.Builder()
                             .positionX((int) storage.loadGame().getSnackPosition(POSITION_X, String.valueOf(snackId)))
                             .positionY((int) storage.loadGame().getSnackPosition(POSITION_Y, String.valueOf(snackId)))
@@ -83,6 +87,8 @@ public class SnacksBuilder {
                             .build()
             );
         }
+
+        return snacks1;
     }
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {

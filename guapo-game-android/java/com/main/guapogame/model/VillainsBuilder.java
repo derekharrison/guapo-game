@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VillainsBuilder {
-
-    List<Villain> villains = new ArrayList<>();
     private Context context;
     private Storage storage;
     private Resources resources;
@@ -38,28 +36,26 @@ public class VillainsBuilder {
     }
 
     public List<Villain> build() {
-        createVillains();
-        return villains;
+        return createVillains();
     }
 
-    private void createVillains() {
+    private List<Villain> createVillains() {
         int numVillains = getNumVillains();
+        List<Villain> villains1 = new ArrayList<>();
         for(int villainId = 0; villainId < numVillains; villainId++) {
             if(isActiveSession())
-                createVillain(String.valueOf(villainId));
+                villains1.add(createVillain(String.valueOf(villainId)));
             else
-                addVillain(createVillain());
+                villains1.add(createVillain());
         }
+
+        return villains1;
     }
 
     private boolean isActiveSession() {
         return context
                 .getSharedPreferences(GAME, Context.MODE_PRIVATE)
                 .getBoolean(getKey(getLevelId(), GAMESTATE), false);
-    }
-
-    private void addVillain(Villain villain) {
-        this.villains.add(villain);
     }
 
     private int getNumVillains() {
@@ -78,14 +74,12 @@ public class VillainsBuilder {
                 .build();
     }
 
-    private void createVillain(String villainId) {
-        villains.add(
-                new VillainBuilder()
-                        .storage(storage)
-                        .context(context)
-                        .resources(resources)
-                        .build(villainId)
-        );
+    private Villain createVillain(String villainId) {
+        return new VillainBuilder()
+                .storage(storage)
+                .context(context)
+                .resources(resources)
+                .build(villainId);
     }
 
     private String getLevelId() {
