@@ -77,7 +77,7 @@ public class Villain extends Character {
     @Override
     public Bitmap getImage() {
         if (displayFirstImage())
-            return getImages().getFirst();
+            return getImages().get(0);
 
         if (displaySecondImage())
             return getImages().get(1);
@@ -87,7 +87,7 @@ public class Villain extends Character {
 
         resetFrameCounter();
 
-        return getImages().getFirst();
+        return getImages().get(0);
     }
 
     private int getX() {
@@ -95,14 +95,12 @@ public class Villain extends Character {
     }
 
     private int getY() {
-        Random random = new Random();
-        return random.nextInt((int) (getScreenHeight() - getHeight()));
+        return new Random().nextInt((int) (getScreenHeight() - getHeight()));
     }
 
     private int getSpeed() {
-        Random random = new Random();
         int bound = 3 * getBackgroundSpeed();
-        int speed = random.nextInt(bound);
+        int speed = new Random().nextInt(bound);
 
         if (speed < bound / 2)
             speed = bound / 2;

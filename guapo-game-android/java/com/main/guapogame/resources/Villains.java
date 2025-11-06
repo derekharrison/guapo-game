@@ -9,8 +9,4 @@ public class Villains {
     public List<Integer> getAssetIds() {
         return assetIds;
     }
-
-    public void addAssetId(int assetId) {
-        assetIds.add(assetId);
-    }
 }

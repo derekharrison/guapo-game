@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.main.guapogame.graphics.Villain;
+import com.main.guapogame.resources.JellyFish;
 import com.main.guapogame.resources.Seagulls;
 import com.main.guapogame.resources.WaraWaras;
 import com.main.guapogame.storage.Storage;
@@ -78,8 +79,11 @@ public class VillainBuilder {
     }
 
     private List<Bitmap> createVillainImages() {
-        if(getLevelId().equals(BEACH) || getLevelId().equals(OCEAN))
+        if(getLevelId().equals(BEACH))
             return createVillainImages(new Seagulls().getAssetIds());
+
+        if(getLevelId().equals(OCEAN))
+            return createVillainImages(new JellyFish().getAssetIds());
 
         return createVillainImages(new WaraWaras().getAssetIds());
     }

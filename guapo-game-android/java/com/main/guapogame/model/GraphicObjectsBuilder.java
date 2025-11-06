@@ -35,7 +35,6 @@ public class GraphicObjectsBuilder {
     }
 
     public GraphicObjects build() {
-        createGameObjects();
         return new GraphicObjects.Builder()
                 .hero(createHero())
                 .villains(createVillains())
@@ -46,12 +45,6 @@ public class GraphicObjectsBuilder {
                 .playButton(createPlayButton())
                 .lives(createLives())
                 .build();
-    }
-
-    private void createGameObjects() {
-        createCheckpointPopup();
-        createPlayButton();
-        createLives();
     }
 
     private Hero createHero() {
