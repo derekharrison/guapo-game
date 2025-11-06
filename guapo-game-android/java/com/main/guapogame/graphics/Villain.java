@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Villain extends Character {
-
     private final static int NUM_FRAMES_DISPLAY = 3;
 
     protected Villain(Builder builder) {

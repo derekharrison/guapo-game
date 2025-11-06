@@ -18,8 +18,8 @@ public class Model implements Update, Draw {
     private final Resources resources;
     private final Storage storage;
     private final Context context;
-    private ModelUpdate updateModel;
-    private ModelDraw drawModel;
+    private ModelUpdate modelUpdate;
+    private ModelDraw modelDraw;
 
     public Model(Context context, Resources resources) {
         this.resources = resources;
@@ -31,12 +31,12 @@ public class Model implements Update, Draw {
 
     @Override
     public void update() {
-        updateModel.update();
+        modelUpdate.update();
     }
 
     @Override
     public void draw(Canvas canvas) {
-        drawModel.draw(canvas);
+        modelDraw.draw(canvas);
     }
 
     public Hero getHero() {
@@ -56,7 +56,7 @@ public class Model implements Update, Draw {
     }
 
     private void createModelUpdate() {
-        updateModel = new ModelUpdate.Builder()
+        modelUpdate = new ModelUpdate.Builder()
                 .graphics(graphics)
                 .resources(resources)
                 .context(context)
@@ -65,7 +65,7 @@ public class Model implements Update, Draw {
     }
 
     private void createModelDraw() {
-        drawModel = new ModelDraw.Builder()
+        modelDraw = new ModelDraw.Builder()
                 .graphics(graphics)
                 .build();
     }

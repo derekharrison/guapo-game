@@ -13,7 +13,6 @@ import com.main.guapogame.graphics.Villain;
 import com.main.guapogame.interfaces.Draw;
 
 public class ModelDraw implements Draw {
-
     GraphicObjects graphics;
 
     protected ModelDraw(Builder builder) {
@@ -104,5 +103,4 @@ public class ModelDraw implements Draw {
     private void drawHero(Canvas canvas) {
         graphics.getHero().draw(canvas);
     }
-
 }

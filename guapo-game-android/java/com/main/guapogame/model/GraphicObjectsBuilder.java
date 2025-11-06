@@ -16,14 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphicObjectsBuilder {
-    private Hero hero;
-    private List<Snack> snacks = new ArrayList<>();
-    private List<Villain> villains = new ArrayList<>();
-    private List<Background> backgrounds = new ArrayList<>();
-    private List<Bitmap> lives = new ArrayList<>();
-    private Bitmap playButton;
-    private Bitmap pauseButton;
-    private Popup checkpointPopup;
     private Context context;
     private Storage storage;
     private Resources resources;
@@ -46,73 +38,72 @@ public class GraphicObjectsBuilder {
     public GraphicObjects build() {
         createGameObjects();
         return new GraphicObjects.Builder()
-                .hero(hero)
-                .villains(villains)
-                .backgrounds(backgrounds)
-                .checkpointPopup(checkpointPopup)
-                .snacks(snacks)
-                .pauseButton(pauseButton)
-                .playButton(playButton)
-                .lives(lives)
+                .hero(createHero())
+                .villains(createVillains())
+                .backgrounds(createBackgrounds())
+                .checkpointPopup(createCheckpointPopup())
+                .snacks(createSnacks())
+                .pauseButton(createPauseButton())
+                .playButton(createPlayButton())
+                .lives(createLives())
                 .build();
     }
 
     private void createGameObjects() {
-        createHero();
-        createSnacks();
-        createVillains();
-        createBackgrounds();
-        createPopups();
-        createPauseAndPlayButtons();
+        createCheckpointPopup();
+        createPlayButton();
         createLives();
     }
 
-    private void createHero() {
-        hero = new HeroBuilder()
+    private Hero createHero() {
+        return new HeroBuilder()
                 .context(context)
                 .resources(resources)
                 .storage(storage)
                 .build();
     }
 
-    private void createSnacks() {
-        snacks = new SnacksBuilder()
+    private List<Snack> createSnacks() {
+        return new SnacksBuilder()
                 .context(context)
                 .resources(resources)
                 .storage(storage)
                 .build();
     }
 
-    private void createVillains() {
-        villains = new VillainsBuilder()
+    private List<Villain> createVillains() {
+        return new VillainsBuilder()
                 .context(context)
                 .resources(resources)
                 .storage(storage)
                 .build();
     }
 
-    private void createBackgrounds() {
-        backgrounds = new BackgroundsBuilder()
+    private List<Background> createBackgrounds() {
+        return new BackgroundsBuilder()
                 .context(context)
                 .resources(resources)
                 .storage(storage)
                 .build();
     }
 
-    private void createLives() {
-        lives = new LivesBuilder()
+    private List<Bitmap> createLives() {
+        return new LivesBuilder()
                 .context(context)
                 .resources(resources)
                 .storage(storage)
                 .build();
     }
-    private void createPauseAndPlayButtons() {
-        playButton = new PlayButtonBuilder().resources(resources).build();
-        pauseButton = new PauseButtonBuilder().resources(resources).build();
+
+    private Bitmap createPauseButton() {
+        return new PauseButtonBuilder().resources(resources).build();
+    }
+    private Bitmap createPlayButton() {
+        return new PlayButtonBuilder().resources(resources).build();
     }
 
-    private void createPopups() {
-        checkpointPopup = new CheckpointPopupBuilder()
+    private Popup createCheckpointPopup() {
+        return new CheckpointPopupBuilder()
                 .resources(resources)
                 .build();
     }
