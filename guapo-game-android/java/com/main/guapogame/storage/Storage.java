@@ -13,7 +13,7 @@ public class Storage {
     }
 
     public Load loadGame() {
-        return this.load;
+        return load;
     }
 
     public Save saveGame() {

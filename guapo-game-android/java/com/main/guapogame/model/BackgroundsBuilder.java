@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BackgroundsBuilder {
-    private final List<Background> backgrounds = new ArrayList<>();
     private Context context;
     private Storage storage;
     private Resources resources;
@@ -50,17 +49,20 @@ public class BackgroundsBuilder {
     }
 
     public List<Background> build() {
-        createBackgrounds();
-        return backgrounds;
+        return createBackgrounds();
     }
 
-    private void createBackgrounds() {
+    private List<Background> createBackgrounds() {
         List<Integer> assetIds = getBackgroundAssetIds();
+        List<Background> backgrounds1 = new ArrayList<>();
+
         int backgroundId = 0;
         for(Integer assetId : assetIds) {
-            this.backgrounds.add(createBackground(assetId, String.valueOf(backgroundId)));
+            backgrounds1.add(createBackground(assetId, String.valueOf(backgroundId)));
             backgroundId++;
         }
+
+        return backgrounds1;
     }
 
     private Background createBackground(int assetId, String backgroundId) {
