@@ -9,9 +9,11 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import com.main.guapogame.graphics.GraphicObjects;
 import com.main.guapogame.graphics.Hero;
+import com.main.guapogame.interfaces.Draw;
+import com.main.guapogame.interfaces.Update;
 import com.main.guapogame.storage.Storage;
 
-public class Model {
+public class Model implements Update, Draw {
     private GraphicObjects graphics;
     private final Resources resources;
     private final Storage storage;
@@ -27,10 +29,12 @@ public class Model {
         createModelData();
     }
 
+    @Override
     public void update() {
         updateModel.update();
     }
 
+    @Override
     public void draw(Canvas canvas) {
         drawModel.draw(canvas);
     }

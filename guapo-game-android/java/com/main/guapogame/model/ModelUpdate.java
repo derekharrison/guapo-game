@@ -19,10 +19,11 @@ import com.main.guapogame.graphics.Hero;
 import com.main.guapogame.graphics.Popup;
 import com.main.guapogame.graphics.Snack;
 import com.main.guapogame.graphics.Villain;
+import com.main.guapogame.interfaces.Update;
 import com.main.guapogame.resources.Sounds;
 import com.main.guapogame.storage.Storage;
 
-public class ModelUpdate {
+public class ModelUpdate implements Update {
     private int difficultyLevel = 0;
     private final GraphicObjects graphics;
     private final Storage storage;
@@ -40,6 +41,16 @@ public class ModelUpdate {
         createSounds();
         getCheckpoint();
         getScore();
+    }
+
+    @Override
+    public void update() {
+        updateBackground();
+        updateVillains();
+        updateHero();
+        updateSnacks();
+        updateCheckpointPopup();
+        saveGame();
     }
 
     public static class Builder {
@@ -71,15 +82,6 @@ public class ModelUpdate {
         public ModelUpdate build() {
             return new ModelUpdate(this);
         }
-    }
-
-    public void update() {
-        updateBackground();
-        updateVillains();
-        updateHero();
-        updateSnacks();
-        updateCheckpointPopup();
-        saveGame();
     }
 
     private void saveGame() {
@@ -246,6 +248,7 @@ public class ModelUpdate {
     private boolean lessThanMaxVillains() {
         return graphics.getVillains().size() < Parameters.MAX_VILLAINS;
     }
+    
     private boolean timeToIncreaseVillains() {
         return GameScore.score >= difficultyLevel * Parameters.SCORE_INTERVAL_DIFFICULTY_LEVEL && lessThanMaxVillains();
     }

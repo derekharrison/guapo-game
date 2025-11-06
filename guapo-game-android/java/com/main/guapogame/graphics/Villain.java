@@ -10,7 +10,7 @@ import android.graphics.Canvas;
 import java.util.List;
 import java.util.Random;
 
-public class Villain extends com.main.guapogame.graphics.Character {
+public class Villain extends Character {
 
     private final static int NUM_FRAMES_DISPLAY = 3;
 
@@ -66,7 +66,29 @@ public class Villain extends com.main.guapogame.graphics.Character {
             setPositionX(getX());
             setPositionY(getY());
         }
+
         setPositionX(getPositionX() - getVelocityX());
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
+    }
+
+    @Override
+    public Bitmap getImage() {
+        if (displayFirstImage())
+            return getImages().getFirst();
+
+        if (displaySecondImage())
+            return getImages().get(1);
+
+        if (displayThirdImage())
+            return getImages().get(2);
+
+        resetFrameCounter();
+
+        return getImages().getFirst();
     }
 
     private int getX() {
@@ -89,23 +111,15 @@ public class Villain extends com.main.guapogame.graphics.Character {
         return speed;
     }
 
-    @Override
-    public Bitmap getImage() {
-        if (getFrameCounter() >= 1 && getFrameCounter() <= NUM_FRAMES_DISPLAY)
-            return getImages().getFirst();
-
-        if (getFrameCounter() > NUM_FRAMES_DISPLAY && getFrameCounter() <= 2 * NUM_FRAMES_DISPLAY)
-            return getImages().get(1);
-
-        if (getFrameCounter() > 2 * NUM_FRAMES_DISPLAY && getFrameCounter() <= 3 * NUM_FRAMES_DISPLAY)
-            return getImages().get(2);
-
-        resetFrameCounter();
-
-        return getImages().getFirst();
+    private boolean displayFirstImage() {
+        return getFrameCounter() >= 1 && getFrameCounter() <= NUM_FRAMES_DISPLAY;
     }
 
-    public void draw(Canvas canvas) {
-        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
+    private boolean displaySecondImage() {
+        return getFrameCounter() > NUM_FRAMES_DISPLAY && getFrameCounter() <= 2 * NUM_FRAMES_DISPLAY;
+    }
+
+    private boolean displayThirdImage() {
+        return getFrameCounter() > 2 * NUM_FRAMES_DISPLAY && getFrameCounter() <= 3 * NUM_FRAMES_DISPLAY;
     }
 }

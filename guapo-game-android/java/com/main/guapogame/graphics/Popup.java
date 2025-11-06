@@ -3,12 +3,13 @@ package com.main.guapogame.graphics;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.main.guapogame.interfaces.Draw;
 import com.main.guapogame.resources.Sounds;
 import com.main.guapogame.interfaces.Image;
 import com.main.guapogame.interfaces.Position;
 import com.main.guapogame.interfaces.Update;
 
-public class Popup implements Position, Image, Update {
+public class Popup implements Position, Image, Update, Draw {
 
     private final int duration;
     private final Bitmap image;
@@ -24,6 +25,14 @@ public class Popup implements Position, Image, Update {
         this.positionY = builder.positionY;
     }
 
+    @Override
+    public void update() {
+        if(frameCounter < duration) {
+            frameCounter++;
+        }
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         if(frameCounter < duration) {
             canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
@@ -34,13 +43,6 @@ public class Popup implements Position, Image, Update {
         if(playSound) {
             sounds.playSoundCheckpoint();
             playSound = false;
-        }
-    }
-
-    @Override
-    public void update() {
-        if(frameCounter < duration) {
-            frameCounter++;
         }
     }
 

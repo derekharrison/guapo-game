@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.main.guapogame.interfaces.Draw;
 import com.main.guapogame.resources.Sounds;
 import com.main.guapogame.interfaces.Image;
 import com.main.guapogame.interfaces.Position;
@@ -14,7 +15,7 @@ import com.main.guapogame.interfaces.Velocity;
 
 import java.util.Random;
 
-public class Snack implements Position, Velocity, Update, Image {
+public class Snack implements Position, Velocity, Update, Image, Draw {
     private int positionX;
     private int positionY;
     private int velocityX;
@@ -128,6 +129,7 @@ public class Snack implements Position, Velocity, Update, Image {
         return 0;
     }
 
+    @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(getSnackImage(), positionX, positionY, null);
     }

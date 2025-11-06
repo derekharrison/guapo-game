@@ -12,16 +12,14 @@ public class Character extends AbstractCharacter {
     private float y;
     private float velX;
     private float velY;
-    private final Bitmap image;
     private final List<Bitmap> images;
-    private int frameCounter = 0;
+    private int frameCounter;
 
     protected Character(Builder builder) {
         this.x = builder.x;
         this.y = builder.y;
         this.velX = builder.velX;
         this.velY = builder.velY;
-        this.image = builder.image;
         this.frameCounter = builder.frameCounter;
         this.images = builder.images;
     }
@@ -31,9 +29,8 @@ public class Character extends AbstractCharacter {
         private float y = 0;
         private float velX = 0;
         private float velY = 0;
-        private Bitmap image;
         private int frameCounter = 0;
-        private final List<Bitmap> images = new ArrayList<>();
+        private List<Bitmap> images = new ArrayList<>();
 
         public Builder positionX(float x) {
             this.x = x;
@@ -42,17 +39,6 @@ public class Character extends AbstractCharacter {
 
         public Builder positionY(float y) {
             this.y = y;
-            return this;
-        }
-
-        public Builder image(Bitmap image) {
-            this.image = image;
-            this.images.add(image);
-            return this;
-        }
-
-        public Builder images(List<Bitmap> characterImage) {
-            this.images.addAll(characterImage);
             return this;
         }
 
@@ -66,6 +52,11 @@ public class Character extends AbstractCharacter {
             return this;
         }
 
+        public Builder images(List<Bitmap> images) {
+            this.images = images;
+            return this;
+        }
+
         public Builder frameCounter(int frameCounter) {
             this.frameCounter = frameCounter;
             return this;
@@ -74,15 +65,6 @@ public class Character extends AbstractCharacter {
         public Character build() {
             return new Character(this);
         }
-    }
-
-
-    public void addCharacter(Bitmap character) {
-        images.add(character);
-    }
-
-    public Bitmap getCharacterImage() {
-        return image;
     }
 
     public List<Bitmap> getImages() { return images; }
@@ -134,10 +116,6 @@ public class Character extends AbstractCharacter {
     @Override
     public void update() {
         advanceFrameCounter();
-    }
-
-    public void setFrameCounter(int frameCounter) {
-        this.frameCounter = frameCounter;
     }
 
     private void advanceFrameCounter() {

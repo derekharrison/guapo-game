@@ -47,7 +47,6 @@ public class Hero extends Character {
 
         public Builder heroImage(Bitmap heroImage) {
             this.heroImage = heroImage;
-            super.image(heroImage);
             return this;
         }
 
@@ -83,6 +82,7 @@ public class Hero extends Character {
         this.setPositionY(getPositionY() + getVelocityY());
     }
 
+    @Override
     public void draw(Canvas canvas) {
         if(hero.equals(Heros.TUTTI)) {
             drawTutti(canvas);

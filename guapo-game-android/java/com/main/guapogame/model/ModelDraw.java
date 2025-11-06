@@ -10,8 +10,9 @@ import com.main.guapogame.graphics.Background;
 import com.main.guapogame.graphics.GraphicObjects;
 import com.main.guapogame.graphics.Snack;
 import com.main.guapogame.graphics.Villain;
+import com.main.guapogame.interfaces.Draw;
 
-public class ModelDraw {
+public class ModelDraw implements Draw {
 
     GraphicObjects graphics;
 
@@ -32,6 +33,7 @@ public class ModelDraw {
         }
     }
 
+    @Override
     public void draw(Canvas canvas) {
         drawBackgrounds(canvas);
         drawLives(canvas);
@@ -54,7 +56,6 @@ public class ModelDraw {
     private void drawPopUp(Canvas canvas) {
         graphics.getCheckpointPopup().draw(canvas);
     }
-
 
     private void drawBackgrounds(Canvas canvas) {
         for(Background background : graphics.getBackgrounds())
