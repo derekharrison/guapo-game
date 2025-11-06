@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.main.guapogame.definitions.Parameters;
 import com.main.guapogame.R;
+import com.main.guapogame.model.GameScore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -132,6 +133,7 @@ public class LevelActivity extends AppCompatActivity {
                 textView.setTextColor(Color.WHITE);
                 setLevelId(prefs, levelId);
                 setSessionIsActive(false);
+                resetGameScore();
                 startActivity(new Intent(LevelActivity.this, GameActivity.class));
             });
         }
@@ -144,8 +146,13 @@ public class LevelActivity extends AppCompatActivity {
             textView.setTextColor(Color.WHITE);
             setLevelId(prefs, levelId);
             setSessionIsActive(false);
+            resetGameScore();
             startActivity(new Intent(LevelActivity.this, GameActivity.class));
         });
+    }
+
+    private void resetGameScore() {
+        GameScore.score = 0;
     }
 
     private void setLevelId(SharedPreferences prefs, String levelId) {

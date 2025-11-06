@@ -18,7 +18,7 @@ import android.view.SurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.main.guapogame.model.State;
+import com.main.guapogame.model.GameState;
 import com.main.guapogame.model.Model;
 import com.main.guapogame.R;
 import com.main.guapogame.activity.ContinueActivity;
@@ -119,27 +119,27 @@ public class View extends SurfaceView implements Runnable {
     }
 
     private void setGameStateToPaused() {
-        State.setGameStateToPaused();
+        GameState.setGameStateToPaused();
     }
 
     private void setGameStateToPlay() {
-        State.setGameStateToPlay();
+        GameState.setGameStateToPlay();
     }
 
     private void setGameStateToGameOver() {
-        State.setGameStateToGameOver();
+        GameState.setGameStateToGameOver();
     }
 
     private boolean gameIsOver() {
-        return State.getGameState().equals(com.main.guapogame.types.State.GAME_OVER);
+        return GameState.getGameState().equals(com.main.guapogame.types.State.GAME_OVER);
     }
 
     private boolean gameIsPaused() {
-        return State.getGameState().equals(com.main.guapogame.types.State.PAUSED);
+        return GameState.getGameState().equals(com.main.guapogame.types.State.PAUSED);
     }
 
     private boolean gameIsPlaying() {
-        return State.getGameState().equals(com.main.guapogame.types.State.PLAY);
+        return GameState.getGameState().equals(com.main.guapogame.types.State.PLAY);
     }
 
     private void handleClick(MotionEvent event) {

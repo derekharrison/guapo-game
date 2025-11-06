@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.main.guapogame.resources.Sounds;
-import com.main.guapogame.model.State;
+import com.main.guapogame.model.GameState;
 import com.main.guapogame.types.Heros;
 
 import java.util.ArrayList;
@@ -101,8 +101,8 @@ public class Hero extends Character {
     }
 
     public Bitmap getImage() {
-        if(State.getGameState().equals(com.main.guapogame.types.State.GAME_OVER)
-        || State.getGameState().equals(com.main.guapogame.types.State.CONTINUE)) {
+        if(GameState.getGameState().equals(com.main.guapogame.types.State.GAME_OVER)
+        || GameState.getGameState().equals(com.main.guapogame.types.State.CONTINUE)) {
             return heroHitImage;
         }
 
