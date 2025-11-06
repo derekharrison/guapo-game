@@ -3,7 +3,9 @@ package com.main.guapogame.storage;
 import static com.main.guapogame.definitions.Keys.BACKGROUND;
 import static com.main.guapogame.definitions.Keys.CHECKPOINT;
 import static com.main.guapogame.definitions.Keys.FRAME_COUNTER;
+import static com.main.guapogame.definitions.Keys.GAME;
 import static com.main.guapogame.definitions.Keys.HERO;
+import static com.main.guapogame.definitions.Keys.HIGH_SCORE;
 import static com.main.guapogame.definitions.Keys.LEVEL;
 import static com.main.guapogame.definitions.Keys.LIVES;
 import static com.main.guapogame.definitions.Keys.NUM_SNACKS;
@@ -32,8 +34,10 @@ import java.util.List;
 public class Save {
 
     SharedPreferences prefs;
+    Context context;
 
     public Save(Context context) {
+        this.context = context;
         prefs = context.getSharedPreferences("game", Context.MODE_PRIVATE);
     }
 
@@ -87,6 +91,23 @@ public class Save {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(getKey(getLevelId(), LIVES), numLives);
         editor.apply();
+    }
+
+    public void saveHighScore(int score) {
+        String levelId = getLevelId();
+        if (getHighScore(levelId) < score) {
+            SharedPreferences.Editor editor = getSharedPreferences().edit();
+            editor.putInt(getKey(levelId, HIGH_SCORE), score);
+            editor.apply();
+        }
+    }
+
+    private int getHighScore(String levelId) {
+        return getSharedPreferences().getInt(getKey(levelId, HIGH_SCORE), 0);
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return context.getSharedPreferences(GAME, Context.MODE_PRIVATE);
     }
 
     private void saveBackground(Background background, String backgroundId) {

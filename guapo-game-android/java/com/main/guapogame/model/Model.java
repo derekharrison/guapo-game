@@ -3,7 +3,6 @@ package com.main.guapogame.model;
 import static com.main.guapogame.definitions.Keys.GAME;
 import static com.main.guapogame.definitions.Keys.GAMESTATE;
 import static com.main.guapogame.definitions.Keys.LEVEL;
-import static com.main.guapogame.definitions.Keys.HIGH_SCORE;
 import static com.main.guapogame.definitions.Keys.getKey;
 import static com.main.guapogame.definitions.Parameters.CHECK_POINT_INTERVAL;
 import static com.main.guapogame.definitions.Parameters.setBackgroundSpeed;
@@ -47,15 +46,6 @@ public class Model {
         createModelData();
     }
 
-    public void saveHighScore() {
-        String levelId = getLevelId();
-        if (getHighScore(levelId) < score) {
-            SharedPreferences.Editor editor = getSharedPreferences().edit();
-            editor.putInt(getKey(levelId, HIGH_SCORE), score);
-            editor.apply();
-        }
-    }
-
     public void update() {
         updateBackground();
         updateVillains();
@@ -78,6 +68,10 @@ public class Model {
 
     public Hero getHero() {
         return graphicObjects.getHero();
+    }
+
+    public void saveHighScore() {
+        storage.saveGame().saveHighScore(score);
     }
 
     private void saveGame() {
@@ -113,10 +107,6 @@ public class Model {
 
     private int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
-    }
-
-    private int getHighScore(String levelId) {
-        return getSharedPreferences().getInt(getKey(levelId, HIGH_SCORE), 0);
     }
 
     private void updateCheckpointPopup() {
