@@ -13,10 +13,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.main.guapogame.graphics.JellyFish;
 import com.main.guapogame.graphics.Villain;
-import com.main.guapogame.resources.JellyFish;
-import com.main.guapogame.resources.Seagulls;
-import com.main.guapogame.resources.WaraWaras;
+import com.main.guapogame.resources.JellyFishAssets;
+import com.main.guapogame.resources.SeagullAssets;
+import com.main.guapogame.resources.WaraWaraAssets;
 import com.main.guapogame.storage.Storage;
 
 import java.util.ArrayList;
@@ -72,6 +73,14 @@ public class VillainBuilder {
     }
 
     private Villain createVillain() {
+        if(getLevelId().equals(OCEAN)) {
+            return new JellyFish
+                    .Builder()
+                    .positionX(-500)
+                    .images(createVillainImages())
+                    .build();
+        }
+
         return new Villain.Builder()
                 .positionX(-500)
                 .images(createVillainImages())
@@ -80,16 +89,16 @@ public class VillainBuilder {
 
     private List<Bitmap> createVillainImages() {
         if(getLevelId().equals(BEACH))
-            return createVillainImages(new Seagulls().getAssetIds());
+            return createVillainImages(new SeagullAssets().getAssetIds());
 
         if(getLevelId().equals(OCEAN))
-            return createVillainImages(new JellyFish().getAssetIds());
+            return createVillainImages(new JellyFishAssets().getAssetIds());
 
-        return createVillainImages(new WaraWaras().getAssetIds());
+        return createVillainImages(new WaraWaraAssets().getAssetIds());
     }
 
     private String getLevelId() {
-        return  context
+        return context
                 .getSharedPreferences(GAME, Context.MODE_PRIVATE)
                 .getString(LEVEL, "");
     }

@@ -5,19 +5,16 @@ import static com.main.guapogame.definitions.Parameters.getScreenHeight;
 import static com.main.guapogame.definitions.Parameters.getScreenWidth;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
 import java.util.List;
 import java.util.Random;
 
-public class Villain extends Character {
-    protected final static int NUM_FRAMES_DISPLAY = 3;
-
-    protected Villain(Builder builder) {
+public class JellyFish extends Villain {
+    protected JellyFish(Builder builder) {
         super(builder);
     }
 
-    public static class Builder extends Character.Builder {
+    public static class Builder extends Villain.Builder {
         public Builder positionX(float positionX) {
             super.positionX(positionX);
             return this;
@@ -43,18 +40,10 @@ public class Villain extends Character {
             return this;
         }
 
-        public Villain build() {
+        public JellyFish build() {
             super.build();
-            return new Villain(this);
+            return new JellyFish(this);
         }
-    }
-
-    public float getWidth() {
-        return getImage().getWidth();
-    }
-
-    public float getHeight() {
-        return getImage().getHeight();
     }
 
     @Override
@@ -66,28 +55,28 @@ public class Villain extends Character {
             setPositionY(getY());
         }
 
+        if (displayFirstImage())
+            setPositionY(getPositionY() + 10);
+
+        if (displaySecondImage())
+            setPositionY(getPositionY() + 10);
+
+        if (displayThirdImage())
+            setPositionY(getPositionY() - 20);
+
         setPositionX(getPositionX() - getVelocityX());
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
+    private boolean displayFirstImage() {
+        return getFrameCounter() < NUM_FRAMES_DISPLAY;
     }
 
-    @Override
-    public Bitmap getImage() {
-        if (displayFirstImage())
-            return getImages().get(0);
+    private boolean displaySecondImage() {
+        return getFrameCounter() >= NUM_FRAMES_DISPLAY && getFrameCounter() < 2 * NUM_FRAMES_DISPLAY;
+    }
 
-        if (displaySecondImage())
-            return getImages().get(1);
-
-        if (displayThirdImage())
-            return getImages().get(2);
-
-        resetFrameCounter();
-
-        return getImages().get(0);
+    private boolean displayThirdImage() {
+        return getFrameCounter() >= 2 * NUM_FRAMES_DISPLAY && getFrameCounter() < 3 * NUM_FRAMES_DISPLAY;
     }
 
     private int getX() {
@@ -95,7 +84,7 @@ public class Villain extends Character {
     }
 
     private int getY() {
-        return new Random().nextInt((int) (getScreenHeight() - getHeight()));
+        return new Random().nextInt((int) (getScreenHeight()));
     }
 
     private int getSpeed() {
@@ -106,17 +95,5 @@ public class Villain extends Character {
             speed = bound / 2;
 
         return speed;
-    }
-
-    private boolean displayFirstImage() {
-        return getFrameCounter() <= NUM_FRAMES_DISPLAY;
-    }
-
-    private boolean displaySecondImage() {
-        return getFrameCounter() > NUM_FRAMES_DISPLAY && getFrameCounter() <= 2 * NUM_FRAMES_DISPLAY;
-    }
-
-    private boolean displayThirdImage() {
-        return getFrameCounter() > 2 * NUM_FRAMES_DISPLAY && getFrameCounter() <= 3 * NUM_FRAMES_DISPLAY;
     }
 }

@@ -15,8 +15,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.main.guapogame.graphics.Hero;
-import com.main.guapogame.resources.Guapo;
-import com.main.guapogame.resources.Tutti;
+import com.main.guapogame.resources.GuapoAssets;
+import com.main.guapogame.resources.TuttiAssets;
 import com.main.guapogame.storage.Storage;
 import com.main.guapogame.types.Heros;
 
@@ -54,22 +54,22 @@ public class HeroBuilder {
     }
 
     private Hero createGuapo() {
-        Guapo guapo = new Guapo();
+        GuapoAssets assets = new GuapoAssets();
         return createHero(
-                guapo.getAssetId(),
-                guapo.getHitAssetId(),
-                guapo.getCape1AssetId(),
-                guapo.getCape2AssetId()
+                assets.getAssetId(),
+                assets.getHitAssetId(),
+                assets.getCape1AssetId(),
+                assets.getCape2AssetId()
         );
     }
 
     private Hero createTutti() {
-        Tutti tutti = new Tutti();
+        TuttiAssets assets = new TuttiAssets();
         return createHero(
-                tutti.getAssetId(),
-                tutti.getHitAssetId(),
-                tutti.getCape1AssetId(),
-                tutti.getCape2AssetId()
+                assets.getAssetId(),
+                assets.getHitAssetId(),
+                assets.getCape1AssetId(),
+                assets.getCape2AssetId()
         );
     }
 
