@@ -49,46 +49,70 @@ public class SnacksBuilder {
     }
 
     private List<Snack> createSnacks() {
-        if(!isActiveSession())
-            return getSnacks();
-
-        if(isActiveSession())
+         if(isActiveSession())
             return getSnacksFromActiveSession();
 
-        return new ArrayList<>();
+        return getSnacks();
     }
 
     private List<Snack> getSnacks() {
-        List<Snack> snacks1 = new ArrayList<>();
-        snacks1.addAll(createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized));
-        snacks1.addAll(createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
-        snacks1.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
-        snacks1.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
-        snacks1.addAll(createSnacks(1, POINTS_BEGGIN_STRIPS, R.drawable.beggin_strip_cropped));
+        List<Snack> snacks = new ArrayList<>();
+        snacks.addAll(createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized));
+        snacks.addAll(createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
+        snacks.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
+        snacks.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
+        snacks.addAll(createSnacks(1, POINTS_BEGGIN_STRIPS, R.drawable.beggin_strip_cropped));
 
-        return snacks1;
+        return snacks;
     }
 
     private List<Snack> getSnacksFromActiveSession() {
-        int numSnacks = getNumSnacks();
+        List<Snack> snacks = new ArrayList<>();
+
+        for(int snackId = 0; snackId < getNumSnacks(); snackId++)
+            snacks.add(createSnack(String.valueOf(snackId)));
+
+        return snacks;
+    }
+
+    private List<Snack> createSnacks(int numSnacks, int pointsForSnack, int assetId) {
+        List<Snack> snacks = new ArrayList<>();
+
+        for (int snack = 0; snack < numSnacks; snack++)
+            snacks.add(createSnack(assetId, pointsForSnack));
+
+        return snacks;
+    }
+
+    private int getAssetId(String snackId) {
+        return storage.loadGame().getSnackAssetId(String.valueOf(snackId));
+    }
+
+    private Snack createSnack(String snackId) {
         int width = (int) (getScreenFactorX() - getScreenFactorX() / 3.0);
         int height = (int) (getScreenFactorY() - getScreenFactorY() / 3.0);
-        List<Snack> snacks1 = new ArrayList<>();
-        for(int snackId = 0; snackId < numSnacks; snackId++) {
-            int assetId = storage.loadGame().getSnackAssetId(String.valueOf(snackId));
-            snacks1.add(
-                    new Snack.Builder()
-                            .positionX((int) storage.loadGame().getSnackPosition(POSITION_X, String.valueOf(snackId)))
-                            .positionY((int) storage.loadGame().getSnackPosition(POSITION_Y, String.valueOf(snackId)))
-                            .velocityX(-getBackgroundSpeed())
-                            .pointsForSnack(storage.loadGame().getSnackPoints(String.valueOf(snackId)))
-                            .snackImage(getBitmapScaled(width, height, assetId))
-                            .assetId(assetId)
-                            .build()
-            );
-        }
+        return new Snack.Builder()
+                .positionX((int) getSnackPositionX(String.valueOf(snackId)))
+                .positionY((int) getSnackPositionY(String.valueOf(snackId)))
+                .velocityX(-getBackgroundSpeed())
+                .pointsForSnack(getPointsForSnack(String.valueOf(snackId)))
+                .snackImage(getBitmapScaled(width, height, getAssetId(snackId)))
+                .assetId(getAssetId(snackId))
+                .build();
+    }
 
-        return snacks1;
+    private Snack createSnack(int assetId, int pointsForSnack) {
+        int width = (int) (getScreenFactorX() - getScreenFactorX() / 3.0);
+        int height = (int) (getScreenFactorY() - getScreenFactorY() / 3.0);
+        Bitmap snackImage = getBitmapScaled(width, height, assetId);
+        return new Snack.Builder()
+                .positionX((int) getSnackPositionX(snackImage))
+                .positionY((int) getSnackPositionY(snackImage))
+                .velocityX(-getBackgroundSpeed())
+                .pointsForSnack(pointsForSnack)
+                .snackImage(snackImage)
+                .assetId(assetId)
+                .build();
     }
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
@@ -120,25 +144,16 @@ public class SnacksBuilder {
         return 1;
     }
 
-    private List<Snack> createSnacks(int numSnacks, int pointsForSnack, int assetId) {
-        List<Snack> snacks = new ArrayList<>();
-        int width = (int) (getScreenFactorX() - getScreenFactorX() / 3.0);
-        int height = (int) (getScreenFactorY() - getScreenFactorY() / 3.0);
-        Bitmap snackImage = getBitmapScaled(width, height, assetId);
-        for (int snack = 0; snack < numSnacks; snack++) {
-            snacks.add(
-                    new Snack.Builder()
-                            .positionX((int) getSnackPositionX(snackImage))
-                            .positionY((int) getSnackPositionY(snackImage))
-                            .velocityX(-getBackgroundSpeed())
-                            .pointsForSnack(pointsForSnack)
-                            .snackImage(snackImage)
-                            .assetId(assetId)
-                            .build()
-            );
-        }
+    private float getSnackPositionX(String snackId) {
+        return storage.loadGame().getSnackPosition(POSITION_X, String.valueOf(snackId));
+    }
 
-        return snacks;
+    private float getSnackPositionY(String snackId) {
+        return storage.loadGame().getSnackPosition(POSITION_Y, String.valueOf(snackId));
+    }
+
+    private int getPointsForSnack(String snackId) {
+        return storage.loadGame().getSnackPoints(String.valueOf(snackId));
     }
 
     private float getSnackPositionX(Bitmap snackImage) {
