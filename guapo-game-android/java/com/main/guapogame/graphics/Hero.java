@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import com.main.guapogame.resources.Sounds;
 import com.main.guapogame.model.GameState;
 import com.main.guapogame.types.Heros;
+import com.main.guapogame.types.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,8 +102,8 @@ public class Hero extends Character {
     }
 
     public Bitmap getImage() {
-        if(GameState.getGameState().equals(com.main.guapogame.types.State.GAME_OVER)
-        || GameState.getGameState().equals(com.main.guapogame.types.State.CONTINUE)) {
+        if(GameState.getGameState().equals(State.GAME_OVER)
+        || GameState.getGameState().equals(State.CONTINUE)) {
             return heroHitImage;
         }
 
@@ -117,13 +118,21 @@ public class Hero extends Character {
     }
 
     private void drawGuapo(Canvas canvas) {
-        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() + getHeight() / 5, null);
+        if(hasCapeImage()) {
+            canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() + getHeight() / 5, null);
+        }
         canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
     }
 
     private void drawTutti(Canvas canvas) {
-        canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() - 3 * getHeight(), null);
+        if(hasCapeImage()) {
+            canvas.drawBitmap(getCapeImage(), getPositionX(), getPositionY() - 3 * getHeight(), null);
+        }
         canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
+    }
+
+    private boolean hasCapeImage() {
+        return getCapeImage() != null;
     }
 
     private Bitmap getCapeImage() {
@@ -131,7 +140,7 @@ public class Hero extends Character {
             return capes.get(1);
         }
         else if(getFrameCounter() > 2 && getFrameCounter() <= 4) {
-            return capes.getFirst();
+            return capes.get(0);
         }
 
         resetFrameCounter();
