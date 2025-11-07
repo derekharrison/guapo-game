@@ -121,7 +121,7 @@ public class Character extends AbstractCharacter {
     private void advanceFrameCounter() {
         frameCounter++;
 
-        if(frameCounter >= 2 * FPS) {
+        if(frameCounter >= 100 * FPS) {
             frameCounter = 0;
         }
     }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Villain extends Character {
-    protected final static int NUM_FRAMES_DISPLAY = 3;
+    protected int NUM_FRAMES_DISPLAY = 3;
 
     protected Villain(Builder builder) {
         super(builder);
@@ -88,6 +88,10 @@ public class Villain extends Character {
         resetFrameCounter();
 
         return getImages().get(0);
+    }
+
+    protected void setFrameCounter(int frameCounter) {
+        this.NUM_FRAMES_DISPLAY = frameCounter;
     }
 
     private int getX() {

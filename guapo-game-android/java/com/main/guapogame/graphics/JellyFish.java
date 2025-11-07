@@ -10,8 +10,11 @@ import java.util.List;
 import java.util.Random;
 
 public class JellyFish extends Villain {
+    protected final static int NUM_FRAMES = 6;
+
     protected JellyFish(Builder builder) {
         super(builder);
+        setFrameCounter(NUM_FRAMES);
     }
 
     public static class Builder extends Villain.Builder {
@@ -55,28 +58,39 @@ public class JellyFish extends Villain {
             setPositionY(getY());
         }
 
-        if (displayFirstImage())
-            setPositionY(getPositionY() + 10);
-
-        if (displaySecondImage())
-            setPositionY(getPositionY() + 10);
-
-        if (displayThirdImage())
-            setPositionY(getPositionY() - 20);
+        updatePositionY();
 
         setPositionX(getPositionX() - getVelocityX());
     }
 
+    private void updatePositionY() {
+        if (displayFirstImage()) {
+            setPositionY(getPositionY() + 5);
+            return;
+        }
+
+        if (displaySecondImage()) {
+            setPositionY(getPositionY() + 5);
+            return;
+        }
+
+        if (displayThirdImage()) {
+            setPositionY(getPositionY() - 10);
+            return;
+        }
+
+        resetFrameCounter();
+    }
     private boolean displayFirstImage() {
-        return getFrameCounter() < NUM_FRAMES_DISPLAY;
+        return getFrameCounter() < NUM_FRAMES;
     }
 
     private boolean displaySecondImage() {
-        return getFrameCounter() >= NUM_FRAMES_DISPLAY && getFrameCounter() < 2 * NUM_FRAMES_DISPLAY;
+        return getFrameCounter() >= NUM_FRAMES && getFrameCounter() < 2 * NUM_FRAMES;
     }
 
     private boolean displayThirdImage() {
-        return getFrameCounter() >= 2 * NUM_FRAMES_DISPLAY && getFrameCounter() < 3 * NUM_FRAMES_DISPLAY;
+        return getFrameCounter() >= 2 * NUM_FRAMES && getFrameCounter() < 3 * NUM_FRAMES;
     }
 
     private int getX() {
@@ -84,7 +98,7 @@ public class JellyFish extends Villain {
     }
 
     private int getY() {
-        return new Random().nextInt((int) (getScreenHeight()));
+        return new Random().nextInt(getScreenHeight());
     }
 
     private int getSpeed() {
