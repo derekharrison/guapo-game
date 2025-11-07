@@ -13,7 +13,7 @@ public class Graphics {
     private final List<Background> backgrounds;
     private Popup checkpointPopup;
     private final List<Bitmap> lives;
-    private List<Bubble> bubbles = new ArrayList<>();
+    private LinkedList<Bubble> bubbles = new LinkedList<>();
     private final Bitmap playButton;
     private final Bitmap pauseButton;
 
@@ -41,12 +41,12 @@ public class Graphics {
         return backgrounds;
     }
 
-    public List<Bubble> getBubbles() {
+    public LinkedList<Bubble> getBubbles() {
         return bubbles;
     }
 
     public void addBubble(Bubble bubble) {
-        this.bubbles.add(bubble);
+        this.bubbles.addLast(bubble);
     }
 
     public Popup getCheckpointPopup() {

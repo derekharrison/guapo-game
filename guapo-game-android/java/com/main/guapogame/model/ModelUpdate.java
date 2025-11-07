@@ -157,23 +157,29 @@ public class ModelUpdate implements Update {
     private void updateBubbles() {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             if((frameCounter % (6 * FPS)) == 0) {
-                if(!graphics.getBubbles().isEmpty() && graphics.getBubbles().size() > 2)
-                    graphics.getBubbles().removeLast();
-
-                Bubble bubble = new BubbleBuilder()
-                        .resources(resources)
-                        .positionX((int) graphics.getHero().getPositionX())
-                        .positionY((int) graphics.getHero().getPositionY())
-                        .build();
-
+                Bubble bubble = createBubble();
                 bubble.playSound();
                 graphics.addBubble(bubble);
+                removeBubble();
             }
 
             for(Bubble bubble : graphics.getBubbles()) {
                 bubble.update();
             }
         }
+    }
+
+    private Bubble createBubble() {
+        return new BubbleBuilder()
+                .resources(resources)
+                .positionX((int) graphics.getHero().getPositionX())
+                .positionY((int) graphics.getHero().getPositionY())
+                .build();
+    }
+
+    private void removeBubble() {
+        if(!graphics.getBubbles().isEmpty() && graphics.getBubbles().size() > 2)
+            graphics.getBubbles().removeFirst();
     }
 
     private void createSounds() {
