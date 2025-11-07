@@ -3,6 +3,7 @@ package com.main.guapogame.graphics;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Graphics {
@@ -12,8 +13,10 @@ public class Graphics {
     private final List<Background> backgrounds;
     private Popup checkpointPopup;
     private final List<Bitmap> lives;
+    private List<Bubble> bubbles = new ArrayList<>();
     private final Bitmap playButton;
     private final Bitmap pauseButton;
+
 
     protected Graphics(Builder builder) {
         this.hero = builder.hero;
@@ -36,6 +39,14 @@ public class Graphics {
 
     public List<Background> getBackgrounds() {
         return backgrounds;
+    }
+
+    public List<Bubble> getBubbles() {
+        return bubbles;
+    }
+
+    public void addBubble(Bubble bubble) {
+        this.bubbles.add(bubble);
     }
 
     public Popup getCheckpointPopup() {

@@ -3,21 +3,19 @@ package com.main.guapogame.graphics;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.main.guapogame.interfaces.Draw;
 import com.main.guapogame.resources.Sounds;
-import com.main.guapogame.interfaces.Image;
-import com.main.guapogame.interfaces.Position;
-import com.main.guapogame.interfaces.Update;
 
-public class Popup implements Position, Image, Update, Draw {
+public class Bubble extends Popup {
+
     private final int duration;
     private final Bitmap image;
     private final float positionX;
-    private final float positionY;
+    private float positionY;
     private int frameCounter = 0;
     private boolean playSound = true;
 
-    protected Popup(Builder builder) {
+    protected Bubble(Builder builder) {
+        super(builder);
         this.duration = builder.duration;
         this.image = builder.image;
         this.positionX = builder.positionX;
@@ -26,9 +24,12 @@ public class Popup implements Position, Image, Update, Draw {
 
     @Override
     public void update() {
+        super.update();
         if(frameCounter < duration) {
             frameCounter++;
         }
+
+        this.positionY = this.positionY - 5;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class Popup implements Position, Image, Update, Draw {
 
     public void playSound() {
         if(playSound) {
-            Sounds.playSoundCheckpoint();
+            Sounds.playBubbles();
             playSound = false;
         }
     }
@@ -60,7 +61,7 @@ public class Popup implements Position, Image, Update, Draw {
         return positionY;
     }
 
-    public static class Builder {
+    public static class Builder extends Popup.Builder {
         private int duration;
         private Bitmap image;
         private float positionX;
@@ -86,8 +87,8 @@ public class Popup implements Position, Image, Update, Draw {
             return this;
         }
 
-        public Popup build() {
-            return new Popup(this);
+        public Bubble build() {
+            return new Bubble(this);
         }
     }
 }

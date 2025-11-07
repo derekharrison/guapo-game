@@ -10,6 +10,7 @@ import static com.main.guapogame.definitions.Keys.TRIP;
 import static com.main.guapogame.definitions.Keys.UTREG;
 import static com.main.guapogame.definitions.Keys.getKey;
 import static com.main.guapogame.definitions.Parameters.CHECK_POINT_INTERVAL;
+import static com.main.guapogame.definitions.Parameters.FPS;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import android.graphics.Rect;
 
 import com.main.guapogame.definitions.Parameters;
 import com.main.guapogame.graphics.Background;
+import com.main.guapogame.graphics.Bubble;
 import com.main.guapogame.graphics.Graphics;
 import com.main.guapogame.graphics.Hero;
 import com.main.guapogame.graphics.Popup;
@@ -35,8 +37,8 @@ public class ModelUpdate implements Update {
     private final Storage storage;
     private final Context context;
     private final Resources resources;
-    private Sounds sounds;
     private int checkpoint = 0;
+    private int frameCounter = 0;
 
     protected ModelUpdate(Builder builder) {
         this.graphics = builder.graphics;
@@ -57,6 +59,8 @@ public class ModelUpdate implements Update {
         updateHero();
         updateSnacks();
         updateCheckpointPopup();
+        updateBubbles();
+        updateFrameCounter();
         saveGame();
     }
 
@@ -144,14 +148,36 @@ public class ModelUpdate implements Update {
     private void updateCheckpointPopup() {
         if(reachedCheckpoint() && isNotFirstCheckpoint()) {
             graphics.setCheckpointPopup(createCheckpointPopup());
-            graphics.getCheckpointPopup().playSoundCheckpoint(sounds);
+            graphics.getCheckpointPopup().playSound();
         }
 
         graphics.getCheckpointPopup().update();
     }
 
+    private void updateBubbles() {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
+            if((frameCounter % (6 * FPS)) == 0) {
+                if(!graphics.getBubbles().isEmpty() && graphics.getBubbles().size() > 2)
+                    graphics.getBubbles().removeLast();
+
+                Bubble bubble = new BubbleBuilder()
+                        .resources(resources)
+                        .positionX((int) graphics.getHero().getPositionX())
+                        .positionY((int) graphics.getHero().getPositionY())
+                        .build();
+
+                bubble.playSound();
+                graphics.addBubble(bubble);
+            }
+
+            for(Bubble bubble : graphics.getBubbles()) {
+                bubble.update();
+            }
+        }
+    }
+
     private void createSounds() {
-        sounds = new Sounds(context);
+        Sounds.createSoundPool(context);
     }
 
     private boolean reachedCheckpoint() {
@@ -166,18 +192,16 @@ public class ModelUpdate implements Update {
         return checkpoint > 0;
     }
 
-
     private void updateHero() {
         graphics.getHero().update();
     }
-
 
     private void updateSnack(Snack snack) {
         snack.update();
         if(heroInteractsWithSnack(graphics.getHero(), snack)) {
             updateScore(snack);
             snack.setPositionX(-500);
-            snack.playSoundEat(sounds);
+            snack.playSoundEat();
         }
     }
 
@@ -203,7 +227,7 @@ public class ModelUpdate implements Update {
         for(Villain villain : graphics.getVillains()) {
             villain.update();
             if(heroInteractsWithVillain(graphics.getHero(), villain)) {
-                graphics.getHero().playSoundInteractingWithVillain(sounds);
+                graphics.getHero().playSoundInteractingWithVillain();
                 setGameStateToGameOver();
                 storage.saveGame().saveNumLives(graphics.getLives().size() - 1);
             }
@@ -303,7 +327,15 @@ public class ModelUpdate implements Update {
         storage.saveGame().saveNumLives(graphics.getLives().size());
         storage.saveGame().saveCheckpoint(checkpoint);
     }
-    
+
+    private void updateFrameCounter() {
+        frameCounter++;
+
+        if(frameCounter >= Integer.MAX_VALUE - 100) {
+            frameCounter = 0;
+        }
+    }
+
     private class SaveState implements Runnable {
 
         @Override

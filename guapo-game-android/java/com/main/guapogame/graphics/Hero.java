@@ -85,12 +85,11 @@ public class Hero extends Character {
 
     @Override
     public void draw(Canvas canvas) {
-        if(hero.equals(Heros.TUTTI)) {
+        if(hero.equals(Heros.TUTTI))
             drawTutti(canvas);
-        }
-        if(hero.equals(Heros.GUAPO)) {
+
+        if(hero.equals(Heros.GUAPO))
             drawGuapo(canvas);
-        }
     }
 
     public float getWidth() {
@@ -110,9 +109,9 @@ public class Hero extends Character {
         return heroImage;
     }
 
-    public void playSoundInteractingWithVillain(Sounds sounds) {
+    public void playSoundInteractingWithVillain() {
         if(playSound) {
-            sounds.playSoundBarkHit();
+            Sounds.playSoundBarkHit();
             playSound = false;
         }
     }

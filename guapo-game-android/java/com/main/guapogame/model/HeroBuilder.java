@@ -121,7 +121,6 @@ public class HeroBuilder {
                 .build();
     }
 
-
     private int getHeroFrameCounter() {
         return storage.loadGame().getHeroFrameCounter();
     }

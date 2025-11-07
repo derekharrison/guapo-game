@@ -13,7 +13,7 @@ public class Character extends AbstractCharacter {
     private float velX;
     private float velY;
     private final List<Bitmap> images;
-    private int frameCounter;
+    private int frameCounter = 0;
 
     protected Character(Builder builder) {
         this.x = builder.x;

@@ -7,10 +7,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.main.guapogame.graphics.Background;
+import com.main.guapogame.graphics.Bubble;
 import com.main.guapogame.graphics.Graphics;
 import com.main.guapogame.graphics.Snack;
 import com.main.guapogame.graphics.Villain;
 import com.main.guapogame.interfaces.Draw;
+import com.main.guapogame.types.Level;
 
 public class ModelDraw implements Draw {
     Graphics graphics;
@@ -42,6 +44,7 @@ public class ModelDraw implements Draw {
         drawVillains(canvas);
         drawHero(canvas);
         drawPopUp(canvas);
+        drawBubbles(canvas);
     }
 
     private int getScreenWidth() {
@@ -54,6 +57,13 @@ public class ModelDraw implements Draw {
 
     private void drawPopUp(Canvas canvas) {
         graphics.getCheckpointPopup().draw(canvas);
+    }
+
+    private void drawBubbles(Canvas canvas) {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
+            for(Bubble bubble : graphics.getBubbles())
+                    bubble.draw(canvas);
+        }
     }
 
     private void drawBackgrounds(Canvas canvas) {

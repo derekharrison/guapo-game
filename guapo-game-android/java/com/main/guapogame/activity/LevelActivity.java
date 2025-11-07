@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.main.guapogame.definitions.Parameters;
 import com.main.guapogame.R;
 import com.main.guapogame.model.GameScore;
+import com.main.guapogame.model.GameState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -132,7 +133,7 @@ public class LevelActivity extends AppCompatActivity {
                 TextView textView = findViewById(buttonId);
                 textView.setTextColor(Color.WHITE);
                 setLevelId(prefs, levelId);
-                setSessionIsActive(false);
+                setSessionIsActive();
                 resetGameScore();
                 startActivity(new Intent(LevelActivity.this, GameActivity.class));
             });
@@ -145,7 +146,7 @@ public class LevelActivity extends AppCompatActivity {
             TextView textView = findViewById(R.id.level1_id);
             textView.setTextColor(Color.WHITE);
             setLevelId(prefs, levelId);
-            setSessionIsActive(false);
+            setSessionIsActive();
             resetGameScore();
             startActivity(new Intent(LevelActivity.this, GameActivity.class));
         });
@@ -153,6 +154,10 @@ public class LevelActivity extends AppCompatActivity {
 
     private void resetGameScore() {
         GameScore.score = 0;
+    }
+
+    private void setMute(boolean isMute) {
+        GameState.setMute(isMute);
     }
 
     private void setLevelId(SharedPreferences prefs, String levelId) {
@@ -193,15 +198,16 @@ public class LevelActivity extends AppCompatActivity {
 
     private void mute(SharedPreferences prefs) {
         isMute = !isMute;
+        setMute(isMute);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("is_mute", isMute);
         editor.apply();
     }
 
-    private void setSessionIsActive(boolean isActive) {
+    private void setSessionIsActive() {
         SharedPreferences prefs = getSharedPreferences(GAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(getKey(getLevelId(), GAMESTATE), isActive);
+        editor.putBoolean(getKey(getLevelId(), GAMESTATE), false);
         editor.apply();
     }
 

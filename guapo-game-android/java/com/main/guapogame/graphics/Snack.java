@@ -18,7 +18,7 @@ import java.util.Random;
 public class Snack implements Position, Velocity, Update, Image, Draw {
     private int positionX;
     private int positionY;
-    private int velocityX;
+    private final int velocityX;
     private final Bitmap snackImage;
     private final int assetId;
     private boolean playSound = true;
@@ -134,9 +134,9 @@ public class Snack implements Position, Velocity, Update, Image, Draw {
         canvas.drawBitmap(getSnackImage(), positionX, positionY, null);
     }
 
-    public void playSoundEat(Sounds sounds) {
+    public void playSoundEat() {
         if(playSound) {
-            sounds.playSoundEat();
+            Sounds.playSoundEat();
             setPlaySoundDisallowed();
         }
     }

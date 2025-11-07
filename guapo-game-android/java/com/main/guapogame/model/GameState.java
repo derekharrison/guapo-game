@@ -6,6 +6,15 @@ import com.main.guapogame.types.State;
 public class GameState {
     private static State state = State.PLAY;
     private static Level level;
+    private static boolean isMute;
+
+    public static void setMute(boolean isMute1) {
+        isMute = isMute1;
+    }
+
+    public static boolean getMute() {
+        return isMute;
+    }
 
     public static void setLevel(Level level1) {
         level = level1;

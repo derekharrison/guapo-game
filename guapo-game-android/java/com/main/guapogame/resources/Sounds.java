@@ -1,43 +1,36 @@
 package com.main.guapogame.resources;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 
 import com.main.guapogame.R;
+import com.main.guapogame.model.GameState;
 
 import java.util.Random;
 
 public class Sounds {
-    private SoundPool soundPool;
-    private final boolean isMute;
-    private int soundHitVillain;
-    private int tuttiEatingKnaagstok;
-    private int tuttiEatingPathe;
-    private int tuttiEatingTosti;
-    private int bubbleSounds;
-    private int barkHit;
-    private int catAppearing;
-    private int brownieAppearing;
-    private int mistyAppearing;
-    private int sunPopUp;
-    private int fritoHit;
-    private int brownieHit;
-    private int mistyHit;
+    private static SoundPool soundPool;
+    private static int soundHitVillain;
+    private static int tuttiEatingKnaagstok;
+    private static int tuttiEatingPathe;
+    private static int tuttiEatingTosti;
+    private static int bubbleSounds;
+    private static int barkHit;
+    private static int catAppearing;
+    private static int brownieAppearing;
+    private static int mistyAppearing;
+    private static int sunPopUp;
+    private static int fritoHit;
+    private static int brownieHit;
+    private static int mistyHit;
 
-    public Sounds(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("game", Context.MODE_PRIVATE);
-        isMute = prefs.getBoolean("is_mute", false);
-        createSoundPool(context);
-    }
-
-    public void playBubbles() {
+    public static void playBubbles() {
         soundPool.play(bubbleSounds, 1, 1, 0, 0, 1);
     }
 
-    public void playSoundEat() {
-        if(!isMute) {
+    public static void playSoundEat() {
+        if(!GameState.getMute()) {
             Random rand = new Random();
             int randomNum = rand.nextInt(3);
             if(randomNum == 0)
@@ -49,75 +42,75 @@ public class Sounds {
         }
     }
 
-    public void playSoundBarkHit() {
-        if(!isMute) {
+    public static void playSoundBarkHit() {
+        if(!GameState.getMute()) {
             soundPool.play(barkHit, 1, 1, 0, 0, 1);
         }
     }
 
-    public void playSoundCatAppearing() {
-        if(!isMute) {
+    public static void playSoundCatAppearing() {
+        if(!GameState.getMute()) {
             soundPool.play(catAppearing, 1, 1, 0, 0, 1);
         }
     }
 
-    public void playSoundBrownieAppearing() {
-        if(!isMute) {
+    public static void playSoundBrownieAppearing() {
+        if(!GameState.getMute()) {
             soundPool.play(brownieAppearing, 1, 1, 0, 0, 1);
         }
     }
 
-    public void playSoundMistyAppearing() {
-        if(!isMute) {
+    public static void playSoundMistyAppearing() {
+        if(!GameState.getMute()) {
             soundPool.play(mistyAppearing, ((float) 1)/4, ((float) 1)/4, 0, 0, 1);
         }
     }
 
-    public void playSoundSunPopup() {
-        if(!isMute) {
+    public static void playSoundSunPopup() {
+        if(!GameState.getMute()) {
             soundPool.play(sunPopUp, ((float) 1)/4, ((float) 1)/4, 0, 0, 1);
         }
     }
 
-    public void playSoundBarkFritoHit() {
-        if(!isMute) {
+    public static void playSoundBarkFritoHit() {
+        if(!GameState.getMute()) {
             soundPool.play(fritoHit, 1, 1, 0, 0, 1);
         }
     }
 
-    public void playSoundBarkBrownieHit() {
-        if(!isMute) {
+    public static void playSoundBarkBrownieHit() {
+        if(!GameState.getMute()) {
             soundPool.play(brownieHit, 1, 1, 0, 0, 1);
         }
     }
 
-    public void playSoundBarkMistyHit() {
-        if(!isMute) {
+    public static void playSoundBarkMistyHit() {
+        if(!GameState.getMute()) {
             soundPool.play(mistyHit, 1, 1, 0, 0, 1);
         }
     }
 
-    public void playSoundCheckpoint() {
-        if(!isMute) {
+    public static void playSoundCheckpoint() {
+        if(!GameState.getMute()) {
             soundPool.play(sunPopUp, 1, 1, 0, 0, 1);
         }
     }
 
-    private void createSoundPool(Context context) {
+    public static void createSoundPool(Context context) {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .setUsage(AudioAttributes.USAGE_GAME)
                 .build();
 
         soundPool = new SoundPool.Builder()
-                .setMaxStreams(30)
+                .setMaxStreams(15)
                 .setAudioAttributes(audioAttributes)
                 .build();
 
         loadSounds(context);
     }
 
-    private void loadSounds(Context context) {
+    private static void loadSounds(Context context) {
         soundHitVillain = soundPool.load(context, R.raw.tutti_0, 0);
         tuttiEatingKnaagstok = soundPool.load(context, R.raw.tutti_eating_knaagstok, 0);
         tuttiEatingPathe = soundPool.load(context, R.raw.tuttu_eating_pathe, 0);
