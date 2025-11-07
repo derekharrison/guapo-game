@@ -97,6 +97,7 @@ public class GraphicsBuilder {
     private Popup createCheckpointPopup() {
         return new CheckpointPopupBuilder()
                 .resources(resources)
+                .duration(0)
                 .build();
     }
 }

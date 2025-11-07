@@ -185,7 +185,10 @@ public class ModelUpdate implements Update {
     }
 
     private Popup createCheckpointPopup() {
-        return new CheckpointPopupBuilder().resources(resources).build();
+        return new CheckpointPopupBuilder()
+                .resources(resources)
+                .duration(2 * FPS)
+                .build();
     }
 
     private boolean isNotFirstCheckpoint() {

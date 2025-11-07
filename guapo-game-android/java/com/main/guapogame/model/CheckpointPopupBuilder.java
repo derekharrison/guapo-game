@@ -10,9 +10,15 @@ import com.main.guapogame.graphics.Popup;
 public class CheckpointPopupBuilder {
 
     private Resources resources;
+    private int duration;
 
     public CheckpointPopupBuilder resources(Resources resources) {
         this.resources = resources;
+        return this;
+    }
+
+    public CheckpointPopupBuilder duration(int duration) {
+        this.duration = duration;
         return this;
     }
 
@@ -25,7 +31,7 @@ public class CheckpointPopupBuilder {
         int height = (int) (getScreenHeight() / 5.0);
         Bitmap image = getBitmapScaled(width, height, R.drawable.flag_aruba_bitmap_cropped);
         return new Popup.Builder()
-                .duration(0)
+                .duration(duration)
                 .positionX(getScreenWidth() - getScreenWidth() / 4)
                 .positionY(image.getHeight() + getScreenHeight() / 10)
                 .image(image)
