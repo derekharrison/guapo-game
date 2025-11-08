@@ -27,14 +27,17 @@ import com.main.guapogame.definitions.Parameters;
 import com.main.guapogame.R;
 import com.main.guapogame.model.GameScore;
 import com.main.guapogame.model.GameState;
+import com.main.guapogame.types.Level;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LevelActivity extends AppCompatActivity {
     private boolean isMute;
-    Map<Integer, String> levelIds = new HashMap<>();
-    Map<String, String> previousLevel = new HashMap<>();
+    Map<Integer, Level> levels = new HashMap<>();
+    Map<Level, String> levelKeys = new HashMap<>();
+    Map<String, String> previousLevelIds = new HashMap<>();
+    Map<Level, Level> previousLevels = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,10 @@ public class LevelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level);
         setUpScreenApiVersionGreaterOrEqualTo30();
         setUpScreenApiVersionLessThan30();
-        createLevelIdRelations();
+        
+        createLevelKeys();
+        createLevelRelations();
+        createPreviousLevelKeys();
         createPreviousLevelRelations();
 
         final SharedPreferences prefs = getSharedPreferences(GAME, MODE_PRIVATE);
@@ -54,10 +60,10 @@ public class LevelActivity extends AppCompatActivity {
         setHighScore(prefs, R.id.high_score_id_level_5);
 
         setFirstLevelButton(prefs);
-        setLevelButton(prefs, R.id.second_level2_id);
-        setLevelButton(prefs, R.id.trip_id);
-        setLevelButton(prefs, R.id.ocean_id);
-        setLevelButton(prefs, R.id.utreg_id);
+        setLevelButton(prefs, R.id.second_level2_id, Level.BEACH);
+        setLevelButton(prefs, R.id.trip_id, Level.TRIP);
+        setLevelButton(prefs, R.id.ocean_id, Level.OCEAN);
+        setLevelButton(prefs, R.id.utreg_id, Level.UTREG);
 
         setButton(R.id.choose_level_id3, ChooseCharacterActivity.class);
         setButton(R.id.main_menu_button3, MainActivity.class);
@@ -66,26 +72,49 @@ public class LevelActivity extends AppCompatActivity {
         handleMuteAction(prefs);
     }
 
-    private void createLevelIdRelations() {
-        levelIds.put( R.id.high_score_id_level1, ARUBA);
-        levelIds.put( R.id.high_score_id_level2, BEACH);
-        levelIds.put( R.id.high_score_id_level3, TRIP);
-        levelIds.put( R.id.high_score_id_level_4, OCEAN);
-        levelIds.put( R.id.high_score_id_level_5, UTREG);
+    private void createLevelKeys() {
+        levelKeys.put(Level.ARUBA, ARUBA);
+        levelKeys.put(Level.BEACH, BEACH);
+        levelKeys.put(Level.TRIP, TRIP);
+        levelKeys.put(Level.OCEAN, OCEAN);
+        levelKeys.put(Level.UTREG, UTREG);
+    }
 
-        levelIds.put(R.id.level1_id, ARUBA);
-        levelIds.put(R.id.second_level2_id, BEACH);
-        levelIds.put(R.id.trip_id, TRIP);
-        levelIds.put(R.id.ocean_id, OCEAN);
-        levelIds.put(R.id.utreg_id, UTREG);
+    private void createLevelRelations() {
+        levels.put(R.id.high_score_id_level1, Level.ARUBA);
+        levels.put(R.id.high_score_id_level2, Level.BEACH);
+        levels.put(R.id.high_score_id_level3, Level.TRIP);
+        levels.put(R.id.high_score_id_level_4, Level.OCEAN);
+        levels.put(R.id.high_score_id_level_5, Level.UTREG);
+
+        levels.put(R.id.level1_id, Level.ARUBA);
+        levels.put(R.id.second_level2_id, Level.BEACH);
+        levels.put(R.id.trip_id, Level.TRIP);
+        levels.put(R.id.ocean_id, Level.OCEAN);
+        levels.put(R.id.utreg_id, Level.UTREG);
+    }
+
+    private void createPreviousLevelKeys() {
+        previousLevelIds.put(ARUBA, "");
+        previousLevelIds.put(BEACH, ARUBA);
+        previousLevelIds.put(TRIP, BEACH);
+        previousLevelIds.put(OCEAN, TRIP);
+        previousLevelIds.put(UTREG, OCEAN);
     }
 
     private void createPreviousLevelRelations() {
-        previousLevel.put(ARUBA, "");
-        previousLevel.put(BEACH, ARUBA);
-        previousLevel.put(TRIP, BEACH);
-        previousLevel.put(OCEAN, TRIP);
-        previousLevel.put(UTREG, OCEAN);
+        previousLevels.put(Level.BEACH, Level.ARUBA);
+        previousLevels.put(Level.TRIP, Level.BEACH);
+        previousLevels.put(Level.OCEAN, Level.TRIP);
+        previousLevels.put(Level.UTREG, Level.OCEAN);
+    }
+
+    private String getLevelKey(Level level) {
+        return levelKeys.get(level);
+    }
+
+    private Level getPreviousLevel(Level level) {
+        return previousLevels.get(level);
     }
 
     private void setUpScreenApiVersionGreaterOrEqualTo30() {
@@ -111,19 +140,28 @@ public class LevelActivity extends AppCompatActivity {
 
     private void setHighScore(SharedPreferences prefs, int assetId) {
         TextView textView = findViewById(assetId);
-        String levelId = levelIds.get(assetId);
-        String highScore = "" + getHighScore(prefs, levelId);
+        String highScore = "" + getHighScore(prefs, getLevelId(assetId));
         textView.setText(highScore);
+    }
+
+    private String getLevelId(int assetId) {
+        Level level = levels.get(assetId);
+        return levelKeys.get(level);
     }
 
     private int getHighScore(SharedPreferences prefs, String levelId) {
         return prefs.getInt(getKey(levelId, HIGH_SCORE), 0);
     }
 
-    private void setLevelButton(SharedPreferences prefs, int buttonId) {
-        String levelId = levelIds.get(buttonId);
-        String previousLevelId = previousLevel.get(levelId);
-        int score = prefs.getInt(getKey(previousLevelId, HIGH_SCORE), 0);
+    private String getPreviousLevelKey(Level level) {
+        Level previousLevel = getPreviousLevel(level);
+        return getLevelKey(previousLevel);
+    }
+
+    private void setLevelButton(SharedPreferences prefs, int buttonId, Level level) {
+        String levelKey = getLevelId(buttonId);
+        String previousLevelKey = getPreviousLevelKey(level);
+        int score = prefs.getInt(getKey(previousLevelKey, HIGH_SCORE), 0);
         if(score < Parameters.LEVEL_UNLOCK_SCORE) {
             TextView textView = findViewById(buttonId);
             textView.setTextColor(Color.parseColor("#00a8f3"));
@@ -132,7 +170,8 @@ public class LevelActivity extends AppCompatActivity {
             findViewById(buttonId).setOnClickListener(_ -> {
                 TextView textView = findViewById(buttonId);
                 textView.setTextColor(Color.WHITE);
-                setLevelId(prefs, levelId);
+                setLevelId(prefs, levelKey);
+                setLevel(level);
                 setSessionIsActive();
                 resetGameScore();
                 startActivity(new Intent(LevelActivity.this, GameActivity.class));
@@ -141,11 +180,12 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     private void setFirstLevelButton(SharedPreferences prefs) {
-        String levelId = levelIds.get(R.id.level1_id);
+        String levelKey = getLevelId(R.id.level1_id);
         findViewById(R.id.level1_id).setOnClickListener(_ -> {
             TextView textView = findViewById(R.id.level1_id);
             textView.setTextColor(Color.WHITE);
-            setLevelId(prefs, levelId);
+            setLevelId(prefs, levelKey);
+            setLevel(Level.ARUBA);
             setSessionIsActive();
             resetGameScore();
             startActivity(new Intent(LevelActivity.this, GameActivity.class));
@@ -164,6 +204,10 @@ public class LevelActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(LEVEL, levelId);
         editor.apply();
+    }
+
+    private void setLevel(Level level) {
+        GameState.setLevel(level);
     }
 
     private <T extends AppCompatActivity> void setButton(int buttonId, Class<T> clazz) {

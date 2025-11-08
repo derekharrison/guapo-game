@@ -1,14 +1,9 @@
 package com.main.guapogame.model;
 
-import static com.main.guapogame.definitions.Keys.ARUBA;
-import static com.main.guapogame.definitions.Keys.BEACH;
 import static com.main.guapogame.definitions.Keys.GAME;
 import static com.main.guapogame.definitions.Keys.GAMESTATE;
 import static com.main.guapogame.definitions.Keys.LEVEL;
-import static com.main.guapogame.definitions.Keys.OCEAN;
 import static com.main.guapogame.definitions.Keys.POSITION_X;
-import static com.main.guapogame.definitions.Keys.TRIP;
-import static com.main.guapogame.definitions.Keys.UTREG;
 import static com.main.guapogame.definitions.Keys.getKey;
 import static com.main.guapogame.definitions.Parameters.getBackgroundSpeed;
 
@@ -24,6 +19,7 @@ import com.main.guapogame.resources.BackgroundsLevel3;
 import com.main.guapogame.resources.BackgroundsLevel4;
 import com.main.guapogame.resources.BackgroundsLevel5;
 import com.main.guapogame.storage.Storage;
+import com.main.guapogame.types.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,22 +91,21 @@ public class BackgroundsBuilder {
     }
 
     private List<Integer> getBackgroundAssetIds() {
-        String levelId = getLevelId();
-        if(levelId.equals(ARUBA)) {
+        if(GameState.getLevel().equals(Level.ARUBA))
             return new BackgroundsLevel1().getAssetIds();
-        }
-        if(levelId.equals(BEACH)) {
+
+        if(GameState.getLevel().equals(Level.BEACH))
             return new BackgroundsLevel2().getAssetIds();
-        }
-        if(levelId.equals(TRIP)) {
+
+        if(GameState.getLevel().equals(Level.TRIP))
             return new BackgroundsLevel3().getAssetIds();
-        }
-        if(levelId.equals(OCEAN)) {
+
+        if(GameState.getLevel().equals(Level.OCEAN))
             return new BackgroundsLevel4().getAssetIds();
-        }
-        if(levelId.equals(UTREG)) {
+
+        if(GameState.getLevel().equals(Level.UTREG))
             return new BackgroundsLevel5().getAssetIds();
-        }
+
         return new ArrayList<>();
     }
 

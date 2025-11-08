@@ -20,6 +20,7 @@ import com.main.guapogame.graphics.Hero;
 import com.main.guapogame.resources.HeroAssets;
 import com.main.guapogame.storage.Storage;
 import com.main.guapogame.types.Heros;
+import com.main.guapogame.types.Level;
 
 public class HeroBuilder {
     private Context context;
@@ -65,7 +66,7 @@ public class HeroBuilder {
     }
 
     private HeroAssets createGuapoAssets() {
-        if(getLevelId().equals(OCEAN)) {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
                     .assetId(R.drawable.guapo_snorkel_bitmap_cropped)
                     .hitAssetId(R.drawable.guapo_snorkel_hit_bitmap_cropped)
@@ -91,7 +92,7 @@ public class HeroBuilder {
     }
 
     private HeroAssets createTuttiAssets() {
-        if(getLevelId().equals(OCEAN)) {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
                     .assetId(R.drawable.tutti_snorkel1_cropped)
                     .hitAssetId(R.drawable.tutti_snorkel1_hit_cropped)

@@ -1,13 +1,8 @@
 package com.main.guapogame.model;
 
-import static com.main.guapogame.definitions.Keys.ARUBA;
-import static com.main.guapogame.definitions.Keys.BEACH;
 import static com.main.guapogame.definitions.Keys.GAME;
 import static com.main.guapogame.definitions.Keys.GAMESTATE;
 import static com.main.guapogame.definitions.Keys.LEVEL;
-import static com.main.guapogame.definitions.Keys.OCEAN;
-import static com.main.guapogame.definitions.Keys.TRIP;
-import static com.main.guapogame.definitions.Keys.UTREG;
 import static com.main.guapogame.definitions.Keys.getKey;
 import static com.main.guapogame.definitions.Parameters.CHECK_POINT_INTERVAL;
 import static com.main.guapogame.definitions.Parameters.FPS;
@@ -49,7 +44,6 @@ public class ModelUpdate implements Update {
         createSounds();
         getCheckpoint();
         getScore();
-        getLevel();
     }
 
     @Override
@@ -111,23 +105,6 @@ public class ModelUpdate implements Update {
     private void getScore() {
         if(isActiveSession())
             GameScore.score = storage.loadGame().getScore();
-    }
-
-    private void getLevel() {
-        if(getLevelId().equals(ARUBA))
-            GameState.setLevel(Level.ARUBA);
-
-        if(getLevelId().equals(BEACH))
-            GameState.setLevel(Level.BEACH);
-
-        if(getLevelId().equals(OCEAN))
-            GameState.setLevel(Level.OCEAN);
-
-        if(getLevelId().equals(TRIP))
-            GameState.setLevel(Level.TRIP);
-
-        if(getLevelId().equals(UTREG))
-            GameState.setLevel(Level.UTREG);
     }
 
     private boolean isActiveSession() {
