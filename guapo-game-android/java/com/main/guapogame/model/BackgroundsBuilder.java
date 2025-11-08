@@ -52,16 +52,16 @@ public class BackgroundsBuilder {
         List<Integer> assetIds = getBackgroundAssetIds();
         List<Background> backgrounds1 = new ArrayList<>();
 
-        int backgroundId = 0;
+        int background = 0;
         for(Integer assetId : assetIds) {
-            backgrounds1.add(createBackground(assetId, String.valueOf(backgroundId)));
-            backgroundId++;
+            backgrounds1.add(createBackground(assetId, background));
+            background++;
         }
 
         return backgrounds1;
     }
 
-    private Background createBackground(int assetId, String backgroundId) {
+    private Background createBackground(int assetId, int backgroundId) {
         return new Background.Builder()
                 .positionX(getStartPositionBackground(backgroundId))
                 .velocityX(-getBackgroundSpeed())
@@ -82,12 +82,12 @@ public class BackgroundsBuilder {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
-    private float getStartPositionBackground(String backgroundId) {
+    private float getStartPositionBackground(int backgroundId) {
         if(isActiveSession()) {
-            return storage.loadGame().getBackgroundPosition(POSITION_X, backgroundId);
+            return storage.loadGame().getBackgroundPosition(POSITION_X, String.valueOf(backgroundId));
         }
 
-        return 0;
+        return getScreenWidth() * backgroundId - 10;
     }
 
     private List<Integer> getBackgroundAssetIds() {

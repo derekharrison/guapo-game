@@ -288,20 +288,22 @@ public class ModelUpdate implements Update {
     }
 
     private void updateBackground() {
-        int backgroundId = 1;
+        int backgroundId = 0;
         for(Background background : graphics.getBackgrounds()) {
-            background.update();
-            if(background.getPositionX() <= 0) {
-                graphics.getBackgrounds()
-                        .get(getFollowingBackground(backgroundId))
-                        .setPositionX(background.getPositionX() + background.getBackground().getWidth() - 10);
+            if(background.getPositionX() + background.getBackground().getWidth() <= 0) {
+                Background precedingBackground = graphics.getBackgrounds().get(getPrecedingBackground(backgroundId));
+                background.setPositionX(precedingBackground.getPositionX() + precedingBackground.getBackground().getWidth() - 10);
             }
+            background.update();
             backgroundId++;
         }
     }
 
-    private int getFollowingBackground(int id) {
-        return id % graphics.getBackgrounds().size();
+    private int getPrecedingBackground(int id) {
+        if(id == 0)
+            return graphics.getBackgrounds().size() - 1;
+
+        return id - 1;
     }
 
     private void save() {
