@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Analyze on SonarQube Cloud
-          command: gradle build sonar
+          command: gradle build sonarqube
 
 workflows:
   main:
