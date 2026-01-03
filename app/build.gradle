@@ -5,7 +5,7 @@ plugins {
 
 sonar {
     properties {
-        property "sonar.projectKey", "derekharrison_guapo-game"
+        property "sonar.projectKey", "derekharrison_guapo-game3"
         property "sonar.organization", "derekharrison"
     }
 }
