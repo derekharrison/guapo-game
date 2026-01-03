@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_guapo_game_startscreen2" />
+
+    <Button
+        android:id="@+id/game_continue_id"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Continue"
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_blue_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.417" />
+
+    <Button
+        android:id="@+id/game_restart_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/game_continue_id"
+        android:layout_centerInParent="true"
+        android:textSize="24sp"
+        android:layout_alignLeft="@+id/game_continue_id"
+        android:layout_alignRight="@+id/game_continue_id"
+        android:text="Level Menu"
+        app:backgroundTint="@android:color/holo_blue_dark" />
+
+</RelativeLayout>

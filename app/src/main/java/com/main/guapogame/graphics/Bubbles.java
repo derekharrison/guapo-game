@@ -1,0 +1,68 @@
+package com.main.guapogame.graphics;
+
+import static com.main.guapogame.parameters.Parameters.FPS;
+
+import android.graphics.Canvas;
+
+import com.main.guapogame.enums.Level;
+import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.state.GameState;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Bubbles {
+    private boolean playSound = true;
+    private final GameObject gameObject;
+    private final List<Bubble> bubblez = new ArrayList<>();
+
+    public Bubbles(GameObject gameObject) {
+        this.gameObject = gameObject;
+    }
+
+    public void updateBubbles(int frameCounter) {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
+            if(frameCounter % FPS == 0 && frameCounter < 3 * FPS) {
+                Bubble bubble = createBubble();
+                addBubble(bubble);
+                removeBubble();
+                playBubbles();
+            }
+
+            for(Bubble bubble : bubblez) {
+                bubble.update();
+            }
+        }
+    }
+
+    public void drawBubbles(Canvas canvas) {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
+            for(Bubble bubble : bubblez)
+                bubble.draw(canvas);
+        }
+    }
+
+    private void playBubbles() {
+        if(playSound) {
+            Sounds.playBubbles();
+            playSound = false;
+        }
+    }
+
+    private Bubble createBubble() {
+        return new BubbleBuilder()
+                .resources(gameObject.getContext().getResources())
+                .positionX((int) gameObject.getPositionX())
+                .positionY((int) gameObject.getPositionY())
+                .build();
+    }
+
+    private void addBubble(Bubble bubble) {
+        bubblez.add(bubble);
+    }
+
+    private void removeBubble() {
+        if(!bubblez.isEmpty() && bubblez.size() > 3)
+            bubblez.remove(0);
+    }
+}
