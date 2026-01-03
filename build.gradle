@@ -12,6 +12,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "4.4.1.3373"
+}
+
 allprojects {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
@@ -19,6 +23,13 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "derekharrison_guapo-game3"
+        property "sonar.organization", "derekharrison"
     }
 }
 
