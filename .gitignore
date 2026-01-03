@@ -1,7 +1,6 @@
 .backup_git/
 *.iml
 .gradle
-.circleci/
 build.gradle/
 gradle.properties
 gradle/
