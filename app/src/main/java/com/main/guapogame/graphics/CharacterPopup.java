@@ -60,10 +60,6 @@ public class CharacterPopup extends Popup {
         return isHit;
     }
 
-    public Bitmap getImageHit() {
-        return imageHit;
-    }
-
     public float getVelY() {
         return velY;
     }
