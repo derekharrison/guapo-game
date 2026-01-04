@@ -2,10 +2,6 @@ package com.main.guapogame.graphics;
 
 import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
 
-import android.graphics.Bitmap;
-
-import java.util.List;
-
 public class JellyFish extends Villain {
     protected static final int NUM_FRAMES = 6;
 
@@ -15,38 +11,9 @@ public class JellyFish extends Villain {
     }
 
     public static class Builder extends Villain.Builder {
-        @Override
-        public Builder positionX(float positionX) {
-            super.positionX(positionX);
-            return this;
-        }
 
         @Override
-        public Builder positionY(float positionY) {
-            super.positionY(positionY);
-            return this;
-        }
-
-        @Override
-        public Builder velX(float velX) {
-            super.velX(velX);
-            return this;
-        }
-
-        @Override
-        public Builder images(List<Bitmap> images) {
-            super.images(images);
-            return this;
-        }
-
-        @Override
-        public Builder frameCounter(int frameCounter) {
-            super.frameCounter(frameCounter);
-            return this;
-        }
-
-        @Override
-        public JellyFish build() {
+        public Villain build() {
             super.build();
             return new JellyFish(this);
         }
