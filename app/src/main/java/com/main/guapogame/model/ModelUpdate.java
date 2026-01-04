@@ -18,11 +18,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-import com.main.guapogame.graphics.Brownie;
 import com.main.guapogame.graphics.BrownieBuilder;
 import com.main.guapogame.graphics.CharacterPopup;
 import com.main.guapogame.graphics.CheckpointPopupBuilder;
-import com.main.guapogame.graphics.Frito;
 import com.main.guapogame.graphics.FritoBuilder;
 import com.main.guapogame.graphics.Misty;
 import com.main.guapogame.graphics.MistyBuilder;

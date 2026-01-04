@@ -86,10 +86,12 @@ public class View extends SurfaceView implements Runnable {
     }
 
     private void makeThreadSleepWithDelay(long delay) {
+        Thread thread = new Thread();
+        thread.start();
         try{
             Thread.sleep(delay);
         } catch(Exception _) {
-            // Not interested in logging.
+            thread.interrupt();
         }
     }
 

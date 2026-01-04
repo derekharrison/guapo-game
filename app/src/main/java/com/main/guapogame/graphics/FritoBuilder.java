@@ -23,6 +23,7 @@ public class FritoBuilder {
 
     private Context context;
     private Storage storage;
+    private Random random = new Random();
 
     public FritoBuilder context(Context context) {
         this.context = context;
@@ -64,7 +65,7 @@ public class FritoBuilder {
             return storage.loadGame().getFritoPosition(POSITION_X);
 
         int screenWidth = getScreenWidth();
-        return (float) -screenWidth - getImage().getWidth() + new Random().nextInt(screenWidth);
+        return (float) -screenWidth - getImage().getWidth() + random.nextInt(screenWidth);
     }
 
     private float getPositionY() {

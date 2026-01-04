@@ -136,12 +136,14 @@ public class Model implements Update, Draw {
     }
 
     private <T extends AppCompatActivity> void transition(Class<T> clazz) {
+        Thread thread = new Thread();
+        thread.start();
         try {
             Thread.sleep(2000);
             activity.startActivity(new Intent(activity, clazz));
             activity.finish();
         } catch (Exception _) {
-            // Not interested in logging
+            thread.interrupt();
         }
     }
 }

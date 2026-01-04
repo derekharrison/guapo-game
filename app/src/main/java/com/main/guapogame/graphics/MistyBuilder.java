@@ -20,6 +20,7 @@ import java.util.Random;
 public class MistyBuilder {
     private Context context;
     private Storage storage;
+    private Random random = new Random();
 
     public MistyBuilder context(Context context) {
         this.context = context;
@@ -113,7 +114,7 @@ public class MistyBuilder {
     }
 
     private float getStartPositionX() {
-        int pos = new Random().nextInt(getScreenWidth() / 2);
+        int pos = random.nextInt(getScreenWidth() / 2);
         return (float) getScreenWidth() / 4 + pos;
     }
 
@@ -128,7 +129,7 @@ public class MistyBuilder {
         if(isActiveSession())
             return storage.loadGame().getMistyIsTop();
 
-        return new Random().nextBoolean();
+        return random.nextBoolean();
     }
 
     private boolean isActiveSession() {

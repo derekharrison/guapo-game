@@ -23,6 +23,7 @@ public class BrownieBuilder {
 
     private Context context;
     private Storage storage;
+    private Random random = new Random();
 
     public BrownieBuilder context(Context context) {
         this.context = context;
@@ -71,7 +72,7 @@ public class BrownieBuilder {
             return storage.loadGame().getBrowniePosition(POSITION_X);
 
         int screenWidth = getScreenWidth();
-        return (float) screenWidth + getImage().getWidth() + new Random().nextInt(screenWidth);
+        return (float) screenWidth + getImage().getWidth() + random.nextInt(screenWidth);
     }
 
     private float getPositionY() {
