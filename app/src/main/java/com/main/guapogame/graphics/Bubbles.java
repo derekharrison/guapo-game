@@ -14,7 +14,7 @@ import java.util.List;
 public class Bubbles {
     private boolean playSound = true;
     private final GameObject gameObject;
-    private final List<Bubble> bubblez = new ArrayList<>();
+    private final List<Popup> bubblez = new ArrayList<>();
 
     public Bubbles(GameObject gameObject) {
         this.gameObject = gameObject;
@@ -23,13 +23,13 @@ public class Bubbles {
     public void updateBubbles(int frameCounter) {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             if(frameCounter % FPS == 0 && frameCounter < 3 * FPS) {
-                Bubble bubble = createBubble();
+                Popup bubble = createBubble();
                 addBubble(bubble);
                 removeBubble();
                 playBubbles();
             }
 
-            for(Bubble bubble : bubblez) {
+            for(Popup bubble : bubblez) {
                 bubble.update();
             }
         }
@@ -37,7 +37,7 @@ public class Bubbles {
 
     public void drawBubbles(Canvas canvas) {
         if(GameState.getLevel().equals(Level.OCEAN)) {
-            for(Bubble bubble : bubblez)
+            for(Popup bubble : bubblez)
                 bubble.draw(canvas);
         }
     }
@@ -49,7 +49,7 @@ public class Bubbles {
         }
     }
 
-    private Bubble createBubble() {
+    private Popup createBubble() {
         return new BubbleBuilder()
                 .resources(gameObject.getContext().getResources())
                 .positionX((int) gameObject.getPositionX())
@@ -57,7 +57,7 @@ public class Bubbles {
                 .build();
     }
 
-    private void addBubble(Bubble bubble) {
+    private void addBubble(Popup bubble) {
         bubblez.add(bubble);
     }
 

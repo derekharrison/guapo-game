@@ -30,7 +30,7 @@ public class BubbleBuilder {
         return this;
     }
 
-    public Bubble build() {
+    public Popup build() {
         int width = (int) (getScreenWidth() / 20.0);
         int height = (int) (getScreenHeight() / 10.0);
         Bitmap image = getBitmapScaled(width, height, R.drawable.bubble_bitmap_cropped);
