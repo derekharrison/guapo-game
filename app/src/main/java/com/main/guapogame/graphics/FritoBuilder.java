@@ -19,21 +19,7 @@ import com.main.guapogame.storage.Storage;
 
 import java.security.SecureRandom;
 
-public class FritoBuilder {
-
-    private Context context;
-    private Storage storage;
-    private SecureRandom random = new SecureRandom();
-
-    public FritoBuilder context(Context context) {
-        this.context = context;
-        return this;
-    }
-
-    public FritoBuilder storage(Storage storage) {
-        this.storage = storage;
-        return this;
-    }
+public class FritoBuilder extends CharacterPopupBuilder {
 
     public CharacterPopup build() {
         return createFrito();

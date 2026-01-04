@@ -8,32 +8,15 @@ import static com.main.guapogame.state.BackgroundSpeed.getBackgroundSpeed;
 import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
 import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.resources.BrownieAssets;
 import com.main.guapogame.state.GameState;
-import com.main.guapogame.storage.Storage;
 
-import java.security.SecureRandom;
+public class BrownieBuilder extends CharacterPopupBuilder {
 
-public class BrownieBuilder {
-
-    private Context context;
-    private Storage storage;
-    private SecureRandom random = new SecureRandom();
-
-    public BrownieBuilder context(Context context) {
-        this.context = context;
-        return this;
-    }
-
-    public BrownieBuilder storage(Storage storage) {
-        this.storage = storage;
-        return this;
-    }
 
     public CharacterPopup build() {
         return createBrownie();
