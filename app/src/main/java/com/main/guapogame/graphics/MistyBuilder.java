@@ -10,10 +10,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.main.guapogame.enums.Level;
 import com.main.guapogame.resources.MistyAssets;
 import com.main.guapogame.state.GameState;
 import com.main.guapogame.storage.Storage;
-import com.main.guapogame.enums.Level;
 
 import java.security.SecureRandom;
 

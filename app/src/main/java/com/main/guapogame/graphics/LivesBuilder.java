@@ -1,11 +1,11 @@
 package com.main.guapogame.graphics;
 
-import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
-import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.GAMESTATE;
 import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.getKey;
+import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
+import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 
 import android.content.Context;
 import android.graphics.Bitmap;

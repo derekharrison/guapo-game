@@ -8,7 +8,6 @@ import com.main.guapogame.R;
 import com.main.guapogame.state.GameState;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 public class Sounds {
     private static SoundPool soundPool;

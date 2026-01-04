@@ -4,14 +4,12 @@ import static com.main.guapogame.parameters.Keys.ARUBA;
 import static com.main.guapogame.parameters.Keys.BEACH;
 import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.GAMESTATE;
+import static com.main.guapogame.parameters.Keys.HIGH_SCORE;
 import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.OCEAN;
-import static com.main.guapogame.parameters.Keys.HIGH_SCORE;
 import static com.main.guapogame.parameters.Keys.TRIP;
 import static com.main.guapogame.parameters.Keys.UTREG;
 import static com.main.guapogame.parameters.Keys.getKey;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,11 +21,13 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.main.guapogame.parameters.Parameters;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.main.guapogame.R;
+import com.main.guapogame.enums.Level;
+import com.main.guapogame.parameters.Parameters;
 import com.main.guapogame.state.GameScore;
 import com.main.guapogame.state.GameState;
-import com.main.guapogame.enums.Level;
 
 import java.util.EnumMap;
 import java.util.HashMap;

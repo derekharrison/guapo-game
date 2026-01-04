@@ -9,7 +9,6 @@ import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
 import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.resources.BrownieAssets;
@@ -90,30 +89,5 @@ public class BrownieBuilder extends CharacterPopupBuilder {
             return getBitmapScaled(width, height, BrownieAssets.getImageHitOcean());
 
         return getBitmapScaled(width, height, BrownieAssets.getImageHit());
-    }
-
-    private boolean isActiveSession() {
-        return storage.loadGame().getSessionIsActive();
-    }
-
-    private int getScreenFactorX() {
-        return (int) (getScreenWidth() / 10.0);
-    }
-
-    private int getScreenFactorY() {
-        return (int) (getScreenHeight() / 5.0);
-    }
-
-    private int getWidth() {
-        return (int) (getScreenFactorX() * 3.0 / 2.0);
-    }
-
-    private int getHeight() {
-        return (int) (getScreenFactorY() * 3.0 / 2.0);
-    }
-
-    private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableIdentification);
-        return Bitmap.createScaledBitmap(bitmap, scaleX, scaleY, false);
     }
 }

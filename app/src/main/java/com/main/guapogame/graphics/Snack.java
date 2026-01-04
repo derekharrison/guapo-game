@@ -7,11 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.main.guapogame.interfaces.Draw;
-import com.main.guapogame.resources.Sounds;
 import com.main.guapogame.interfaces.Image;
 import com.main.guapogame.interfaces.Position;
 import com.main.guapogame.interfaces.Update;
 import com.main.guapogame.interfaces.Velocity;
+import com.main.guapogame.resources.Sounds;
 
 import java.security.SecureRandom;
 

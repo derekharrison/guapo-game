@@ -33,10 +33,10 @@ import android.content.SharedPreferences;
 import com.main.guapogame.graphics.Background;
 import com.main.guapogame.graphics.BegginStrip;
 import com.main.guapogame.graphics.CharacterPopup;
+import com.main.guapogame.graphics.Hero;
 import com.main.guapogame.graphics.Misty;
 import com.main.guapogame.graphics.Snack;
 import com.main.guapogame.graphics.Villain;
-import com.main.guapogame.graphics.Hero;
 
 import java.util.List;
 

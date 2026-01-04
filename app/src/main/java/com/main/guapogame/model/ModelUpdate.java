@@ -18,25 +18,25 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.main.guapogame.graphics.Background;
 import com.main.guapogame.graphics.BrownieBuilder;
 import com.main.guapogame.graphics.CharacterPopup;
 import com.main.guapogame.graphics.CheckpointPopupBuilder;
 import com.main.guapogame.graphics.FritoBuilder;
-import com.main.guapogame.graphics.Misty;
-import com.main.guapogame.graphics.MistyBuilder;
-import com.main.guapogame.graphics.SunPopupBuilder;
-import com.main.guapogame.graphics.VillainBuilder;
-import com.main.guapogame.state.GameScore;
-import com.main.guapogame.state.GameState;
-import com.main.guapogame.parameters.Parameters;
-import com.main.guapogame.graphics.Background;
 import com.main.guapogame.graphics.Graphics;
 import com.main.guapogame.graphics.Hero;
+import com.main.guapogame.graphics.Misty;
+import com.main.guapogame.graphics.MistyBuilder;
 import com.main.guapogame.graphics.Popup;
 import com.main.guapogame.graphics.Snack;
+import com.main.guapogame.graphics.SunPopupBuilder;
 import com.main.guapogame.graphics.Villain;
+import com.main.guapogame.graphics.VillainBuilder;
 import com.main.guapogame.interfaces.Update;
+import com.main.guapogame.parameters.Parameters;
 import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.state.GameScore;
+import com.main.guapogame.state.GameState;
 import com.main.guapogame.storage.Storage;
 
 class ModelUpdate implements Update {

@@ -1,14 +1,14 @@
 package com.main.guapogame.model;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.main.guapogame.parameters.Keys.GAMESTATE;
-import static com.main.guapogame.state.BackgroundSpeed.setBackgroundSpeed;
-import static com.main.guapogame.state.ScreenDimensions.setScreenHeight;
-import static com.main.guapogame.state.ScreenDimensions.setScreenWidth;
 import static com.main.guapogame.parameters.Keys.GAME;
+import static com.main.guapogame.parameters.Keys.GAMESTATE;
 import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.LIVES;
 import static com.main.guapogame.parameters.Keys.getKey;
+import static com.main.guapogame.state.BackgroundSpeed.setBackgroundSpeed;
+import static com.main.guapogame.state.ScreenDimensions.setScreenHeight;
+import static com.main.guapogame.state.ScreenDimensions.setScreenWidth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,13 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.main.guapogame.activity.ContinueActivity;
 import com.main.guapogame.activity.LevelActivity;
-import com.main.guapogame.graphics.GraphicsBuilder;
-import com.main.guapogame.resources.Sounds;
-import com.main.guapogame.state.GameScore;
 import com.main.guapogame.graphics.Graphics;
+import com.main.guapogame.graphics.GraphicsBuilder;
 import com.main.guapogame.graphics.Hero;
 import com.main.guapogame.interfaces.Draw;
 import com.main.guapogame.interfaces.Update;
+import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.state.GameScore;
 import com.main.guapogame.storage.Storage;
 
 public class Model implements Update, Draw {

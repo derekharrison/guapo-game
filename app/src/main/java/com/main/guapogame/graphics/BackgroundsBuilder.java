@@ -1,26 +1,26 @@
 package com.main.guapogame.graphics;
 
-import static com.main.guapogame.state.BackgroundSpeed.getBackgroundSpeed;
-import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
-import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.GAMESTATE;
 import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.getKey;
+import static com.main.guapogame.state.BackgroundSpeed.getBackgroundSpeed;
+import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
+import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.main.guapogame.state.GameState;
+import com.main.guapogame.enums.Level;
 import com.main.guapogame.resources.BackgroundsLevel1;
 import com.main.guapogame.resources.BackgroundsLevel2;
 import com.main.guapogame.resources.BackgroundsLevel3;
 import com.main.guapogame.resources.BackgroundsLevel4;
 import com.main.guapogame.resources.BackgroundsLevel5;
+import com.main.guapogame.state.GameState;
 import com.main.guapogame.storage.Storage;
-import com.main.guapogame.enums.Level;
 
 import java.util.ArrayList;
 import java.util.List;

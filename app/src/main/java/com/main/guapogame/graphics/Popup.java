@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.main.guapogame.interfaces.Draw;
-import com.main.guapogame.resources.Sounds;
 import com.main.guapogame.interfaces.Image;
 import com.main.guapogame.interfaces.Update;
+import com.main.guapogame.resources.Sounds;
 
 public class Popup extends GameObject implements Image, Update, Draw {
     protected final int duration;

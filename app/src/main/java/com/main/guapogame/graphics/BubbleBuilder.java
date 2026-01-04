@@ -1,8 +1,8 @@
 package com.main.guapogame.graphics;
 
+import static com.main.guapogame.parameters.Parameters.FPS;
 import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
 import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
-import static com.main.guapogame.parameters.Parameters.FPS;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

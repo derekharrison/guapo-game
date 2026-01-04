@@ -1,7 +1,5 @@
 package com.main.guapogame.graphics;
 
-import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
-import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 import static com.main.guapogame.parameters.Keys.BEACH;
 import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.LEVEL;
@@ -9,6 +7,8 @@ import static com.main.guapogame.parameters.Keys.OCEAN;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
 import static com.main.guapogame.parameters.Keys.VELOCITY_X;
+import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
+import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 
 import android.content.Context;
 import android.graphics.Bitmap;

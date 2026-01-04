@@ -1,7 +1,5 @@
 package com.main.guapogame.graphics;
 
-import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
-import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.GAMESTATE;
 import static com.main.guapogame.parameters.Keys.LEVEL;
@@ -9,6 +7,8 @@ import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
 import static com.main.guapogame.parameters.Keys.getKey;
 import static com.main.guapogame.parameters.Parameters.POINTS_BEGGIN_STRIPS;
+import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
+import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,7 +21,6 @@ import com.main.guapogame.storage.Storage;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 class SnacksBuilder {
     private Context context;

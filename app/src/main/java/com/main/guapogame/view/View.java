@@ -1,9 +1,9 @@
 package com.main.guapogame.view;
 
-import static com.main.guapogame.parameters.Parameters.FPS;
 import static com.main.guapogame.enums.State.GAME_OVER;
 import static com.main.guapogame.enums.State.PAUSED;
 import static com.main.guapogame.enums.State.PLAY;
+import static com.main.guapogame.parameters.Parameters.FPS;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,9 +13,9 @@ import android.view.SurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.main.guapogame.state.GameState;
-import com.main.guapogame.model.Model;
 import com.main.guapogame.R;
+import com.main.guapogame.model.Model;
+import com.main.guapogame.state.GameState;
 
 public class View extends SurfaceView implements Runnable {
     private final int screenWidth;
