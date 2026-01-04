@@ -1,8 +1,8 @@
 package com.main.guapogame.model;
 
 import static com.main.guapogame.enums.State.PAUSED;
-import static com.main.guapogame.state.ScreenDimensions.getScreenHeight;
-import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
+import static com.main.guapogame.model.state.ScreenDimensions.getScreenHeight;
+import static com.main.guapogame.model.state.ScreenDimensions.getScreenWidth;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,11 +10,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.main.guapogame.enums.Level;
-import com.main.guapogame.graphics.Background;
-import com.main.guapogame.graphics.Graphics;
-import com.main.guapogame.graphics.Snack;
-import com.main.guapogame.graphics.Villain;
-import com.main.guapogame.interfaces.Draw;
+import com.main.guapogame.model.graphics.gameobjects.Background;
+import com.main.guapogame.model.graphics.gameobjects.Graphics;
+import com.main.guapogame.model.graphics.gameobjects.Snack;
+import com.main.guapogame.model.graphics.gameobjects.Villain;
+import com.main.guapogame.model.interfaces.Draw;
 import com.main.guapogame.state.GameScore;
 import com.main.guapogame.state.GameState;
 
