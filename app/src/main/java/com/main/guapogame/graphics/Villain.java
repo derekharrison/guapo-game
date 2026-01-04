@@ -7,12 +7,12 @@ import static com.main.guapogame.state.ScreenDimensions.getScreenWidth;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 public class Villain extends Character {
     protected int numFramesDisplay = 3;
-    protected final Random random = new Random();
+    protected final SecureRandom random = new SecureRandom();
 
     protected Villain(Builder builder) {
         super(builder);

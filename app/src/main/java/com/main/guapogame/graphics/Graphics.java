@@ -3,7 +3,6 @@ package com.main.guapogame.graphics;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Graphics {

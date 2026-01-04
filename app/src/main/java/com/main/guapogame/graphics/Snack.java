@@ -13,7 +13,7 @@ import com.main.guapogame.interfaces.Position;
 import com.main.guapogame.interfaces.Update;
 import com.main.guapogame.interfaces.Velocity;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Snack implements Position, Velocity, Update, Image, Draw {
     private int positionX;
@@ -21,7 +21,7 @@ public class Snack implements Position, Velocity, Update, Image, Draw {
     private final Bitmap snackImage;
     private boolean playSound = true;
     private final int pointsSnack;
-    private final Random random = new Random();
+    private final SecureRandom random = new SecureRandom();
     private final Resources resources;
 
     protected Snack(Builder builder) {

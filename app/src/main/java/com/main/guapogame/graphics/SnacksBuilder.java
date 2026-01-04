@@ -18,6 +18,7 @@ import com.main.guapogame.R;
 import com.main.guapogame.parameters.Parameters;
 import com.main.guapogame.storage.Storage;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +26,7 @@ import java.util.Random;
 class SnacksBuilder {
     private Context context;
     private Storage storage;
-    private final Random random = new Random();
+    private final SecureRandom random = new SecureRandom();
 
     SnacksBuilder context(Context context) {
         this.context = context;

@@ -7,6 +7,7 @@ import android.media.SoundPool;
 import com.main.guapogame.R;
 import com.main.guapogame.state.GameState;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class Sounds {
@@ -23,7 +24,7 @@ public class Sounds {
     private static int fritoHit;
     private static int brownieHit;
     private static int mistyHit;
-    private static final Random random = new Random();
+    private static final SecureRandom random = new SecureRandom();
 
     public static void playBubbles() {
         soundPool.play(bubbleSounds, 1, 1, 0, 0, 1);
