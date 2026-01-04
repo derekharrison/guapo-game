@@ -42,11 +42,11 @@ public class FritoBuilder {
         return new Frito.Builder()
                 .image(getImage())
                 .imageHit(getHitImage())
+                .isHit(getHit())
                 .positionX(getPositionX())
                 .positionY(getPositionY())
                 .velY(getVelocityY())
                 .frameCounter(getFrameCounter())
-                .isHit(getHit())
                 .context(context)
                 .duration(6 * FPS)
                 .build();
