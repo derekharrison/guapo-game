@@ -17,7 +17,6 @@ public class Graphics {
     private Popup checkpointPopup;
     private Popup sunPopup;
     private final List<Bitmap> lives;
-    private final LinkedList<Bubble> bubbles = new LinkedList<>();
     private final Bitmap playButton;
     private final Bitmap pauseButton;
 

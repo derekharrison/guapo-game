@@ -18,7 +18,6 @@ import com.main.guapogame.state.GameState;
 import com.main.guapogame.storage.Storage;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 public class BrownieBuilder {
 
