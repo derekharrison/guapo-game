@@ -16,9 +16,9 @@ import android.graphics.BitmapFactory;
 
 import com.main.guapogame.model.graphics.gameobjects.JellyFish;
 import com.main.guapogame.model.graphics.gameobjects.Villain;
-import com.main.guapogame.resources.JellyFishAssets;
-import com.main.guapogame.resources.SeagullAssets;
-import com.main.guapogame.resources.WaraWaraAssets;
+import com.main.guapogame.resources.assets.JellyFishAssets;
+import com.main.guapogame.resources.assets.SeagullAssets;
+import com.main.guapogame.resources.assets.WaraWaraAssets;
 import com.main.guapogame.resources.storage.Storage;
 
 import java.util.ArrayList;

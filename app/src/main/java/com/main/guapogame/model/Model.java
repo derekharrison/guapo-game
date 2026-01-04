@@ -23,7 +23,7 @@ import com.main.guapogame.model.graphics.builders.GraphicsBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Hero;
 import com.main.guapogame.model.interfaces.Draw;
 import com.main.guapogame.model.interfaces.Update;
-import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.resources.assets.Sounds;
 import com.main.guapogame.state.GameScore;
 import com.main.guapogame.resources.storage.Storage;
 

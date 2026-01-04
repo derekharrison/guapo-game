@@ -11,7 +11,7 @@ import com.main.guapogame.model.interfaces.Image;
 import com.main.guapogame.model.interfaces.Position;
 import com.main.guapogame.model.interfaces.Update;
 import com.main.guapogame.model.interfaces.Velocity;
-import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.resources.assets.Sounds;
 
 import java.security.SecureRandom;
 

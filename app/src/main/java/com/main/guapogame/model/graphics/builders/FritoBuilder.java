@@ -13,7 +13,7 @@ import android.graphics.Bitmap;
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
 import com.main.guapogame.model.graphics.gameobjects.Frito;
-import com.main.guapogame.resources.FritoAssets;
+import com.main.guapogame.resources.assets.FritoAssets;
 import com.main.guapogame.state.GameState;
 
 public class FritoBuilder extends AbstractCharacterPopupBuilder {

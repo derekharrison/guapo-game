@@ -34,7 +34,7 @@ import com.main.guapogame.model.graphics.gameobjects.Villain;
 import com.main.guapogame.model.graphics.builders.VillainBuilder;
 import com.main.guapogame.model.interfaces.Update;
 import com.main.guapogame.parameters.Parameters;
-import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.resources.assets.Sounds;
 import com.main.guapogame.state.GameScore;
 import com.main.guapogame.state.GameState;
 import com.main.guapogame.resources.storage.Storage;

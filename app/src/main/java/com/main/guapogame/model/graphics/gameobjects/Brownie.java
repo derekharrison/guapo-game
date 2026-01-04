@@ -2,7 +2,7 @@ package com.main.guapogame.model.graphics.gameobjects;
 
 import static com.main.guapogame.model.state.BackgroundSpeed.getBackgroundSpeed;
 
-import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.resources.assets.Sounds;
 
 public class Brownie extends CharacterPopup {
 

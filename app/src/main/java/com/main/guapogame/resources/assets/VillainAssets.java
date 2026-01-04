@@ -1,4 +1,4 @@
-package com.main.guapogame.resources;
+package com.main.guapogame.resources.assets;
 
 import java.util.ArrayList;
 import java.util.List;

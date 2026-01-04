@@ -15,11 +15,11 @@ import android.graphics.BitmapFactory;
 
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.Background;
-import com.main.guapogame.resources.BackgroundsLevel1;
-import com.main.guapogame.resources.BackgroundsLevel2;
-import com.main.guapogame.resources.BackgroundsLevel3;
-import com.main.guapogame.resources.BackgroundsLevel4;
-import com.main.guapogame.resources.BackgroundsLevel5;
+import com.main.guapogame.resources.assets.BackgroundsLevel1;
+import com.main.guapogame.resources.assets.BackgroundsLevel2;
+import com.main.guapogame.resources.assets.BackgroundsLevel3;
+import com.main.guapogame.resources.assets.BackgroundsLevel4;
+import com.main.guapogame.resources.assets.BackgroundsLevel5;
 import com.main.guapogame.state.GameState;
 import com.main.guapogame.resources.storage.Storage;
 

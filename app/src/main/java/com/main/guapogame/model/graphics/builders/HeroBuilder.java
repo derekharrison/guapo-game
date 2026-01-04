@@ -19,7 +19,7 @@ import com.main.guapogame.R;
 import com.main.guapogame.model.enums.HeroId;
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.Hero;
-import com.main.guapogame.resources.HeroAssets;
+import com.main.guapogame.resources.assets.HeroAssets;
 import com.main.guapogame.state.GameState;
 import com.main.guapogame.resources.storage.Storage;
 

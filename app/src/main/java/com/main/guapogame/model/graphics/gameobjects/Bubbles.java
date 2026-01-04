@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.builders.BubbleBuilder;
-import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.resources.assets.Sounds;
 import com.main.guapogame.state.GameState;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.main.guapogame.presentation.View;
+import com.main.guapogame.presentation.view.View;
 
 public class GameActivity extends AppCompatActivity {
 

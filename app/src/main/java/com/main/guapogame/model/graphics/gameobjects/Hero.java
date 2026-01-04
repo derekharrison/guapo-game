@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.main.guapogame.enums.State;
-import com.main.guapogame.resources.Sounds;
+import com.main.guapogame.resources.assets.Sounds;
 import com.main.guapogame.state.GameState;
 
 import java.util.ArrayList;

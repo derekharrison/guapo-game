@@ -1,4 +1,4 @@
-package com.main.guapogame.resources;
+package com.main.guapogame.resources.assets;
 
 import android.content.Context;
 import android.media.AudioAttributes;

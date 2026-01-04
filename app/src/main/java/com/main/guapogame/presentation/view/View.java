@@ -1,4 +1,4 @@
-package com.main.guapogame.presentation;
+package com.main.guapogame.presentation.view;
 
 import static com.main.guapogame.enums.State.GAME_OVER;
 import static com.main.guapogame.enums.State.PAUSED;

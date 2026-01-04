@@ -1,4 +1,4 @@
-package com.main.guapogame.resources;
+package com.main.guapogame.resources.assets;
 
 public class HeroAssets {
 
