@@ -11,15 +11,6 @@ public class Brownie extends CharacterPopup {
     }
 
     @Override
-    public void update() {
-        super.update();
-        updatePosition();
-        reflect();
-        updateBubbles();
-        playSoundAppearing();
-    }
-
-    @Override
     public void playSoundHit() {
         if(playSoundHit) {
             Sounds.playSoundBarkBrownieHit();
@@ -35,10 +26,6 @@ public class Brownie extends CharacterPopup {
         }
     }
 
-    public void hitBrownie() {
-        isHit = true;
-    }
-
     public void setFrameCounter(int frameCounter) {
         this.frameCounter = frameCounter;
     }
@@ -51,7 +38,8 @@ public class Brownie extends CharacterPopup {
         }
     }
 
-    private void updatePosition() {
+    @Override
+    protected void updatePosition() {
         positionX -= (getBackgroundSpeed() * 2);
         positionY += velY;
     }

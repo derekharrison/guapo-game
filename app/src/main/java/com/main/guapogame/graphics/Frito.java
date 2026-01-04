@@ -11,15 +11,6 @@ public class Frito extends CharacterPopup {
     }
 
     @Override
-    public void update() {
-        super.update();
-        updatePosition();
-        reflect();
-        updateBubbles();
-        playSoundAppearing();
-    }
-
-    @Override
     public void playSoundHit() {
         if(playSoundHit) {
             Sounds.playSoundBarkFritoHit();
@@ -43,7 +34,8 @@ public class Frito extends CharacterPopup {
         }
     }
 
-    private void updatePosition() {
+    @Override
+    protected void updatePosition() {
         positionX += getBackgroundSpeed() * 2;
         positionY += velY;
     }

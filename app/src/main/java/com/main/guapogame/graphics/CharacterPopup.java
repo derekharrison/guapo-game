@@ -24,6 +24,15 @@ public class CharacterPopup extends Popup {
     }
 
     @Override
+    public void update() {
+        super.update();
+        updatePosition();
+        reflect();
+        updateBubbles();
+        playSoundAppearing();
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         if(!isHit)
             canvas.drawBitmap(image, getPositionX(), getPositionY(), null);
@@ -123,6 +132,10 @@ public class CharacterPopup extends Popup {
         public CharacterPopup build() {
             return new CharacterPopup(this);
         }
+    }
+
+    protected void updatePosition() {
+        // Implement in child classes
     }
 
     protected boolean isOnScreen() {
