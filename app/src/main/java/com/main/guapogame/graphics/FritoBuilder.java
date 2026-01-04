@@ -17,13 +17,14 @@ import com.main.guapogame.resources.FritoAssets;
 import com.main.guapogame.state.GameState;
 import com.main.guapogame.storage.Storage;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class FritoBuilder {
 
     private Context context;
     private Storage storage;
-    private Random random = new Random();
+    private SecureRandom random = new SecureRandom();
 
     public FritoBuilder context(Context context) {
         this.context = context;

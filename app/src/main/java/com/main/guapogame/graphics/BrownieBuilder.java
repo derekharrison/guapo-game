@@ -17,13 +17,14 @@ import com.main.guapogame.resources.BrownieAssets;
 import com.main.guapogame.state.GameState;
 import com.main.guapogame.storage.Storage;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class BrownieBuilder {
 
     private Context context;
     private Storage storage;
-    private Random random = new Random();
+    private SecureRandom random = new SecureRandom();
 
     public BrownieBuilder context(Context context) {
         this.context = context;

@@ -15,12 +15,13 @@ import com.main.guapogame.state.GameState;
 import com.main.guapogame.storage.Storage;
 import com.main.guapogame.enums.Level;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class MistyBuilder {
     private Context context;
     private Storage storage;
-    private Random random = new Random();
+    private SecureRandom random = new SecureRandom();
 
     public MistyBuilder context(Context context) {
         this.context = context;
