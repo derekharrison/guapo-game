@@ -16,6 +16,7 @@ import com.main.guapogame.state.GameState;
 
 public class FritoBuilder extends CharacterPopupBuilder {
 
+    @Override
     public CharacterPopup build() {
         return createFrito();
     }
