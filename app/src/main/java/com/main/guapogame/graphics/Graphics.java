@@ -65,14 +65,6 @@ public class Graphics {
         return backgrounds;
     }
 
-    public List<Bubble> getBubbles() {
-        return bubbles;
-    }
-
-    public void addBubble(Bubble bubble) {
-        this.bubbles.addLast(bubble);
-    }
-
     public Popup getCheckpointPopup() {
         return checkpointPopup;
     }

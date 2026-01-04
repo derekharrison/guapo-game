@@ -48,7 +48,7 @@ public class FritoBuilder {
                 .velY(getVelocityY())
                 .frameCounter(getFrameCounter())
                 .context(context)
-                .duration(6 * FPS)
+                .duration(16 * FPS)
                 .build();
     }
 

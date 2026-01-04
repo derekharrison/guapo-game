@@ -48,7 +48,7 @@ public class BrownieBuilder {
                 .isHit(getHit())
                 .velY((int) getVelY())
                 .context(context)
-                .duration(6 * FPS)
+                .duration(16 * FPS)
                 .build();
     }
 

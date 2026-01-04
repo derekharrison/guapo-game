@@ -22,7 +22,7 @@ public class Bubbles {
 
     public void updateBubbles(int frameCounter) {
         if(GameState.getLevel().equals(Level.OCEAN)) {
-            if(frameCounter % FPS == 0 && frameCounter < 3 * FPS) {
+            if(frameCounter % FPS == 0) {
                 Popup bubble = createBubble();
                 addBubble(bubble);
                 removeBubble();
