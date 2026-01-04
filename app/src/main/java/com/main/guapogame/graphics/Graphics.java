@@ -9,8 +9,8 @@ import java.util.List;
 public class Graphics {
     private final Hero hero;
     private Misty misty;
-    private Brownie brownie;
-    private Frito frito;
+    private CharacterPopup brownie;
+    private CharacterPopup frito;
     private final List<Snack> snacks;
     private final List<Villain> villains;
     private final List<Background> backgrounds;
@@ -41,19 +41,19 @@ public class Graphics {
 
     public Misty getMisty() { return misty; }
 
-    public Brownie getBrownie() { return brownie; }
+    public CharacterPopup getBrownie() { return brownie; }
 
-    public Frito getFrito() { return frito; }
+    public CharacterPopup getFrito() { return frito; }
 
     public void setMisty(Misty misty) {
         this.misty = misty;
     }
 
-    public void setBrownie(Brownie brownie) {
+    public void setBrownie(CharacterPopup brownie) {
         this.brownie = brownie;
     }
 
-    public void setFrito(Frito frito) {
+    public void setFrito(CharacterPopup frito) {
         this.frito = frito;
     }
 
@@ -108,8 +108,8 @@ public class Graphics {
     public static class Builder {
         private Hero hero;
         private Misty misty;
-        private Brownie brownie;
-        private Frito frito;
+        private CharacterPopup brownie;
+        private CharacterPopup frito;
         private List<Snack> snacks = new ArrayList<>();
         private List<Villain> villains = new ArrayList<>();
         private List<Background> backgrounds = new ArrayList<>();
@@ -129,12 +129,12 @@ public class Graphics {
             return this;
         }
 
-        public Builder brownie(Brownie brownie) {
+        public Builder brownie(CharacterPopup brownie) {
             this.brownie = brownie;
             return this;
         }
 
-        public Builder frito(Frito frito) {
+        public Builder frito(CharacterPopup frito) {
             this.frito = frito;
             return this;
         }

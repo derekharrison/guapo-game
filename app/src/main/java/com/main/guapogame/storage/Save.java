@@ -32,8 +32,7 @@ import android.content.SharedPreferences;
 
 import com.main.guapogame.graphics.Background;
 import com.main.guapogame.graphics.BegginStrip;
-import com.main.guapogame.graphics.Brownie;
-import com.main.guapogame.graphics.Frito;
+import com.main.guapogame.graphics.CharacterPopup;
 import com.main.guapogame.graphics.Misty;
 import com.main.guapogame.graphics.Snack;
 import com.main.guapogame.graphics.Villain;
@@ -67,7 +66,7 @@ public class Save {
         saveFrameCounter(getKey(getLevelId(), MISTY, FRAME_COUNTER), misty.getFrameCounter());
     }
 
-    public void saveBrownie(Brownie brownie) {
+    public void saveBrownie(CharacterPopup brownie) {
         savePosition(getKey(getLevelId(), BROWNIE, POSITION_X), brownie.getPositionX());
         savePosition(getKey(getLevelId(), BROWNIE, POSITION_Y), brownie.getPositionY());
         saveIsHit(getKey(getLevelId(), BROWNIE, IS_HIT), brownie.getIsHit());
@@ -75,7 +74,7 @@ public class Save {
         saveFrameCounter(getKey(getLevelId(), BROWNIE, FRAME_COUNTER), brownie.getFrameCounter());
     }
 
-    public void saveFrito(Frito frito) {
+    public void saveFrito(CharacterPopup frito) {
         savePosition(getKey(getLevelId(), FRITO, POSITION_X), frito.getPositionX());
         savePosition(getKey(getLevelId(), FRITO, POSITION_Y), frito.getPositionY());
         saveIsHit(getKey(getLevelId(), FRITO, IS_HIT), frito.getIsHit());

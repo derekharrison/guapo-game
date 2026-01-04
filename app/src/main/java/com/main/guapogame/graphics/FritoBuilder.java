@@ -34,11 +34,11 @@ public class FritoBuilder {
         return this;
     }
 
-    public Frito build() {
+    public CharacterPopup build() {
         return createFrito();
     }
 
-    private Frito createFrito() {
+    private CharacterPopup createFrito() {
         return new Frito.Builder()
                 .image(getImage())
                 .imageHit(getHitImage())

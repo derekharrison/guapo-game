@@ -20,6 +20,7 @@ import android.graphics.Rect;
 
 import com.main.guapogame.graphics.Brownie;
 import com.main.guapogame.graphics.BrownieBuilder;
+import com.main.guapogame.graphics.CharacterPopup;
 import com.main.guapogame.graphics.CheckpointPopupBuilder;
 import com.main.guapogame.graphics.Frito;
 import com.main.guapogame.graphics.FritoBuilder;
@@ -163,14 +164,14 @@ class ModelUpdate implements Update {
                 .build();
     }
 
-    private Brownie createBrownie() {
+    private CharacterPopup createBrownie() {
         return new BrownieBuilder()
                 .context(context)
                 .storage(storage)
                 .build();
     }
 
-    private Frito createFrito() {
+    private CharacterPopup createFrito() {
         return new FritoBuilder()
                 .context(context)
                 .storage(storage)
@@ -246,7 +247,7 @@ class ModelUpdate implements Update {
         }
 
         if(heroInteractsWithPopup(graphics.getHero(), graphics.getBrownie())) {
-            graphics.getBrownie().hitBrownie();
+            graphics.getBrownie().hit();
             graphics.getBrownie().playSoundHit();
         }
 
@@ -260,7 +261,7 @@ class ModelUpdate implements Update {
         }
 
         if(heroInteractsWithPopup(graphics.getHero(), graphics.getFrito())) {
-            graphics.getFrito().hitFrito();
+            graphics.getFrito().hit();
             graphics.getFrito().playSoundHit();
         }
 

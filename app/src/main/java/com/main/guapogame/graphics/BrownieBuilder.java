@@ -34,11 +34,11 @@ public class BrownieBuilder {
         return this;
     }
 
-    public Brownie build() {
+    public CharacterPopup build() {
         return createBrownie();
     }
 
-    private Brownie createBrownie() {
+    private CharacterPopup createBrownie() {
         return new Brownie.Builder()
                 .image(getImage())
                 .imageHit(getHitImage())

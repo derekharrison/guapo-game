@@ -52,14 +52,14 @@ public class GraphicsBuilder {
                 .build();
     }
 
-    private Brownie createBrownie() {
+    private CharacterPopup createBrownie() {
         return new BrownieBuilder()
                 .context(context)
                 .storage(storage)
                 .build();
     }
 
-    private Frito createFrito() {
+    private CharacterPopup createFrito() {
         return new FritoBuilder()
                 .context(context)
                 .storage(storage)

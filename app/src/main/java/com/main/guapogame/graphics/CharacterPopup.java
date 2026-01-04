@@ -7,8 +7,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.main.guapogame.resources.Sounds;
-
 public class CharacterPopup extends Popup {
 
     protected Bitmap imageHit;
@@ -38,11 +36,15 @@ public class CharacterPopup extends Popup {
     }
 
     public void playSoundHit() {
-
+        // Implement in child classes
     }
 
     public void playSoundAppearing() {
+        // Implement in child classes
+    }
 
+    public void hit() {
+        isHit = true;
     }
 
     public boolean getIsHit() {
