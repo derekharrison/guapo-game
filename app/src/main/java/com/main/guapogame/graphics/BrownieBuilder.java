@@ -14,7 +14,7 @@ import com.main.guapogame.enums.Level;
 import com.main.guapogame.resources.BrownieAssets;
 import com.main.guapogame.state.GameState;
 
-public class BrownieBuilder extends CharacterPopupBuilder {
+public class BrownieBuilder extends AbstractCharacterPopupBuilder {
 
 
     @Override

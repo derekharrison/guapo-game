@@ -11,18 +11,18 @@ import com.main.guapogame.storage.Storage;
 
 import java.security.SecureRandom;
 
-public class CharacterPopupBuilder {
+public abstract class AbstractCharacterPopupBuilder {
 
     protected Context context;
     protected Storage storage;
     protected SecureRandom random = new SecureRandom();
 
-    public CharacterPopupBuilder context(Context context) {
+    public AbstractCharacterPopupBuilder context(Context context) {
         this.context = context;
         return this;
     }
 
-    public CharacterPopupBuilder storage(Storage storage) {
+    public AbstractCharacterPopupBuilder storage(Storage storage) {
         this.storage = storage;
         return this;
     }

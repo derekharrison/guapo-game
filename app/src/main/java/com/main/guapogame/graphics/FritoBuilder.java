@@ -14,7 +14,7 @@ import com.main.guapogame.enums.Level;
 import com.main.guapogame.resources.FritoAssets;
 import com.main.guapogame.state.GameState;
 
-public class FritoBuilder extends CharacterPopupBuilder {
+public class FritoBuilder extends AbstractCharacterPopupBuilder {
 
     @Override
     public CharacterPopup build() {
