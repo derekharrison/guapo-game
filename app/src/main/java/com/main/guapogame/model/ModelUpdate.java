@@ -286,7 +286,9 @@ class ModelUpdate implements Update {
             graphics.getRocco().playSoundHit();
         }
 
-        graphics.getRocco().update();
+        if(frameCounter >= 16 * FPS) {
+            graphics.getRocco().update();
+        }
     }
 
     private void updateSnack(Snack snack) {
