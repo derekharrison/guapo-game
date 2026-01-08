@@ -19,6 +19,7 @@ import static com.main.guapogame.parameters.Keys.NUM_SNACKS;
 import static com.main.guapogame.parameters.Keys.NUM_VILLAINS;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
+import static com.main.guapogame.parameters.Keys.ROCCO;
 import static com.main.guapogame.parameters.Keys.SCORE;
 import static com.main.guapogame.parameters.Keys.SNACK;
 import static com.main.guapogame.parameters.Keys.SNACK_POINTS;
@@ -80,6 +81,14 @@ public class Save {
         saveIsHit(getKey(getLevelId(), FRITO, IS_HIT), frito.getIsHit());
         saveVelocity(getKey(getLevelId(), FRITO, VELOCITY_Y), frito.getVelY());
         saveFrameCounter(getKey(getLevelId(), FRITO, FRAME_COUNTER), frito.getFrameCounter());
+    }
+
+    public void saveRocco(CharacterPopup rocco) {
+        savePosition(getKey(getLevelId(), ROCCO, POSITION_X), rocco.getPositionX());
+        savePosition(getKey(getLevelId(), ROCCO, POSITION_Y), rocco.getPositionY());
+        saveIsHit(getKey(getLevelId(), ROCCO, IS_HIT), rocco.getIsHit());
+        saveVelocity(getKey(getLevelId(), ROCCO, VELOCITY_Y), rocco.getVelY());
+        saveFrameCounter(getKey(getLevelId(), ROCCO, FRAME_COUNTER), rocco.getFrameCounter());
     }
 
     private void saveIsHit(String key, boolean isHit) {

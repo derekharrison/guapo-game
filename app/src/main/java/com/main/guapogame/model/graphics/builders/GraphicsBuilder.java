@@ -9,6 +9,7 @@ import com.main.guapogame.model.graphics.gameobjects.Graphics;
 import com.main.guapogame.model.graphics.gameobjects.Hero;
 import com.main.guapogame.model.graphics.gameobjects.Misty;
 import com.main.guapogame.model.graphics.gameobjects.Popup;
+import com.main.guapogame.model.graphics.gameobjects.Rocco;
 import com.main.guapogame.model.graphics.gameobjects.Snack;
 import com.main.guapogame.model.graphics.gameobjects.Villain;
 import com.main.guapogame.resources.storage.Storage;
@@ -35,6 +36,7 @@ public class GraphicsBuilder {
                 .misty(createMisty())
                 .brownie(createBrownie())
                 .frito(createFrito())
+                .rocco(createRocco())
                 .villains(createVillains())
                 .backgrounds(createBackgrounds())
                 .checkpointPopup(createCheckpointPopup())
@@ -69,6 +71,13 @@ public class GraphicsBuilder {
 
     private CharacterPopup createFrito() {
         return new FritoBuilder()
+                .context(context)
+                .storage(storage)
+                .build();
+    }
+
+    private CharacterPopup createRocco() {
+        return new RoccoBuilder()
                 .context(context)
                 .storage(storage)
                 .build();

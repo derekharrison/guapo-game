@@ -16,6 +16,7 @@ import static com.main.guapogame.parameters.Keys.LIVES;
 import static com.main.guapogame.parameters.Keys.MISTY;
 import static com.main.guapogame.parameters.Keys.NUM_SNACKS;
 import static com.main.guapogame.parameters.Keys.NUM_VILLAINS;
+import static com.main.guapogame.parameters.Keys.ROCCO;
 import static com.main.guapogame.parameters.Keys.SCORE;
 import static com.main.guapogame.parameters.Keys.SNACK;
 import static com.main.guapogame.parameters.Keys.SNACK_ASSET_ID;
@@ -84,6 +85,22 @@ public class Load {
 
     public float getFritoVelocity(String key) {
         return getVelocity(getKey(getLevelId(), FRITO, key));
+    }
+
+    public float getRoccoPosition(String key) {
+        return getPosition(getKey(getLevelId(), ROCCO, key));
+    }
+
+    public boolean getRoccoIsHit() {
+        return getHit(getKey(getLevelId(), ROCCO, IS_HIT));
+    }
+
+    public int getRoccoFrameCounter() {
+        return getFrameCounter(getKey(getLevelId(), ROCCO, FRAME_COUNTER));
+    }
+
+    public float getRoccoVelocity(String key) {
+        return getVelocity(getKey(getLevelId(), ROCCO, key));
     }
 
     public float getVillainPosition(String key, String villainId) {

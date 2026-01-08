@@ -5,6 +5,7 @@ public class Keys {
     public static final String MISTY = "misty";
     public static final String BROWNIE = "brownie";
     public static final String FRITO = "frito";
+    public static final String ROCCO = "rocco";
     public static final String SNACK = "snack";
     public static final String BEGGIN = "beggin";
     public static final String VILLAIN = "villain";

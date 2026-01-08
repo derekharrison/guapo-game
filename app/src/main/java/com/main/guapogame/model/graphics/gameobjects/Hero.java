@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.main.guapogame.enums.State;
+import com.main.guapogame.model.state.Position;
+import com.main.guapogame.model.state.Trajectory;
 import com.main.guapogame.resources.assets.Sounds;
 import com.main.guapogame.state.GameState;
 
@@ -92,7 +94,9 @@ public class Hero extends Character {
             setPositionY(getPositionY());
         }
 
+        updateTrajectory();
         updateBubbles();
+
         reflect();
     }
 
@@ -193,5 +197,10 @@ public class Hero extends Character {
             setVelX(-getVelocityX());
             positionX = (float) getScreenWidth() - width;
         }
+    }
+
+    private void updateTrajectory() {
+        Position position = new Position(getPositionX(), getPositionY());
+        Trajectory.addPosition(position);
     }
 }

@@ -10,6 +10,7 @@ public class Graphics {
     private Misty misty;
     private CharacterPopup brownie;
     private CharacterPopup frito;
+    private CharacterPopup rocco;
     private final List<Snack> snacks;
     private final List<Villain> villains;
     private final List<Background> backgrounds;
@@ -42,6 +43,7 @@ public class Graphics {
     public CharacterPopup getBrownie() { return brownie; }
 
     public CharacterPopup getFrito() { return frito; }
+    public CharacterPopup getRocco() { return rocco; }
 
     public void setMisty(Misty misty) {
         this.misty = misty;
@@ -53,6 +55,9 @@ public class Graphics {
 
     public void setFrito(CharacterPopup frito) {
         this.frito = frito;
+    }
+    public void setRocco(CharacterPopup rocco) {
+        this.rocco = rocco;
     }
 
     public List<Villain> getVillains() {
@@ -100,6 +105,7 @@ public class Graphics {
         private Misty misty;
         private CharacterPopup brownie;
         private CharacterPopup frito;
+        private CharacterPopup rocco;
         private List<Snack> snacks = new ArrayList<>();
         private List<Villain> villains = new ArrayList<>();
         private List<Background> backgrounds = new ArrayList<>();
@@ -126,6 +132,11 @@ public class Graphics {
 
         public Builder frito(CharacterPopup frito) {
             this.frito = frito;
+            return this;
+        }
+
+        public Builder rocco(CharacterPopup rocco) {
+            this.rocco = rocco;
             return this;
         }
 

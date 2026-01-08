@@ -50,6 +50,7 @@ class ModelDraw implements Draw {
         drawMisty(canvas);
         drawBrownie(canvas);
         drawFrito(canvas);
+        drawRocco(canvas);
         drawPopUp(canvas);
         drawSunPopup(canvas);
     }
@@ -134,5 +135,8 @@ class ModelDraw implements Draw {
 
     private void drawFrito(Canvas canvas) {
         graphics.getFrito().draw(canvas);
+    }
+    private void drawRocco(Canvas canvas) {
+        graphics.getRocco().draw(canvas);
     }
 }

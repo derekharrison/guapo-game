@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.main.guapogame.model.graphics.builders.RoccoBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Background;
 import com.main.guapogame.model.graphics.builders.BrownieBuilder;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
@@ -66,6 +67,7 @@ class ModelUpdate implements Update {
         updateMisty();
         updateBrownie();
         updateFrito();
+        updateRocco();
         updateSnacks();
         updateCheckpointPopup();
         updateSunPopup();
@@ -176,6 +178,13 @@ class ModelUpdate implements Update {
                 .build();
     }
 
+    private CharacterPopup createRocco() {
+        return new RoccoBuilder()
+                .context(context)
+                .storage(storage)
+                .build();
+    }
+
     private void createSounds() {
         Sounds.createSoundPool(context);
     }
@@ -264,6 +273,20 @@ class ModelUpdate implements Update {
         }
 
         graphics.getFrito().update();
+    }
+
+    private void updateRocco() {
+        if((frameCounter % (16 * FPS)) == 0) {
+            graphics.setRocco(createRocco());
+            graphics.getRocco().playSound();
+        }
+
+        if(heroInteractsWithPopup(graphics.getHero(), graphics.getRocco())) {
+            graphics.getRocco().hit();
+            graphics.getRocco().playSoundHit();
+        }
+
+        graphics.getRocco().update();
     }
 
     private void updateSnack(Snack snack) {
