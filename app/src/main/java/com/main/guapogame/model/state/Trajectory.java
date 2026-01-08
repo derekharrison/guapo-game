@@ -15,8 +15,7 @@ public class Trajectory {
 
     public static Position getFirst() {
         if(!track.isEmpty()) {
-            Position first = track.get(0);
-            return first;
+            return track.get(0);
         }
 
         return null;
