@@ -44,15 +44,15 @@ class ModelDraw implements Draw {
         drawLives(canvas);
         drawSnacks(canvas);
         drawScore(canvas);
-        drawPauseButton(canvas);
         drawVillains(canvas);
-        drawHero(canvas);
         drawMisty(canvas);
         drawBrownie(canvas);
         drawFrito(canvas);
         drawRocco(canvas);
         drawPopUp(canvas);
         drawSunPopup(canvas);
+        drawHero(canvas);
+        drawPauseButton(canvas);
     }
 
     private void drawPopUp(Canvas canvas) {

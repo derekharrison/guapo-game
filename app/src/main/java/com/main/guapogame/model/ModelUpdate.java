@@ -276,7 +276,7 @@ class ModelUpdate implements Update {
     }
 
     private void updateRocco() {
-        if((frameCounter % (16 * FPS)) == 0) {
+        if((frameCounter % (8 * FPS)) == 0) {
             graphics.setRocco(createRocco());
             graphics.getRocco().playSound();
         }
@@ -286,7 +286,7 @@ class ModelUpdate implements Update {
             graphics.getRocco().playSoundHit();
         }
 
-        if(frameCounter >= 16 * FPS) {
+        if(frameCounter >= 8 * FPS) {
             graphics.getRocco().update();
         }
     }

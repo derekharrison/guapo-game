@@ -1,11 +1,9 @@
 package com.main.guapogame.model.graphics.builders;
 
-import static com.main.guapogame.model.state.BackgroundSpeed.getBackgroundSpeed;
 import static com.main.guapogame.model.state.ScreenDimensions.getScreenHeight;
 import static com.main.guapogame.model.state.ScreenDimensions.getScreenWidth;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
-import static com.main.guapogame.parameters.Keys.VELOCITY_Y;
 import static com.main.guapogame.parameters.Parameters.FPS;
 
 import android.graphics.Bitmap;
@@ -24,18 +22,30 @@ public class RoccoBuilder extends AbstractCharacterPopupBuilder {
     }
 
     private CharacterPopup createRocco() {
+        int width = getRoccoWidth();
+        int height = getRoccoHeight();
         return new Rocco.Builder()
+                .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, RoccoAssets.getCapeImage1()))
+                .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, RoccoAssets.getCapeImage2()))
                 .image(getImage())
                 .imageHit(getHitImage())
                 .isHit(getHit())
                 .positionX(getPositionX())
                 .positionY(getPositionY())
-                .velY(getVelocityY())
                 .frameCounter(getFrameCounter())
                 .context(context)
-                .duration(16 * FPS)
+                .duration(4 * FPS)
                 .build();
     }
+
+    private int getRoccoWidth() {
+        return  (int) (getScreenFactorX() * 3 / 2.0);
+    }
+
+    private int getRoccoHeight() {
+        return (int) (getScreenFactorY() * 3 / 2.0);
+    }
+
 
     private int getFrameCounter() {
         if(isActiveSession())
@@ -57,13 +67,6 @@ public class RoccoBuilder extends AbstractCharacterPopupBuilder {
             return storage.loadGame().getRoccoPosition(POSITION_Y);
 
         return (float) getScreenHeight() / 2;
-    }
-
-    private float getVelocityY() {
-        if(isActiveSession())
-            return storage.loadGame().getRoccoVelocity(VELOCITY_Y);
-
-        return (float) getBackgroundSpeed() * 2;
     }
 
     private boolean getHit() {
