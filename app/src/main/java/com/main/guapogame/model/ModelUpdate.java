@@ -18,15 +18,16 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.main.guapogame.model.graphics.builders.ChivazBuilder;
 import com.main.guapogame.model.graphics.builders.RoccoBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Background;
 import com.main.guapogame.model.graphics.builders.BrownieBuilder;
+import com.main.guapogame.model.graphics.gameobjects.BoundaryPopup;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
 import com.main.guapogame.model.graphics.builders.CheckpointPopupBuilder;
 import com.main.guapogame.model.graphics.builders.FritoBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Graphics;
 import com.main.guapogame.model.graphics.gameobjects.Hero;
-import com.main.guapogame.model.graphics.gameobjects.Misty;
 import com.main.guapogame.model.graphics.builders.MistyBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Popup;
 import com.main.guapogame.model.graphics.gameobjects.Snack;
@@ -65,6 +66,7 @@ class ModelUpdate implements Update {
         updateVillains();
         updateHero();
         updateMisty();
+        updateChivaz();
         updateBrownie();
         updateFrito();
         updateRocco();
@@ -157,8 +159,15 @@ class ModelUpdate implements Update {
         graphics.getSunPopup().update();
     }
 
-    private Misty createMisty() {
+    private BoundaryPopup createMisty() {
         return new MistyBuilder()
+                .context(context)
+                .storage(storage)
+                .build();
+    }
+
+    private BoundaryPopup createChivaz() {
+        return new ChivazBuilder()
                 .context(context)
                 .storage(storage)
                 .build();
@@ -240,11 +249,25 @@ class ModelUpdate implements Update {
         }
 
         if(heroInteractsWithPopup(graphics.getHero(), graphics.getMisty())) {
-            graphics.getMisty().hitMisty();
+            graphics.getMisty().hit();
             graphics.getMisty().playSoundHit();
         }
 
         graphics.getMisty().update();
+    }
+
+    private void updateChivaz() {
+        if((frameCounter % (8 * FPS)) == 0) {
+            graphics.setChivaz(createChivaz());
+            graphics.getChivaz().playSound();
+        }
+
+        if(heroInteractsWithPopup(graphics.getHero(), graphics.getChivaz())) {
+            graphics.getChivaz().hit();
+            graphics.getChivaz().playSoundHit();
+        }
+
+        graphics.getChivaz().update();
     }
 
     private void updateBrownie() {
@@ -441,6 +464,7 @@ class ModelUpdate implements Update {
         private void save() {
             storage.saveGame().saveHero(graphics.getHero());
             storage.saveGame().saveMisty(graphics.getMisty());
+            storage.saveGame().saveMisty(graphics.getChivaz());
             storage.saveGame().saveBrownie(graphics.getBrownie());
             storage.saveGame().saveFrito(graphics.getFrito());
             storage.saveGame().saveSnacks(graphics.getSnacks());

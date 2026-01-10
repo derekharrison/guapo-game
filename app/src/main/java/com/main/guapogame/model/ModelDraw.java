@@ -46,6 +46,7 @@ class ModelDraw implements Draw {
         drawScore(canvas);
         drawVillains(canvas);
         drawMisty(canvas);
+        drawChivaz(canvas);
         drawBrownie(canvas);
         drawFrito(canvas);
         drawRocco(canvas);
@@ -127,6 +128,10 @@ class ModelDraw implements Draw {
 
     private void drawMisty(Canvas canvas) {
         graphics.getMisty().draw(canvas);
+    }
+
+    private void drawChivaz(Canvas canvas) {
+        graphics.getChivaz().draw(canvas);
     }
 
     private void drawBrownie(Canvas canvas) {

@@ -3,6 +3,7 @@ package com.main.guapogame.parameters;
 public class Keys {
     public static final String HERO = "hero";
     public static final String MISTY = "misty";
+    public static final String CHIVAZ = "chivaz";
     public static final String BROWNIE = "brownie";
     public static final String FRITO = "frito";
     public static final String ROCCO = "rocco";

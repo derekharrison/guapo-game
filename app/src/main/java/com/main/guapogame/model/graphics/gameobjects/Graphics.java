@@ -7,7 +7,8 @@ import java.util.List;
 
 public class Graphics {
     private final Hero hero;
-    private Misty misty;
+    private BoundaryPopup misty;
+    private BoundaryPopup chivaz;
     private CharacterPopup brownie;
     private CharacterPopup frito;
     private CharacterPopup rocco;
@@ -23,6 +24,7 @@ public class Graphics {
     protected Graphics(Builder builder) {
         this.hero = builder.hero;
         this.misty = builder.misty;
+        this.chivaz = builder.chivaz;
         this.brownie = builder.brownie;
         this.villains = builder.villains;
         this.backgrounds = builder.backgrounds;
@@ -38,15 +40,21 @@ public class Graphics {
         return hero;
     }
 
-    public Misty getMisty() { return misty; }
+    public BoundaryPopup getMisty() { return misty; }
+
+    public BoundaryPopup getChivaz() { return chivaz; }
 
     public CharacterPopup getBrownie() { return brownie; }
 
     public CharacterPopup getFrito() { return frito; }
     public CharacterPopup getRocco() { return rocco; }
 
-    public void setMisty(Misty misty) {
+    public void setMisty(BoundaryPopup misty) {
         this.misty = misty;
+    }
+
+    public void setChivaz(BoundaryPopup chivaz) {
+        this.chivaz = chivaz;
     }
 
     public void setBrownie(CharacterPopup brownie) {
@@ -102,7 +110,8 @@ public class Graphics {
 
     public static class Builder {
         private Hero hero;
-        private Misty misty;
+        private BoundaryPopup misty;
+        private BoundaryPopup chivaz;
         private CharacterPopup brownie;
         private CharacterPopup frito;
         private CharacterPopup rocco;
@@ -120,8 +129,13 @@ public class Graphics {
             return this;
         }
 
-        public Builder misty(Misty misty) {
+        public Builder misty(BoundaryPopup misty) {
             this.misty = misty;
+            return this;
+        }
+
+        public Builder chivaz(BoundaryPopup chivaz) {
+            this.chivaz = chivaz;
             return this;
         }
 

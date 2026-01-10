@@ -11,7 +11,7 @@ import com.main.guapogame.resources.assets.Sounds;
 
 public class Popup extends GameObject implements Image, Update, Draw {
     protected final int duration;
-    protected final Bitmap image;
+    protected Bitmap image;
     protected int frameCounter;
     protected boolean playSound = true;
 

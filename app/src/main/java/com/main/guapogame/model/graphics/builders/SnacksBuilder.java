@@ -44,8 +44,9 @@ class SnacksBuilder {
     }
 
     private List<Snack> createSnacks() {
-         if(isActiveSession())
-            return getSnacksFromActiveSession();
+        // TODO 
+//         if(isActiveSession())
+//            return getSnacksFromActiveSession();
 
         return getSnacks();
     }

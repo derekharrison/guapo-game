@@ -1,10 +1,10 @@
 package com.main.guapogame.model.graphics.builders;
 
+import static com.main.guapogame.model.state.ScreenDimensions.getScreenHeight;
+import static com.main.guapogame.model.state.ScreenDimensions.getScreenWidth;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
 import static com.main.guapogame.parameters.Parameters.FPS;
-import static com.main.guapogame.model.state.ScreenDimensions.getScreenHeight;
-import static com.main.guapogame.model.state.ScreenDimensions.getScreenWidth;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,24 +12,26 @@ import android.graphics.BitmapFactory;
 
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.BoundaryPopup;
-import com.main.guapogame.model.graphics.gameobjects.Misty;
+import com.main.guapogame.model.graphics.gameobjects.Chivaz;
 import com.main.guapogame.model.state.RandomNumber;
-import com.main.guapogame.resources.assets.MistyAssets;
-import com.main.guapogame.state.GameState;
+import com.main.guapogame.resources.assets.ChivazAssets;
 import com.main.guapogame.resources.storage.Storage;
+import com.main.guapogame.state.GameState;
 
 import java.security.SecureRandom;
 
-public class MistyBuilder {
+public class ChivazBuilder {
+
     private Context context;
     private Storage storage;
+    private SecureRandom random = new SecureRandom();
 
-    public MistyBuilder context(Context context) {
+    public ChivazBuilder context(Context context) {
         this.context = context;
         return this;
     }
 
-    public MistyBuilder storage(Storage storage) {
+    public ChivazBuilder storage(Storage storage) {
         this.storage = storage;
         return this;
     }
@@ -39,11 +41,11 @@ public class MistyBuilder {
     }
 
     private BoundaryPopup createMisty() {
-        return new Misty.Builder()
-                .top(getMistyTop())
-                .topHit(getMistyTopHit())
-                .bottom(getMistyBottom())
-                .bottomHit(getMistyBottomHit())
+        return new Chivaz.Builder()
+                .top(getTop())
+                .topHit(getTopHit())
+                .bottom(getBottom())
+                .bottomHit(getBottomHit())
                 .positionX(getPositionX())
                 .positionY(getPositionY())
                 .frameCounter(getFrameCounter())
@@ -54,63 +56,63 @@ public class MistyBuilder {
                 .build();
     }
 
-    private Bitmap getMistyTop() {
+    private Bitmap getTop() {
         int width = getWidth();
         int height = getHeight();
 
         if(GameState.getLevel().equals(Level.OCEAN))
-            return getBitmapScaled(width, height, MistyAssets.getMistyTopOcean());
+            return getBitmapScaled(width, height, ChivazAssets.getTopOcean());
 
-        return getBitmapScaled(width, height, MistyAssets.getMistyTop());
+        return getBitmapScaled(width, height, ChivazAssets.getTop());
     }
 
-    private Bitmap getMistyTopHit() {
+    private Bitmap getTopHit() {
         int width = getWidth();
         int height = getHeight();
 
         if(GameState.getLevel().equals(Level.OCEAN))
-            return getBitmapScaled(width, height, MistyAssets.getMistyTopHitOcean());
+            return getBitmapScaled(width, height, ChivazAssets.getTopHitOcean());
 
-        return getBitmapScaled(width, height, MistyAssets.getMistyTopHit());
+        return getBitmapScaled(width, height, ChivazAssets.getTopHit());
     }
 
-    private Bitmap getMistyBottom() {
+    private Bitmap getBottom() {
         int width = getWidth();
         int height = getHeight();
 
         if(GameState.getLevel().equals(Level.OCEAN))
-            return getBitmapScaled(width, height, MistyAssets.getMistyBottomOcean());
+            return getBitmapScaled(width, height, ChivazAssets.getBottomOcean());
 
-        return getBitmapScaled(width, height, MistyAssets.getMistyBottom());
+        return getBitmapScaled(width, height, ChivazAssets.getBottom());
     }
 
-    private Bitmap getMistyBottomHit() {
+    private Bitmap getBottomHit() {
         int width = getWidth();
         int height = getHeight();
 
         if(GameState.getLevel().equals(Level.OCEAN))
-            return getBitmapScaled(width, height, MistyAssets.getMistyBottomHitOcean());
+            return getBitmapScaled(width, height, ChivazAssets.getBottomHitOcean());
 
-        return getBitmapScaled(width, height, MistyAssets.getMistyBottomHit());
+        return getBitmapScaled(width, height, ChivazAssets.getBottomHit());
     }
 
     private int getFrameCounter() {
         if(isActiveSession())
-            return storage.loadGame().getMistyFrameCounter();
+            return storage.loadGame().getChivazFrameCounter();
 
         return 0;
     }
 
     private float getPositionX() {
         if(isActiveSession())
-            return storage.loadGame().getMistyPosition(POSITION_X);
+            return storage.loadGame().getChivazPosition(POSITION_X);
 
         return getStartPositionX();
     }
 
     private float getPositionY() {
         if(isActiveSession())
-            return storage.loadGame().getMistyPosition(POSITION_Y);
+            return storage.loadGame().getChivazPosition(POSITION_Y);
 
         return -getScreenHeight();
     }
@@ -122,16 +124,16 @@ public class MistyBuilder {
 
     private boolean getHit() {
         if(isActiveSession())
-            return storage.loadGame().getMistyIsHit();
+            return storage.loadGame().getChivazIsHit();
 
         return false;
     }
 
     private boolean getIsTop() {
         if(isActiveSession())
-            return storage.loadGame().getMistyIsTop();
+            return storage.loadGame().getChivazIsTop();
 
-        return new SecureRandom().nextBoolean();
+        return random.nextBoolean();
     }
 
     private boolean isActiveSession() {
@@ -151,7 +153,7 @@ public class MistyBuilder {
     }
 
     private int getHeight() {
-        return (int) (getScreenFactorY() * 3.0 / 2.0);
+        return (int) (getScreenFactorY() * 4.0 / 2.0);
     }
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {

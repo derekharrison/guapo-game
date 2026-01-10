@@ -4,12 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.main.guapogame.model.graphics.gameobjects.Background;
+import com.main.guapogame.model.graphics.gameobjects.BoundaryPopup;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
 import com.main.guapogame.model.graphics.gameobjects.Graphics;
 import com.main.guapogame.model.graphics.gameobjects.Hero;
-import com.main.guapogame.model.graphics.gameobjects.Misty;
 import com.main.guapogame.model.graphics.gameobjects.Popup;
-import com.main.guapogame.model.graphics.gameobjects.Rocco;
 import com.main.guapogame.model.graphics.gameobjects.Snack;
 import com.main.guapogame.model.graphics.gameobjects.Villain;
 import com.main.guapogame.resources.storage.Storage;
@@ -55,8 +54,15 @@ public class GraphicsBuilder {
                 .build();
     }
 
-    private Misty createMisty() {
+    private BoundaryPopup createMisty() {
         return new MistyBuilder()
+                .context(context)
+                .storage(storage)
+                .build();
+    }
+
+    private BoundaryPopup createChivaz() {
+        return new ChivazBuilder()
                 .context(context)
                 .storage(storage)
                 .build();

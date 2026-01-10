@@ -1,8 +1,8 @@
 package com.main.guapogame.model.graphics.gameobjects;
 
-public class Misty extends BoundaryPopup {
+public class Chivaz extends BoundaryPopup {
 
-    protected Misty(Builder builder) {
+    protected Chivaz(Builder builder) {
         super(builder);
     }
 }

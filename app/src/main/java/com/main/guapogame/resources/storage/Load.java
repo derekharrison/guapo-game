@@ -4,6 +4,7 @@ import static com.main.guapogame.parameters.Keys.BACKGROUND;
 import static com.main.guapogame.parameters.Keys.BEGGIN;
 import static com.main.guapogame.parameters.Keys.BROWNIE;
 import static com.main.guapogame.parameters.Keys.CHECKPOINT;
+import static com.main.guapogame.parameters.Keys.CHIVAZ;
 import static com.main.guapogame.parameters.Keys.DIFFICULTY_LEVEL;
 import static com.main.guapogame.parameters.Keys.FRAME_COUNTER;
 import static com.main.guapogame.parameters.Keys.FRITO;
@@ -53,6 +54,22 @@ public class Load {
 
     public boolean getMistyIsTop() {
         return getTop(getKey(getLevelId(), MISTY, IS_TOP));
+    }
+
+    public float getChivazPosition(String key) {
+        return getPosition(getKey(getLevelId(), CHIVAZ, key));
+    }
+
+    public boolean getChivazIsHit() {
+        return getHit(getKey(getLevelId(), CHIVAZ, IS_HIT));
+    }
+
+    public int getChivazFrameCounter() {
+        return getFrameCounter(getKey(getLevelId(), CHIVAZ, FRAME_COUNTER));
+    }
+
+    public boolean getChivazIsTop() {
+        return getTop(getKey(getLevelId(), CHIVAZ, IS_TOP));
     }
 
     public float getBrowniePosition(String key) {

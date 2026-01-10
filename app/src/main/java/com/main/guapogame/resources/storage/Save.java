@@ -4,6 +4,7 @@ import static com.main.guapogame.parameters.Keys.BACKGROUND;
 import static com.main.guapogame.parameters.Keys.BEGGIN;
 import static com.main.guapogame.parameters.Keys.BROWNIE;
 import static com.main.guapogame.parameters.Keys.CHECKPOINT;
+import static com.main.guapogame.parameters.Keys.CHIVAZ;
 import static com.main.guapogame.parameters.Keys.DIFFICULTY_LEVEL;
 import static com.main.guapogame.parameters.Keys.FRAME_COUNTER;
 import static com.main.guapogame.parameters.Keys.FRITO;
@@ -33,9 +34,9 @@ import android.content.SharedPreferences;
 
 import com.main.guapogame.model.graphics.gameobjects.Background;
 import com.main.guapogame.model.graphics.gameobjects.BegginStrip;
+import com.main.guapogame.model.graphics.gameobjects.BoundaryPopup;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
 import com.main.guapogame.model.graphics.gameobjects.Hero;
-import com.main.guapogame.model.graphics.gameobjects.Misty;
 import com.main.guapogame.model.graphics.gameobjects.Snack;
 import com.main.guapogame.model.graphics.gameobjects.Villain;
 
@@ -59,12 +60,20 @@ public class Save {
         saveFrameCounter(getKey(getLevelId(), HERO, FRAME_COUNTER), hero.getFrameCounter());
     }
 
-    public void saveMisty(Misty misty) {
+    public void saveMisty(BoundaryPopup misty) {
         savePosition(getKey(getLevelId(), MISTY, POSITION_X), misty.getPositionX());
         savePosition(getKey(getLevelId(), MISTY, POSITION_Y), misty.getPositionY());
         saveIsHit(getKey(getLevelId(), MISTY, IS_HIT), misty.isHit());
         saveMistyIsTop(getKey(getLevelId(), MISTY, IS_TOP), misty.isTop());
         saveFrameCounter(getKey(getLevelId(), MISTY, FRAME_COUNTER), misty.getFrameCounter());
+    }
+
+    public void saveChivaz(BoundaryPopup chivaz) {
+        savePosition(getKey(getLevelId(), CHIVAZ, POSITION_X), chivaz.getPositionX());
+        savePosition(getKey(getLevelId(), CHIVAZ, POSITION_Y), chivaz.getPositionY());
+        saveIsHit(getKey(getLevelId(), CHIVAZ, IS_HIT), chivaz.isHit());
+        saveMistyIsTop(getKey(getLevelId(), CHIVAZ, IS_TOP), chivaz.isTop());
+        saveFrameCounter(getKey(getLevelId(), CHIVAZ, FRAME_COUNTER), chivaz.getFrameCounter());
     }
 
     public void saveBrownie(CharacterPopup brownie) {
