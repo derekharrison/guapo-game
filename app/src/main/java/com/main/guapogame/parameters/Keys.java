@@ -11,7 +11,6 @@ public class Keys {
     public static final String BEGGIN = "beggin";
     public static final String VILLAIN = "villain";
     public static final String NUM_VILLAINS = "numVillains";
-    public static final String NUM_SNACKS = "numSnacks";
     public static final String BACKGROUND = "background";
     public static final String SNACK_POINTS = "snackPoints";
     public static final String SNACK_ASSET_ID = "snackAssetId";
@@ -35,6 +34,7 @@ public class Keys {
     public static final String IS_HIT = "hit";
     public static final String IS_TOP = "top";
     public static final String DIFFICULTY_LEVEL = "difficultyLevel";
+    public static final String ASSET_ID = "asset_id";
 
     public static String getKey(String...key) {
         StringBuilder stringBuilder = new StringBuilder();

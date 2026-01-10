@@ -6,6 +6,10 @@ import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
 import static com.main.guapogame.parameters.Keys.getKey;
+import static com.main.guapogame.parameters.Parameters.NUM_BROCCOLI;
+import static com.main.guapogame.parameters.Parameters.NUM_CHEESY_BITES;
+import static com.main.guapogame.parameters.Parameters.NUM_CUCUMBERS;
+import static com.main.guapogame.parameters.Parameters.NUM_PAPRIKA;
 import static com.main.guapogame.parameters.Parameters.POINTS_BEGGIN_STRIPS;
 import static com.main.guapogame.model.state.ScreenDimensions.getScreenHeight;
 import static com.main.guapogame.model.state.ScreenDimensions.getScreenWidth;
@@ -44,9 +48,8 @@ class SnacksBuilder {
     }
 
     private List<Snack> createSnacks() {
-        // TODO 
-//         if(isActiveSession())
-//            return getSnacksFromActiveSession();
+         if(isActiveSession())
+            return getSnacksFromActiveSession();
 
         return getSnacks();
     }
@@ -54,8 +57,8 @@ class SnacksBuilder {
     private List<Snack> getSnacks() {
         List<Snack> snacks = new ArrayList<>();
         snacks.addAll(createSnacks(Parameters.NUM_CHEESY_BITES, Parameters.POINTS_CHEESY_BITES, R.drawable.cheesy_bite_resized));
-        snacks.addAll(createSnacks(Parameters.NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
-        snacks.addAll(createSnacks(Parameters.NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
+        snacks.addAll(createSnacks(NUM_PAPRIKA, Parameters.POINTS_PAPRIKA, R.drawable.paprika_bitmap_cropped));
+        snacks.addAll(createSnacks(NUM_CUCUMBERS, Parameters.POINTS_CUCUMBER, R.drawable.cucumber_bitmap_cropped));
         snacks.addAll(createSnacks(Parameters.NUM_BROCCOLI, Parameters.POINTS_BROCCOLI, R.drawable.broccoli_bitmap_cropped));
         snacks.add(createBegginStrip());
 
@@ -83,17 +86,18 @@ class SnacksBuilder {
     }
 
     private int getAssetId(String snackId) {
-        return storage.loadGame().getSnackAssetId(String.valueOf(snackId));
+        return storage.loadGame().getSnackAssetId(snackId);
     }
 
     private Snack createSnack(String snackId) {
         int width = (int) (getScreenFactorX() - getScreenFactorX() / 3.0);
         int height = (int) (getScreenFactorY() - getScreenFactorY() / 3.0);
         return new Snack.Builder()
-                .positionX((int) getSnackPositionX(String.valueOf(snackId)))
-                .positionY((int) getSnackPositionY(String.valueOf(snackId)))
-                .pointsForSnack(getPointsForSnack(String.valueOf(snackId)))
+                .positionX((int) getSnackPositionX(snackId))
+                .positionY((int) getSnackPositionY(snackId))
+                .pointsForSnack(getPointsForSnack(snackId))
                 .snackImage(getBitmapScaled(width, height, getAssetId(snackId)))
+                .assetId(getAssetId(snackId))
                 .resources(context.getResources())
                 .build();
     }
@@ -107,11 +111,12 @@ class SnacksBuilder {
                 .positionY((int) getSnackPositionY(snackImage))
                 .pointsForSnack(pointsForSnack)
                 .snackImage(snackImage)
+                .assetId(assetId)
                 .resources(context.getResources())
                 .build();
     }
 
-    private BegginStrip createBegginStrip() {
+    private Snack createBegginStrip() {
         int width = (int) (getScreenFactorX() - getScreenFactorX() / 3.0);
         int height = (int) (getScreenFactorY() - getScreenFactorY() / 3.0);
         Bitmap snackImage = getBitmapScaled(width, height, R.drawable.beggin_strip_cropped);
@@ -120,6 +125,7 @@ class SnacksBuilder {
                 .positionY((int) getBegginPositionY(snackImage))
                 .pointsForSnack(POINTS_BEGGIN_STRIPS)
                 .snackImage(snackImage)
+                .assetId(R.drawable.beggin_strip_cropped)
                 .resources(context.getResources())
                 .build();
     }
@@ -138,15 +144,11 @@ class SnacksBuilder {
     }
 
     private int getNumSnacks() {
-        if(isActiveSession()) {
-            return storage.loadGame().getNumSnacks();
-        }
-
-        return 1;
+        return NUM_CHEESY_BITES + NUM_BROCCOLI + NUM_PAPRIKA + NUM_CUCUMBERS;
     }
 
     private float getSnackPositionX(String snackId) {
-        return storage.loadGame().getSnackPosition(POSITION_X, String.valueOf(snackId));
+        return storage.loadGame().getSnackPosition(POSITION_X, snackId);
     }
 
     private float getBegginPositionX() {
@@ -164,11 +166,11 @@ class SnacksBuilder {
     }
 
     private float getSnackPositionY(String snackId) {
-        return storage.loadGame().getSnackPosition(POSITION_Y, String.valueOf(snackId));
+        return storage.loadGame().getSnackPosition(POSITION_Y, snackId);
     }
 
     private int getPointsForSnack(String snackId) {
-        return storage.loadGame().getSnackPoints(String.valueOf(snackId));
+        return storage.loadGame().getSnackPoints(snackId);
     }
 
     private float getSnackPositionX(Bitmap snackImage) {

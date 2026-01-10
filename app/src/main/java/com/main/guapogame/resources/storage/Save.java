@@ -16,13 +16,13 @@ import static com.main.guapogame.parameters.Keys.IS_TOP;
 import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.LIVES;
 import static com.main.guapogame.parameters.Keys.MISTY;
-import static com.main.guapogame.parameters.Keys.NUM_SNACKS;
 import static com.main.guapogame.parameters.Keys.NUM_VILLAINS;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
 import static com.main.guapogame.parameters.Keys.ROCCO;
 import static com.main.guapogame.parameters.Keys.SCORE;
 import static com.main.guapogame.parameters.Keys.SNACK;
+import static com.main.guapogame.parameters.Keys.SNACK_ASSET_ID;
 import static com.main.guapogame.parameters.Keys.SNACK_POINTS;
 import static com.main.guapogame.parameters.Keys.VELOCITY_X;
 import static com.main.guapogame.parameters.Keys.VELOCITY_Y;
@@ -132,7 +132,6 @@ public class Save {
                 snackId++;
             }
         }
-        saveNum(getKey(getLevelId(), SNACK, NUM_SNACKS), snackId);
     }
 
     public void saveDifficulty(int difficultyLevel) {
@@ -194,6 +193,7 @@ public class Save {
         savePosition(getKey(getLevelId(), SNACK, POSITION_Y, snackId), snack.getPositionY());
         savePosition(getKey(getLevelId(), SNACK, VELOCITY_X, snackId), snack.getVelocityX());
         savePosition(getKey(getLevelId(), SNACK, VELOCITY_Y, snackId), snack.getVelocityY());
+        saveAssetId(getKey(getLevelId(), SNACK, SNACK_ASSET_ID, snackId), snack.getAssetId());
         saveSnackPoints(getKey(getLevelId(), SNACK, SNACK_POINTS, snackId), snack.getPointsForSnack());
     }
 
@@ -213,6 +213,12 @@ public class Save {
     private void savePosition(String key, float position) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putFloat(key, position);
+        editor.apply();
+    }
+
+    private void saveAssetId(String key, int asset) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(key, asset);
         editor.apply();
     }
 

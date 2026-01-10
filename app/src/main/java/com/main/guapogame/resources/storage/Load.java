@@ -15,7 +15,6 @@ import static com.main.guapogame.parameters.Keys.IS_TOP;
 import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.LIVES;
 import static com.main.guapogame.parameters.Keys.MISTY;
-import static com.main.guapogame.parameters.Keys.NUM_SNACKS;
 import static com.main.guapogame.parameters.Keys.NUM_VILLAINS;
 import static com.main.guapogame.parameters.Keys.ROCCO;
 import static com.main.guapogame.parameters.Keys.SCORE;
@@ -133,7 +132,7 @@ public class Load {
     }
 
     public int getSnackAssetId(String snackId) {
-        return prefs.getInt(getKey(getLevelId(), SNACK, SNACK_ASSET_ID, snackId), 1);
+        return prefs.getInt(getKey(getLevelId(), SNACK, SNACK_ASSET_ID, snackId), 0);
     }
 
     public int getSnackPoints(String snackId) {
@@ -170,10 +169,6 @@ public class Load {
 
     public int getNumVillains() {
         return prefs.getInt(getKey(getLevelId(), VILLAIN, NUM_VILLAINS), 3);
-    }
-
-    public int getNumSnacks() {
-        return prefs.getInt(getKey(getLevelId(), SNACK, NUM_SNACKS), 1);
     }
 
     public int getVillainFrameCounter(String villainId) {

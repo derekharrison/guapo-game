@@ -23,6 +23,7 @@ public class Snack implements Position, Velocity, Update, Image, Draw {
     private final int pointsSnack;
     private final SecureRandom random = new SecureRandom();
     private final Resources resources;
+    private final int assetId;
 
     protected Snack(Builder builder) {
         this.positionX = builder.positionX;
@@ -30,6 +31,7 @@ public class Snack implements Position, Velocity, Update, Image, Draw {
         this.snackImage = builder.snackImage;
         this.pointsSnack = builder.pointsSnack;
         this.resources = builder.resources;
+        this.assetId = builder.assetId;
     }
 
     public static class Builder {
@@ -38,6 +40,7 @@ public class Snack implements Position, Velocity, Update, Image, Draw {
         private Bitmap snackImage;
         private int pointsSnack;
         private Resources resources;
+        private int assetId;
 
         public Builder positionX(int positionX) {
             this.positionX = positionX;
@@ -61,6 +64,11 @@ public class Snack implements Position, Velocity, Update, Image, Draw {
 
         public Builder resources(Resources resources) {
             this.resources = resources;
+            return this;
+        }
+
+        public Builder assetId(int assetId) {
+            this.assetId = assetId;
             return this;
         }
 
@@ -88,6 +96,10 @@ public class Snack implements Position, Velocity, Update, Image, Draw {
     @Override
     public float getPositionY() {
         return positionY;
+    }
+
+    public int getAssetId() {
+        return assetId;
     }
 
     @Override
