@@ -13,7 +13,7 @@ import android.graphics.BitmapFactory;
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.BoundaryPopup;
 import com.main.guapogame.model.graphics.gameobjects.Chivaz;
-import com.main.guapogame.model.state.RandomNumber;
+import com.main.guapogame.model.state.Random;
 import com.main.guapogame.resources.assets.ChivazAssets;
 import com.main.guapogame.resources.storage.Storage;
 import com.main.guapogame.state.GameState;
@@ -24,7 +24,6 @@ public class ChivazBuilder {
 
     private Context context;
     private Storage storage;
-    private SecureRandom random = new SecureRandom();
 
     public ChivazBuilder context(Context context) {
         this.context = context;
@@ -118,7 +117,7 @@ public class ChivazBuilder {
     }
 
     private float getStartPositionX() {
-        int pos = RandomNumber.getRandomNumber(getScreenWidth() / 2);
+        int pos = Random.getRandomNumber(getScreenWidth() / 2);
         return (float) getScreenWidth() / 4 + pos;
     }
 
@@ -133,7 +132,7 @@ public class ChivazBuilder {
         if(isActiveSession())
             return storage.loadGame().getChivazIsTop();
 
-        return random.nextBoolean();
+        return Random.getRandomBoolean();
     }
 
     private boolean isActiveSession() {

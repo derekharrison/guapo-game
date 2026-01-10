@@ -231,6 +231,6 @@ public class BoundaryPopup extends Popup {
     }
 
     private int calcStartPositionBottomY() {
-        return getScreenHeight() + image.getHeight();
+        return getScreenHeight();
     }
 }

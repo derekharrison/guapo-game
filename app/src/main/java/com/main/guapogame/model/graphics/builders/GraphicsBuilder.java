@@ -33,6 +33,7 @@ public class GraphicsBuilder {
         return new Graphics.Builder()
                 .hero(createHero())
                 .misty(createMisty())
+                .chivaz(createChivaz())
                 .brownie(createBrownie())
                 .frito(createFrito())
                 .rocco(createRocco())
