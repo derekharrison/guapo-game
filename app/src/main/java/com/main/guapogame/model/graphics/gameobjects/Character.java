@@ -74,16 +74,7 @@ public class Character extends AbstractCharacter {
     }
 
     public List<Bitmap> getImages() { return images; }
-
-
-    public void setPositionX(float positionX) {
-        this.positionX = positionX;
-    }
-
-    public void setPositionY(float positionY) {
-        this.positionY = positionY;
-    }
-
+    
     @Override
     public float getVelocityX() {
         return velX;

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.main.guapogame.model.state.Random;
 import com.main.guapogame.resources.assets.Sounds;
 
 public class BoundaryPopup extends Popup {
@@ -14,9 +15,8 @@ public class BoundaryPopup extends Popup {
     private final Bitmap topHit;
     private final Bitmap bottom;
     private final Bitmap bottomHit;
-    private Bitmap imageHit;
     private boolean isHit;
-    private final boolean isTop;
+    private boolean isTop;
     private boolean playSoundHit = true;
     private final Bubbles bubbles = new Bubbles(this);
 
@@ -28,7 +28,6 @@ public class BoundaryPopup extends Popup {
         this.bottomHit = builder.bottomHit;
         this.isHit = builder.isHit;
         this.isTop = builder.isTop;
-        setImages();
         setStartPositionY();
     }
 
@@ -97,13 +96,26 @@ public class BoundaryPopup extends Popup {
         return frameCounter;
     }
 
+    public void reset() {
+        playSound = true;
+        frameCounter = 0;
+        isHit = false;
+        isTop = Random.getRandomBoolean();
+    }
+
     @Override
     public Bitmap getImage() {
-        return image;
+        if(isTop)
+            return top;
+
+        return bottom;
     }
 
     public Bitmap getImageHit() {
-        return imageHit;
+        if(isTop)
+            return topHit;
+
+        return bottomHit;
     }
 
     public static class Builder extends Popup.Builder {
@@ -206,18 +218,6 @@ public class BoundaryPopup extends Popup {
         return (getImage().getHeight() * 3) / (12 * FPS);
     }
 
-    private void setImages() {
-        if(isTop) {
-            image = top;
-            imageHit = topHit;
-        }
-
-        if(!isTop) {
-            image = bottom;
-            imageHit = bottomHit;
-        }
-    }
-
     private void setStartPositionY() {
         if(isTop)
             positionY = calcStartPositionTopY();
@@ -227,7 +227,7 @@ public class BoundaryPopup extends Popup {
     }
 
     private int calcStartPositionTopY() {
-        return -image.getHeight();
+        return -getImage().getHeight();
     }
 
     private int calcStartPositionBottomY() {

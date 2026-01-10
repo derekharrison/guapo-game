@@ -29,6 +29,14 @@ public class GameObject implements Position {
         return positionY;
     }
 
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
+
     public static class Builder {
         private Context context;
         private float positionX;

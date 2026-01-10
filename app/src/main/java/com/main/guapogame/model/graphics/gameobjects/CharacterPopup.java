@@ -68,6 +68,12 @@ public class CharacterPopup extends Popup {
         return frameCounter;
     }
 
+    public void reset() {
+        playSound = true;
+        frameCounter = 0;
+        isHit = false;
+    }
+
     public static class Builder extends Popup.Builder {
         private Bitmap imageHit;
         private float velY;

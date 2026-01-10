@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.Brownie;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
+import com.main.guapogame.model.state.Random;
 import com.main.guapogame.resources.assets.BrownieAssets;
 import com.main.guapogame.state.GameState;
 
@@ -57,7 +58,7 @@ public class BrownieBuilder extends AbstractCharacterPopupBuilder {
             return storage.loadGame().getBrowniePosition(POSITION_X);
 
         int screenWidth = getScreenWidth();
-        return (float) screenWidth + getImage().getWidth() + random.nextInt(screenWidth);
+        return (float) screenWidth + getImage().getWidth() + Random.getRandomNumber(screenWidth);
     }
 
     private float getPositionY() {

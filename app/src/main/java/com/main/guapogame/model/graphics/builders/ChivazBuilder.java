@@ -18,8 +18,6 @@ import com.main.guapogame.resources.assets.ChivazAssets;
 import com.main.guapogame.resources.storage.Storage;
 import com.main.guapogame.state.GameState;
 
-import java.security.SecureRandom;
-
 public class ChivazBuilder {
 
     private Context context;

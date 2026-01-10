@@ -18,17 +18,15 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-import com.main.guapogame.model.graphics.builders.ChivazBuilder;
-import com.main.guapogame.model.graphics.builders.RoccoBuilder;
+import com.main.guapogame.model.graphics.converters.BrownieConverter;
+import com.main.guapogame.model.graphics.converters.BoundaryPopupConverter;
+import com.main.guapogame.model.graphics.converters.FritoConverter;
+import com.main.guapogame.model.graphics.converters.RoccoConverter;
 import com.main.guapogame.model.graphics.gameobjects.Background;
-import com.main.guapogame.model.graphics.builders.BrownieBuilder;
 import com.main.guapogame.model.graphics.gameobjects.BoundaryPopup;
-import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
 import com.main.guapogame.model.graphics.builders.CheckpointPopupBuilder;
-import com.main.guapogame.model.graphics.builders.FritoBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Graphics;
 import com.main.guapogame.model.graphics.gameobjects.Hero;
-import com.main.guapogame.model.graphics.builders.MistyBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Popup;
 import com.main.guapogame.model.graphics.gameobjects.Snack;
 import com.main.guapogame.model.graphics.builders.SunPopupBuilder;
@@ -159,39 +157,20 @@ class ModelUpdate implements Update {
         graphics.getSunPopup().update();
     }
 
-    private BoundaryPopup createMisty() {
-        return new MistyBuilder()
-                .context(context)
-                .storage(storage)
-                .build();
+    private void convertRocco() {
+        RoccoConverter.convert(graphics.getRocco());
     }
 
-    private BoundaryPopup createChivaz() {
-        return new ChivazBuilder()
-                .context(context)
-                .storage(storage)
-                .build();
+    private void convertBoundaryPopup(BoundaryPopup popup) {
+        BoundaryPopupConverter.convert(popup);
     }
 
-    private CharacterPopup createBrownie() {
-        return new BrownieBuilder()
-                .context(context)
-                .storage(storage)
-                .build();
+    private void convertBrownie() {
+        BrownieConverter.convert(graphics.getBrownie());
     }
 
-    private CharacterPopup createFrito() {
-        return new FritoBuilder()
-                .context(context)
-                .storage(storage)
-                .build();
-    }
-
-    private CharacterPopup createRocco() {
-        return new RoccoBuilder()
-                .context(context)
-                .storage(storage)
-                .build();
+    private void convertFrito() {
+        FritoConverter.convert(graphics.getFrito());
     }
 
     private void createSounds() {
@@ -244,7 +223,7 @@ class ModelUpdate implements Update {
 
     private void updateMisty() {
         if((frameCounter % (6 * FPS)) == 0) {
-            graphics.setMisty(createMisty());
+            convertBoundaryPopup(graphics.getMisty());
             graphics.getMisty().playSound();
         }
 
@@ -258,7 +237,7 @@ class ModelUpdate implements Update {
 
     private void updateChivaz() {
         if((frameCounter % (8 * FPS)) == 0) {
-            graphics.setChivaz(createChivaz());
+            convertBoundaryPopup(graphics.getChivaz());
             graphics.getChivaz().playSound();
         }
 
@@ -272,7 +251,7 @@ class ModelUpdate implements Update {
 
     private void updateBrownie() {
         if((frameCounter % (16 * FPS)) == 0) {
-            graphics.setBrownie(createBrownie());
+            convertBrownie();
             graphics.getBrownie().playSound();
         }
 
@@ -286,7 +265,7 @@ class ModelUpdate implements Update {
 
     private void updateFrito() {
         if((frameCounter % (16 * FPS)) == 0) {
-            graphics.setFrito(createFrito());
+            convertFrito();
             graphics.getFrito().playSound();
         }
 
@@ -299,8 +278,8 @@ class ModelUpdate implements Update {
     }
 
     private void updateRocco() {
-        if((frameCounter % (8 * FPS)) == 0) {
-            graphics.setRocco(createRocco());
+        if((frameCounter % (10 * FPS)) == 0) {
+            convertRocco();
             graphics.getRocco().playSound();
         }
 

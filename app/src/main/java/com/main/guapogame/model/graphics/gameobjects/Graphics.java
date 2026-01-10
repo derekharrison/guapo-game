@@ -25,7 +25,9 @@ public class Graphics {
         this.hero = builder.hero;
         this.misty = builder.misty;
         this.chivaz = builder.chivaz;
+        this.rocco = builder.rocco;
         this.brownie = builder.brownie;
+        this.frito = builder.frito;
         this.villains = builder.villains;
         this.backgrounds = builder.backgrounds;
         this.checkpointPopup = builder.checkpointPopup;
