@@ -222,7 +222,7 @@ class ModelUpdate implements Update {
     }
 
     private void updateMisty() {
-        if((frameCounter % (6 * FPS)) == 0) {
+        if((frameCounter % (10 * FPS)) == 0) {
             convertBoundaryPopup(graphics.getMisty());
             graphics.getMisty().playSound();
         }
@@ -236,7 +236,7 @@ class ModelUpdate implements Update {
     }
 
     private void updateChivaz() {
-        if((frameCounter % (8 * FPS)) == 0) {
+        if((frameCounter % (10 * FPS)) == 0) {
             convertBoundaryPopup(graphics.getChivaz());
             graphics.getChivaz().playSound();
         }

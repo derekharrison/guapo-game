@@ -98,6 +98,7 @@ public class BoundaryPopup extends Popup {
 
     public void reset() {
         playSound = true;
+        playSoundHit = true;
         frameCounter = 0;
         isHit = false;
         isTop = Random.getRandomBoolean();

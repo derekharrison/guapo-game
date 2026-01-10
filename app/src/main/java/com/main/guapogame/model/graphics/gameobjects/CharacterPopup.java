@@ -70,6 +70,8 @@ public class CharacterPopup extends Popup {
 
     public void reset() {
         playSound = true;
+        playSoundAppearing = true;
+        playSoundHit = true;
         frameCounter = 0;
         isHit = false;
     }

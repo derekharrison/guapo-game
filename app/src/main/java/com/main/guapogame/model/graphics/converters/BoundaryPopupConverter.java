@@ -13,9 +13,9 @@ public class BoundaryPopupConverter {
     }
 
     protected static void update(BoundaryPopup popup) {
+        popup.reset();
         popup.setPositionX(getPositionX());
         popup.setPositionY(getPositionY(popup));
-        popup.reset();
     }
 
     private static float getPositionX() {
