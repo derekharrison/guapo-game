@@ -115,10 +115,6 @@ public class Load {
         return getFrameCounter(getKey(getLevelId(), ROCCO, FRAME_COUNTER));
     }
 
-    public float getRoccoVelocity(String key) {
-        return getVelocity(getKey(getLevelId(), ROCCO, key));
-    }
-
     public float getVillainPosition(String key, String villainId) {
         return getPosition(getKey(getLevelId(), VILLAIN, key, villainId));
     }

@@ -443,9 +443,10 @@ class ModelUpdate implements Update {
         private void save() {
             storage.saveGame().saveHero(graphics.getHero());
             storage.saveGame().saveMisty(graphics.getMisty());
-            storage.saveGame().saveMisty(graphics.getChivaz());
+            storage.saveGame().saveChivaz(graphics.getChivaz());
             storage.saveGame().saveBrownie(graphics.getBrownie());
             storage.saveGame().saveFrito(graphics.getFrito());
+            storage.saveGame().saveRocco(graphics.getRocco());
             storage.saveGame().saveSnacks(graphics.getSnacks());
             storage.saveGame().saveVillains(graphics.getVillains());
             storage.saveGame().saveBackgrounds(graphics.getBackgrounds());

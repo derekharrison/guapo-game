@@ -49,7 +49,7 @@ public class RoccoBuilder extends AbstractCharacterPopupBuilder {
 
     private int getFrameCounter() {
         if(isActiveSession())
-            return storage.loadGame().getFritoFrameCounter();
+            return storage.loadGame().getRoccoFrameCounter();
 
         return 0;
     }
