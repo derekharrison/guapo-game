@@ -3,14 +3,14 @@ package com.main.guapogame.model.state;
 import java.security.SecureRandom;
 
 public class Random {
-    private static SecureRandom random = new SecureRandom();
+    private static SecureRandom secureRandom = new SecureRandom();
 
     public static int getRandomNumber(int bound) {
-        return random.nextInt(bound);
+        return secureRandom.nextInt(bound);
     }
 
     public static boolean getRandomBoolean() {
-        return random.nextBoolean();
+        return secureRandom.nextBoolean();
     }
 
     private Random() {}
