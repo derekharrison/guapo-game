@@ -3,6 +3,7 @@ package com.main.guapogame.model.graphics.gameobjects;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.main.guapogame.model.state.Random;
 import com.main.guapogame.model.state.Trajectory;
 import com.main.guapogame.resources.assets.Sounds;
 
@@ -13,6 +14,7 @@ public class Rocco extends CharacterPopup {
 
     private final List<Bitmap> capes;
     private int capeCounter = 0;
+    private float departureAngle;
 
     protected Rocco(Builder builder) {
         super(builder);
@@ -21,13 +23,16 @@ public class Rocco extends CharacterPopup {
 
     @Override
     public void update() {
-        super.update();
-        if(getFrameCounter() < duration) {
+        if(getFrameCounter() < duration / 2) {
             updatePosition();
             updateBubbles();
             playSoundAppearing();
-            capeCounter++;
         }
+        else if(getFrameCounter() < duration) {
+            flyAway();
+        }
+        frameCounter++;
+        capeCounter++;
     }
 
     @Override
@@ -67,6 +72,12 @@ public class Rocco extends CharacterPopup {
         }
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        departureAngle = Random.getRandomFloat((float) (2 * Math.PI));
+    }
+
     public static class Builder extends CharacterPopup.Builder {
         private List<Bitmap> capes = new ArrayList<>();
 
@@ -87,6 +98,15 @@ public class Rocco extends CharacterPopup {
             positionX = Trajectory.getFirst().getPositionX();
             positionY = Trajectory.getFirst().getPositionY();
         }
+    }
+
+    private void flyAway() {
+        float speed = 100;
+        float displacementX = (float) (speed * Math.cos(departureAngle));
+        float displacementY = (float) (speed * Math.sin(departureAngle));
+
+        positionX += displacementX;
+        positionY += displacementY;
     }
 
     private Bitmap getCapeImage() {

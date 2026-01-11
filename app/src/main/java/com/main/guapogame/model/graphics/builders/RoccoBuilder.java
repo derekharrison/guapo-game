@@ -34,7 +34,7 @@ public class RoccoBuilder extends AbstractCharacterPopupBuilder {
                 .positionY(getPositionY())
                 .frameCounter(getFrameCounter())
                 .context(context)
-                .duration(4 * FPS)
+                .duration(8 * FPS)
                 .build();
     }
 

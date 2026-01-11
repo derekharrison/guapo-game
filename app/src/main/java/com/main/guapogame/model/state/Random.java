@@ -13,5 +13,9 @@ public class Random {
         return secureRandom.nextBoolean();
     }
 
+    public static float getRandomFloat(float bound) {
+        return secureRandom.nextFloat() * bound;
+    }
+
     private Random() {}
 }
