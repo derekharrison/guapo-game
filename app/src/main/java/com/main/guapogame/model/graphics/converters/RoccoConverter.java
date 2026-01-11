@@ -9,10 +9,6 @@ import com.main.guapogame.model.state.Random;
 public class RoccoConverter {
 
     public static void convert(CharacterPopup popup) {
-        update(popup);
-    }
-
-    protected static void update(CharacterPopup popup) {
         popup.setPositionX(getPositionX(popup));
         popup.setPositionY(getPositionY());
         popup.reset();

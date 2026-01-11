@@ -9,10 +9,6 @@ import com.main.guapogame.model.state.Random;
 public class BoundaryPopupConverter {
 
     public static void convert(BoundaryPopup popup) {
-        update(popup);
-    }
-
-    protected static void update(BoundaryPopup popup) {
         popup.reset();
         popup.setPositionX(getPositionX());
         popup.setPositionY(getPositionY(popup));

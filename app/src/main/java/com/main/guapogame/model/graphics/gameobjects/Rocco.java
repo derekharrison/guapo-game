@@ -79,7 +79,7 @@ public class Rocco extends CharacterPopup {
     }
 
     public static class Builder extends CharacterPopup.Builder {
-        private List<Bitmap> capes = new ArrayList<>();
+        private final List<Bitmap> capes = new ArrayList<>();
 
         public Builder capes(Bitmap cape) {
             capes.add(cape);
