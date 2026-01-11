@@ -132,7 +132,9 @@ public class View extends SurfaceView implements Runnable {
 
     private void handleClick(MotionEvent event) {
         handlePause(event);
-        handleUpdatePosition(event);
+        if(heroUpdatesAllowed()) {
+            handleUpdatePosition(event);
+        }
     }
 
     private void handleMove(MotionEvent event) {
@@ -150,6 +152,10 @@ public class View extends SurfaceView implements Runnable {
 
     private void stopHeroUpdates() {
         model.getHero().setAllowUpdate(false);
+    }
+
+    private boolean heroUpdatesAllowed() {
+        return model.getHero().getAllowUpdate();
     }
     private void handleUp() {
         allowHeroUpdates();

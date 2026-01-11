@@ -133,6 +133,10 @@ public class Hero extends Character {
         this.allowUpdate = allowUpdate;
     }
 
+    public boolean getAllowUpdate() {
+        return allowUpdate;
+    }
+
     private void updateBubbles() {
         if(getBubbleFrameCounter() >= 6 * FPS) {
             bubbles = new Bubbles(this);
