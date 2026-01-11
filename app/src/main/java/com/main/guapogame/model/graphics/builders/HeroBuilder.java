@@ -2,6 +2,7 @@ package com.main.guapogame.model.graphics.builders;
 
 import static com.main.guapogame.model.enums.HeroId.MICA;
 import static com.main.guapogame.model.enums.HeroId.TUTTI;
+import static com.main.guapogame.parameters.Keys.CHOOSE_CHARACTER;
 import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.GAMESTATE;
 import static com.main.guapogame.parameters.Keys.LEVEL;
@@ -134,6 +135,7 @@ class HeroBuilder {
         int width = getHeroWidth();
         int height = getHeroHeight();
         return new Hero.Builder()
+                .velX(0).velY(0)
                 .positionX(getHeroPositionX())
                 .positionY(getHeroPositionY())
                 .heroImage(getBitmapScaled(width, height, assetId))
@@ -165,9 +167,6 @@ class HeroBuilder {
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableIdentification);
-        if(bitmap == null)
-            return null;
-
         return Bitmap.createScaledBitmap(bitmap, scaleX, scaleY, false);
     }
 
@@ -200,7 +199,7 @@ class HeroBuilder {
     }
 
     private HeroId getHeroId() {
-        int heroId = getSharedPreferences().getInt("choose_character", 0);
+        int heroId = getSharedPreferences().getInt(CHOOSE_CHARACTER, 0);
 
         if(heroId == 1)
             return HeroId.TUTTI;

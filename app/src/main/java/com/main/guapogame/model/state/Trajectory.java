@@ -37,5 +37,9 @@ public class Trajectory {
         return null;
     }
 
+    public static void clear() {
+        track.clear();
+    }
+
     private Trajectory() {}
 }

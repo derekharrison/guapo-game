@@ -16,6 +16,7 @@ import android.graphics.Canvas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.main.guapogame.model.state.Trajectory;
 import com.main.guapogame.presentation.activity.ContinueActivity;
 import com.main.guapogame.presentation.activity.LevelActivity;
 import com.main.guapogame.model.graphics.gameobjects.Graphics;
@@ -37,6 +38,7 @@ public class Model implements Update, Draw {
     public Model(AppCompatActivity activity) {
         this.activity = activity;
         this.storage = new Storage(activity);
+        resetTrajectory();
         createModelData();
         setSessionIsNotActive();
     }
@@ -135,6 +137,10 @@ public class Model implements Update, Draw {
         return activity.getResources().getDisplayMetrics().heightPixels;
     }
 
+    private void resetTrajectory() {
+        Trajectory.clear();
+    }
+    
     private <T extends AppCompatActivity> void transition(Class<T> clazz) {
         Thread thread = new Thread();
         thread.start();

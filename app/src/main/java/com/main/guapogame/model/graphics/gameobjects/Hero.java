@@ -38,6 +38,18 @@ public class Hero extends Character {
         private final List<Bitmap> capes = new ArrayList<>();
 
         @Override
+        public Builder velX(float velX) {
+            super.velX(velX);
+            return this;
+        }
+
+        @Override
+        public Builder velY(float velY) {
+            super.velY(velY);
+            return this;
+        }
+
+        @Override
         public Builder positionX(float positionX) {
             super.positionX(positionX);
             return this;
