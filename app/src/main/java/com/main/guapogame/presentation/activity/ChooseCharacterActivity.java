@@ -64,6 +64,7 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
             tuttiButton.setTextColor(Color.WHITE);
             guapoButton.setTextColor(Color.BLACK);
             micaButton.setTextColor(Color.BLACK);
+            startActivity(new Intent(ChooseCharacterActivity.this, LevelActivity.class));
         });
     }
 
@@ -78,6 +79,7 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
             guapoButton.setTextColor(Color.WHITE);
             tuttiButton.setTextColor(Color.BLACK);
             micaButton.setTextColor(Color.BLACK);
+            startActivity(new Intent(ChooseCharacterActivity.this, LevelActivity.class));
         });
     }
 
@@ -92,6 +94,7 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
             micaButton.setTextColor(Color.WHITE);
             tuttiButton.setTextColor(Color.BLACK);
             guapoButton.setTextColor(Color.BLACK);
+            startActivity(new Intent(ChooseCharacterActivity.this, LevelActivity.class));
         });
     }
 
