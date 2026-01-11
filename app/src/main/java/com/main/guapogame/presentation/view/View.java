@@ -33,16 +33,16 @@ public class View extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+        if(isClickGesture(event) && heroUpdatesAllowed()) {
             handleClick(event);
             return true;
         }
-        if(event.getAction() == MotionEvent.ACTION_MOVE) {
+        if(isMoveGesture(event)) {
             handleMove(event);
             return true;
         }
-        if(event.getAction() == MotionEvent.ACTION_UP) {
-            handleUp();
+        if(isReleaseGesture(event)) {
+            handleRelease();
             return true;
         }
 
@@ -100,6 +100,18 @@ public class View extends SurfaceView implements Runnable {
         return Bitmap.createScaledBitmap(bitmap, scaleX, scaleY, false);
     }
 
+    private boolean isClickGesture(MotionEvent event) {
+        return event.getAction() == MotionEvent.ACTION_DOWN;
+    }
+
+    private boolean isMoveGesture(MotionEvent event) {
+        return event.getAction() == MotionEvent.ACTION_MOVE;
+    }
+
+    private boolean isReleaseGesture(MotionEvent event) {
+        return event.getAction() == MotionEvent.ACTION_UP;
+    }
+
     private Bitmap getPauseButton() {
         int screenFactorX = (int) (screenWidth / 10.0);
         int screenFactorY = (int) (screenHeight / 5.0);
@@ -132,14 +144,11 @@ public class View extends SurfaceView implements Runnable {
 
     private void handleClick(MotionEvent event) {
         handlePause(event);
-        if(heroUpdatesAllowed()) {
-            handleUpdatePosition(event);
-        }
+        handleUpdatePosition(event);
     }
 
     private void handleMove(MotionEvent event) {
         stopHeroUpdates();
-
         if(gameIsPlaying() && !touchInPauseArea(event)) {
             updateVelocityHero(event);
             updatePositionHero(event);
@@ -157,7 +166,7 @@ public class View extends SurfaceView implements Runnable {
     private boolean heroUpdatesAllowed() {
         return model.getHero().getAllowUpdate();
     }
-    private void handleUp() {
+    private void handleRelease() {
         allowHeroUpdates();
     }
 

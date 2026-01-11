@@ -21,5 +21,21 @@ public class Trajectory {
         return null;
     }
 
+    public static Position getLast() {
+        if(!track.isEmpty()) {
+            return track.get(track.size() - 1);
+        }
+
+        return null;
+    }
+
+    public static Position getSecondToLast() {
+        if(!track.isEmpty() && track.size() > 1) {
+            return track.get(track.size() - 2);
+        }
+
+        return null;
+    }
+
     private Trajectory() {}
 }

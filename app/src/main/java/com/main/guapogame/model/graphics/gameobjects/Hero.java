@@ -122,6 +122,22 @@ public class Hero extends Character {
         return heroImage;
     }
 
+    @Override
+    public float getVelocityX() {
+        if(Trajectory.getLast() == null || Trajectory.getSecondToLast() == null)
+            return 0;
+
+        return Trajectory.getLast().getPositionX() - Trajectory.getSecondToLast().getPositionX();
+    }
+
+    @Override
+    public float getVelocityY() {
+        if(Trajectory.getLast() == null || Trajectory.getSecondToLast() == null)
+            return 0;
+
+        return Trajectory.getLast().getPositionY() - Trajectory.getSecondToLast().getPositionY();
+    }
+
     public void playSoundInteractingWithVillain() {
         if(playSound) {
             Sounds.playSoundBarkHit();
