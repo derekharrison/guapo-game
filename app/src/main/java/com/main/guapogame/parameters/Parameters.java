@@ -17,6 +17,7 @@ public class Parameters {
     public static final int NUM_LIVES = 3;
     public static final int FPS = 30;
     public static final int START_NUM_OF_VILLAINS = 3;
+    public static final int MAX_VELOCITY = 50;
 
     private Parameters() {}
 }

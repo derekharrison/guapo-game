@@ -4,6 +4,7 @@ import static com.main.guapogame.enums.State.GAME_OVER;
 import static com.main.guapogame.enums.State.PAUSED;
 import static com.main.guapogame.enums.State.PLAY;
 import static com.main.guapogame.parameters.Parameters.FPS;
+import static com.main.guapogame.parameters.Parameters.MAX_VELOCITY;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -195,8 +196,10 @@ public class View extends SurfaceView implements Runnable {
     private void updateVelocityHero(MotionEvent event) {
         float velX = event.getX() - model.getHero().getWidth() / 2 - model.getHero().getPositionX();
         float velY = event.getY() - model.getHero().getHeight() / 2 - model.getHero().getPositionY();
-        model.getHero().setVelX(velX);
-        model.getHero().setVelY(velY);
+        if(velX < MAX_VELOCITY && velY < MAX_VELOCITY) {
+            model.getHero().setVelX(velX);
+            model.getHero().setVelY(velY);
+        }
     }
 
     private void setVelocityHeroToZero() {
