@@ -35,6 +35,7 @@ public class Keys {
     public static final String IS_TOP = "top";
     public static final String DIFFICULTY_LEVEL = "difficultyLevel";
     public static final String ASSET_ID = "asset_id";
+    public static final String CHOOSE_CHARACTER = "choose_character";
 
     public static String getKey(String...key) {
         StringBuilder stringBuilder = new StringBuilder();

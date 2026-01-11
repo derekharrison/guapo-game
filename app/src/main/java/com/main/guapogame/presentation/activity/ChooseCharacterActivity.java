@@ -1,5 +1,7 @@
 package com.main.guapogame.presentation.activity;
 
+import static com.main.guapogame.parameters.Keys.CHOOSE_CHARACTER;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -22,18 +24,19 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_choose);
 
-        setUpScreenApiVersionGreaterOrEqualTo30();
-        setUpScreenApiVersionLessThan30();
+        setUpScreen();
         SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
 
         setCharacterChoiceIsTuttiButton(prefs);
         setCharacterChoiceIsGuapoButton(prefs);
+        setCharacterChoiceIsMiccaButton(prefs);
 
         setButton(R.id.choose_level_id, LevelActivity.class);
         setButton(R.id.main_menu_button2, MainActivity.class);
     }
 
-    private void setUpScreenApiVersionGreaterOrEqualTo30() {
+    @SuppressWarnings("deprecation")
+    private void setUpScreen() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             final WindowInsetsController insetsController;
             insetsController = getWindow().getInsetsController();
@@ -42,11 +45,7 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
                 insetsController.hide(WindowInsets.Type.navigationBars());
             }
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    private void setUpScreenApiVersionLessThan30() {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) {
+        else {
             getWindow().setFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -57,24 +56,42 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
     private void setCharacterChoiceIsTuttiButton(SharedPreferences prefs) {
         TextView guapoButton = findViewById(R.id.guapo_char_id);
         TextView tuttiButton = findViewById(R.id.tutti_char_id);
+        TextView micaButton = findViewById(R.id.mica_char_id);
         findViewById(R.id.tutti_char_id).setOnClickListener(_ -> {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("choose_character", 1);
+            editor.putInt(CHOOSE_CHARACTER, 1);
             editor.apply();
             tuttiButton.setTextColor(Color.WHITE);
             guapoButton.setTextColor(Color.BLACK);
+            micaButton.setTextColor(Color.BLACK);
         });
     }
 
     private void setCharacterChoiceIsGuapoButton(SharedPreferences prefs) {
         TextView guapoButton = findViewById(R.id.guapo_char_id);
         TextView tuttiButton = findViewById(R.id.tutti_char_id);
+        TextView micaButton = findViewById(R.id.mica_char_id);
         findViewById(R.id.guapo_char_id).setOnClickListener(_ -> {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("choose_character", 0);
+            editor.putInt(CHOOSE_CHARACTER, 0);
             editor.apply();
             guapoButton.setTextColor(Color.WHITE);
             tuttiButton.setTextColor(Color.BLACK);
+            micaButton.setTextColor(Color.BLACK);
+        });
+    }
+
+    private void setCharacterChoiceIsMiccaButton(SharedPreferences prefs) {
+        TextView guapoButton = findViewById(R.id.guapo_char_id);
+        TextView tuttiButton = findViewById(R.id.tutti_char_id);
+        TextView micaButton = findViewById(R.id.mica_char_id);
+        findViewById(R.id.mica_char_id).setOnClickListener(_ -> {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(CHOOSE_CHARACTER, 2);
+            editor.apply();
+            micaButton.setTextColor(Color.WHITE);
+            tuttiButton.setTextColor(Color.BLACK);
+            guapoButton.setTextColor(Color.BLACK);
         });
     }
 

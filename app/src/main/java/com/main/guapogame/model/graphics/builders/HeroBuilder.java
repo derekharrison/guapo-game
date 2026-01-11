@@ -1,5 +1,6 @@
 package com.main.guapogame.model.graphics.builders;
 
+import static com.main.guapogame.model.enums.HeroId.MICA;
 import static com.main.guapogame.model.enums.HeroId.TUTTI;
 import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.GAMESTATE;
@@ -42,12 +43,13 @@ class HeroBuilder {
     }
 
     private Hero createHero() {
-        if(getHeroId().equals(TUTTI)) {
+        if(getHeroId().equals(TUTTI))
             return createTutti();
-        }
-        else {
-            return createGuapo();
-        }
+
+        if(getHeroId().equals(MICA))
+            return createMica();
+
+        return createGuapo();
     }
 
     private Hero createGuapo() {
@@ -86,6 +88,16 @@ class HeroBuilder {
         );
     }
 
+    private Hero createMica() {
+        HeroAssets assets = createMicaAssets();
+        return createHero(
+                assets.getAssetId(),
+                assets.getHitAssetId(),
+                assets.getCape1AssetId(),
+                assets.getCape2AssetId()
+        );
+    }
+
     private HeroAssets createTuttiAssets() {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
@@ -97,6 +109,22 @@ class HeroBuilder {
         return new HeroAssets.Builder()
                 .assetId(R.drawable.tutti_bitmap_no_cape_cropped)
                 .hitAssetId(R.drawable.tutti_bitmap_hit_no_cape_cropped)
+                .cape1AssetId(R.drawable.cape1_bitmap_cropped1)
+                .cape2AssetId( R.drawable.cape2_bitmap_cropped1)
+                .build();
+    }
+
+    private HeroAssets createMicaAssets() {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
+            return new HeroAssets.Builder()
+                    .assetId(R.drawable.mica)
+                    .hitAssetId(R.drawable.mica)
+                    .build();
+        }
+
+        return new HeroAssets.Builder()
+                .assetId(R.drawable.mica)
+                .hitAssetId(R.drawable.mica)
                 .cape1AssetId(R.drawable.cape1_bitmap_cropped1)
                 .cape2AssetId( R.drawable.cape2_bitmap_cropped1)
                 .build();
@@ -173,8 +201,12 @@ class HeroBuilder {
 
     private HeroId getHeroId() {
         int heroId = getSharedPreferences().getInt("choose_character", 0);
+
         if(heroId == 1)
             return HeroId.TUTTI;
+
+        if(heroId == 2)
+            return MICA;
 
         return HeroId.GUAPO;
     }

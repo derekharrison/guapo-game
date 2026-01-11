@@ -56,6 +56,29 @@
         android:src="@drawable/tutti_main_image_cropped_resized" />
 
     <Button
+        android:id="@+id/mica_char_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tutti_char_id"
+        android:layout_alignLeft="@id/tutti_char_id"
+        android:layout_alignRight="@id/tutti_char_id"
+        android:text="Mica "
+        android:textSize="24sp"
+        app:backgroundTint="@android:color/holo_orange_dark" />
+
+    <ImageView
+        android:id="@+id/micaImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_toLeftOf="@+id/mica_char_id"
+        android:layout_alignTop="@+id/mica_char_id"
+        android:adjustViewBounds="true"
+        android:maxWidth="44dp"
+        android:maxHeight="44dp"
+        android:src="@drawable/mica_head_cropped_resized" />
+
+    <Button
         android:id="@+id/choose_level_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
