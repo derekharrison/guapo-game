@@ -62,7 +62,7 @@
         android:layout_below="@+id/tutti_char_id"
         android:layout_alignLeft="@id/tutti_char_id"
         android:layout_alignRight="@id/tutti_char_id"
-        android:text="Mica "
+        android:text="Mika "
         android:textSize="24sp"
         app:backgroundTint="@android:color/holo_orange_dark" />
 
