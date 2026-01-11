@@ -15,9 +15,9 @@ public class RoccoAssets {
         return R.drawable.rocco;
     }
 
-    public static Integer getCapeImage1() { return R.drawable.cape1_bitmap_cropped1; }
+    public static Integer getCapeImage1() { return R.drawable.cape1_bitmap_cropped1_blue; }
 
-    public static Integer getCapeImage2() { return R.drawable.cape2_bitmap_cropped1; }
+    public static Integer getCapeImage2() { return R.drawable.cape2_bitmap_cropped1_blue; }
 
     public static Integer getImageHitOcean() {
         return R.drawable.rocco;
