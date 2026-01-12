@@ -237,11 +237,9 @@ public class LevelActivity extends AppCompatActivity {
     private void setSessionIsNotActive() {
         SharedPreferences prefs = getSharedPreferences(GAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(getKey(getLevelId(), GAMESTATE), false);
+        for(String levelId : levelKeys.values()) {
+            editor.putBoolean(getKey(levelId, GAMESTATE), false);
+        }
         editor.apply();
-    }
-
-    private String getLevelId() {
-        return getSharedPreferences(GAME, MODE_PRIVATE).getString(LEVEL, "");
     }
 }

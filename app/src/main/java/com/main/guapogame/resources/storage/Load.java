@@ -23,6 +23,7 @@ import static com.main.guapogame.parameters.Keys.SNACK_ASSET_ID;
 import static com.main.guapogame.parameters.Keys.SNACK_POINTS;
 import static com.main.guapogame.parameters.Keys.VILLAIN;
 import static com.main.guapogame.parameters.Keys.getKey;
+import static com.main.guapogame.parameters.Parameters.START_NUM_OF_VILLAINS;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -164,7 +165,7 @@ public class Load {
     }
 
     public int getNumVillains() {
-        return prefs.getInt(getKey(getLevelId(), VILLAIN, NUM_VILLAINS), 3);
+        return prefs.getInt(getKey(getLevelId(), VILLAIN, NUM_VILLAINS), START_NUM_OF_VILLAINS);
     }
 
     public int getVillainFrameCounter(String villainId) {

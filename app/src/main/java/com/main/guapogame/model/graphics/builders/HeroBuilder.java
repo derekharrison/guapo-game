@@ -167,6 +167,8 @@ class HeroBuilder {
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableIdentification);
+        if(bitmap == null)
+            return null;
         return Bitmap.createScaledBitmap(bitmap, scaleX, scaleY, false);
     }
 

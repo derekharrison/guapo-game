@@ -62,6 +62,7 @@ public class Model implements Update, Draw {
     }
 
     public void handleGameOver() {
+        setSessionIsNotActive();
         if(getLives() < 0) {
             saveHighScore();
             transition(LevelActivity.class);
@@ -70,7 +71,6 @@ public class Model implements Update, Draw {
             saveHighScore();
             transition(ContinueActivity.class);
         }
-
         releaseSoundPool();
     }
 
@@ -81,6 +81,7 @@ public class Model implements Update, Draw {
     private void releaseSoundPool() {
         Sounds.releaseSoundPool();
     }
+
     private String getLevelId() {
         return activity.getSharedPreferences(GAME, MODE_PRIVATE).getString(LEVEL, "");
     }
@@ -140,7 +141,7 @@ public class Model implements Update, Draw {
     private void resetTrajectory() {
         Trajectory.clear();
     }
-    
+
     private <T extends AppCompatActivity> void transition(Class<T> clazz) {
         Thread thread = new Thread();
         thread.start();
