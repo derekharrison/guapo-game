@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.main.guapogame.enums.State;
+import com.main.guapogame.model.enums.HeroId;
 import com.main.guapogame.model.state.Position;
 import com.main.guapogame.model.state.Trajectory;
 import com.main.guapogame.resources.assets.Sounds;
@@ -24,17 +25,20 @@ public class Hero extends Character {
     private boolean playSound = true;
     private boolean allowUpdate = true;
     private Bubbles bubbles = new Bubbles(this);
+    private final HeroId heroId;
 
     protected Hero(Builder builder) {
         super(builder);
         this.heroImage = builder.heroImage;
         this.heroHitImage = builder.heroHitImage;
         this.capes = builder.capes;
+        this.heroId = builder.heroId;
     }
 
     public static class Builder extends Character.Builder {
         private Bitmap heroImage;
         private Bitmap heroHitImage;
+        private HeroId heroId;
         private final List<Bitmap> capes = new ArrayList<>();
 
         @Override
@@ -85,6 +89,11 @@ public class Hero extends Character {
         @Override
         public Builder context(Context context) {
             super.context(context);
+            return this;
+        }
+
+        public Builder heroId(HeroId heroId) {
+            this.heroId = heroId;
             return this;
         }
 
@@ -175,17 +184,27 @@ public class Hero extends Character {
     }
 
     private void drawHero(Canvas canvas) {
-        if(hasCapeImage()) {
-            canvas.drawBitmap(
-                    getCapeImage(),
-                    getPositionX(),
-                    getPositionY() + getHeight() / 5,
-                    null
-            );
-        }
+        if(hasCapeImage())
+            drawCape(canvas);
+
         canvas.drawBitmap(getImage(), getPositionX(), getPositionY(), null);
     }
 
+    private void drawCape(Canvas canvas) {
+        canvas.drawBitmap(
+                getCapeImage(),
+                getPositionX(),
+                getCapePositionY(),
+                null
+        );
+    }
+
+    private float getCapePositionY() {
+        if(heroId.equals(HeroId.MICA))
+            return getPositionY();
+
+        return getPositionY() + getHeight() / 5;
+    }
     private void drawBubbles(Canvas canvas) {
         bubbles.drawBubbles(canvas);
     }

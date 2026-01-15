@@ -1,5 +1,6 @@
 package com.main.guapogame.model.graphics.builders;
 
+import static com.main.guapogame.model.enums.HeroId.GUAPO;
 import static com.main.guapogame.model.enums.HeroId.MICA;
 import static com.main.guapogame.model.enums.HeroId.TUTTI;
 import static com.main.guapogame.parameters.Keys.CHOOSE_CHARACTER;
@@ -56,6 +57,7 @@ class HeroBuilder {
     private Hero createGuapo() {
         HeroAssets assets = createGuapoAssets();
         return createHero(
+                GUAPO,
                 assets.getAssetId(),
                 assets.getHitAssetId(),
                 assets.getCape1AssetId(),
@@ -82,6 +84,7 @@ class HeroBuilder {
     private Hero createTutti() {
         HeroAssets assets = createTuttiAssets();
         return createHero(
+                TUTTI,
                 assets.getAssetId(),
                 assets.getHitAssetId(),
                 assets.getCape1AssetId(),
@@ -92,6 +95,7 @@ class HeroBuilder {
     private Hero createMica() {
         HeroAssets assets = createMicaAssets();
         return createHero(
+                MICA,
                 assets.getAssetId(),
                 assets.getHitAssetId(),
                 assets.getCape1AssetId(),
@@ -118,32 +122,35 @@ class HeroBuilder {
     private HeroAssets createMicaAssets() {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
-                    .assetId(R.drawable.mica)
+                    .assetId(R.drawable.mica_cropped_main)
                     .hitAssetId(R.drawable.mica)
                     .build();
         }
 
         return new HeroAssets.Builder()
-                .assetId(R.drawable.mica)
+                .assetId(R.drawable.mica_cropped_main)
                 .hitAssetId(R.drawable.mica)
                 .cape1AssetId(R.drawable.cape1_bitmap_cropped1)
                 .cape2AssetId( R.drawable.cape2_bitmap_cropped1)
                 .build();
     }
 
-    private Hero createHero(int assetId, int hitAssetId, int capeAssetId1, int capeAssetId2) {
+    private Hero createHero(HeroId heroId, int assetId, int hitAssetId, int capeAssetId1, int capeAssetId2) {
         int width = getHeroWidth();
         int height = getHeroHeight();
+        int scaleX = (2 * width) / 3;
+        int scaleY = (2 * height) / 3;
         return new Hero.Builder()
                 .velX(0).velY(0)
                 .positionX(getHeroPositionX())
                 .positionY(getHeroPositionY())
                 .heroImage(getBitmapScaled(width, height, assetId))
                 .heroHitImage(getBitmapScaled(width, height, hitAssetId))
-                .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, capeAssetId1))
-                .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, capeAssetId2))
+                .capes(getBitmapScaled(scaleX, scaleY, capeAssetId1))
+                .capes(getBitmapScaled(scaleX, scaleY, capeAssetId2))
                 .frameCounter(getHeroFrameCounter())
                 .context(context)
+                .heroId(heroId)
                 .build();
     }
 
