@@ -21,9 +21,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        finishAffinity();
+    protected void onResume() {
+        super.onResume();
+        setUpScreen();
     }
 
     @SuppressWarnings("deprecation")
