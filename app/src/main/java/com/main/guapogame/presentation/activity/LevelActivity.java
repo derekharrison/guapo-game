@@ -68,6 +68,7 @@ public class LevelActivity extends AppCompatActivity {
 
         setMuteButton(prefs);
         handleMuteAction(prefs);
+        setSessionIsNotActive();
     }
 
     private void createLevelKeys() {
@@ -158,7 +159,6 @@ public class LevelActivity extends AppCompatActivity {
                 textView.setTextColor(Color.WHITE);
                 setLevelId(prefs, levelId);
                 setLevel(level);
-                setSessionIsNotActive();
                 resetGameScore();
                 startActivity(new Intent(LevelActivity.this, GameActivity.class));
             });
@@ -172,7 +172,6 @@ public class LevelActivity extends AppCompatActivity {
             textView.setTextColor(Color.WHITE);
             setLevelId(prefs, levelId);
             setLevel(Level.ARUBA);
-            setSessionIsNotActive();
             resetGameScore();
             startActivity(new Intent(LevelActivity.this, GameActivity.class));
         });

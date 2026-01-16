@@ -22,6 +22,7 @@ public class View extends SurfaceView implements Runnable {
     private final int screenWidth;
     private final int screenHeight;
     private final Model model;
+    private final Thread thread = new Thread(this);
 
     public View(AppCompatActivity activity) {
         super(activity);
@@ -57,8 +58,15 @@ public class View extends SurfaceView implements Runnable {
 
     public void startGame() {
         setGameStateToPlay();
-        Thread thread = new Thread(this);
         thread.start();
+    }
+
+    public void stopGame() {
+        try {
+            thread.join();
+        } catch (InterruptedException _) {
+            thread.interrupt();
+        }
     }
 
     private void runGame() {
