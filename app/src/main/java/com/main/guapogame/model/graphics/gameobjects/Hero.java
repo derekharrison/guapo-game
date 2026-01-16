@@ -193,10 +193,17 @@ public class Hero extends Character {
     private void drawCape(Canvas canvas) {
         canvas.drawBitmap(
                 getCapeImage(),
-                getPositionX(),
+                getCapePositionX(),
                 getCapePositionY(),
                 null
         );
+    }
+
+    private float getCapePositionX() {
+        if(heroId.equals(HeroId.MICA))
+            return getPositionX() - getWidth() / 5;
+
+        return getPositionX();
     }
 
     private float getCapePositionY() {
@@ -205,6 +212,7 @@ public class Hero extends Character {
 
         return getPositionY() + getHeight() / 5;
     }
+
     private void drawBubbles(Canvas canvas) {
         bubbles.drawBubbles(canvas);
     }
