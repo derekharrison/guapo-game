@@ -102,7 +102,7 @@ public class Villain extends Character {
     }
 
     protected int getX() {
-        return (getScreenWidth() * 5) / 4;
+        return (getScreenWidth() * 6) / 4;
     }
 
     protected int getY() {

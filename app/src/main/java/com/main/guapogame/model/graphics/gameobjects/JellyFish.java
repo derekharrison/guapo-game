@@ -1,7 +1,5 @@
 package com.main.guapogame.model.graphics.gameobjects;
 
-import static com.main.guapogame.model.state.ScreenDimensions.getScreenHeight;
-
 public class JellyFish extends Villain {
     protected static final int NUM_FRAMES = 6;
 
