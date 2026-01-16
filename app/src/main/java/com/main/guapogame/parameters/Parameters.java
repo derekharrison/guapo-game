@@ -2,7 +2,7 @@ package com.main.guapogame.parameters;
 
 public class Parameters {
     public static final int LEVEL_UNLOCK_SCORE = 64;
-    public static final int CHECK_POINT_INTERVAL = 50;
+    public static final int CHECK_POINT_INTERVAL = 48;
     public static final int MAX_VILLAINS = 12;
     public static final int POINTS_BEGGIN_STRIPS = 5;
     public static final int NUM_CHEESY_BITES = 2;

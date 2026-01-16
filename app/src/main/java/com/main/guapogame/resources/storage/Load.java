@@ -148,6 +148,10 @@ public class Load {
         return prefs.getInt(getKey(getLevelId(), HERO, FRAME_COUNTER), 0);
     }
 
+    public int getModelFrameCounter() {
+        return prefs.getInt(getKey(getLevelId(), FRAME_COUNTER), 0);
+    }
+
     public int getScore() {
         return prefs.getInt(getKey(getLevelId(), SCORE), 0);
     }

@@ -55,6 +55,7 @@ class ModelUpdate implements Update {
         
         createSounds();
         getCheckpoint();
+        getFrameCounter();
         getDifficultyLevel();
         getScore();
     }
@@ -114,6 +115,11 @@ class ModelUpdate implements Update {
             checkpoint = storage.loadGame().getCheckpoint();
     }
 
+    private void getFrameCounter() {
+        if(isActiveSession())
+            frameCounter = storage.loadGame().getModelFrameCounter();
+    }
+
     private void getScore() {
         if(isActiveSession())
             GameScore.setScore(storage.loadGame().getScore());
@@ -149,7 +155,7 @@ class ModelUpdate implements Update {
     }
 
     private void updateSunPopup() {
-        if(nextLevelIslocked() && GameScore.getScore() > LEVEL_UNLOCK_SCORE) {
+        if(nextLevelIslocked() && GameScore.getScore() >= LEVEL_UNLOCK_SCORE) {
             graphics.setSunPopup(createSunPopup());
             graphics.getSunPopup().playSound();
             storage.saveGame().saveHighScore(GameScore.getScore());
@@ -185,7 +191,7 @@ class ModelUpdate implements Update {
     private boolean nextLevelIslocked() {
         if(levelCanBeUnlocked()) {
             return getHighScore(context.getSharedPreferences(GAME, MODE_PRIVATE), getLevelId())
-                    < LEVEL_UNLOCK_SCORE;
+                    <= LEVEL_UNLOCK_SCORE;
         }
 
         return false;
@@ -222,22 +228,23 @@ class ModelUpdate implements Update {
         graphics.getHero().update();
     }
 
-    private void updateMisty() {
-        if((frameCounter % (10 * FPS)) == 0) {
-            convertBoundaryPopup(graphics.getMisty());
-            graphics.getMisty().playSound();
+    private void updateBrownie() {
+        if(frameCounter == 8 * FPS) {
+            convertBrownie();
+            graphics.getBrownie().playSoundAppearing();
         }
 
-        if(heroInteractsWithPopup(graphics.getHero(), graphics.getMisty())) {
-            graphics.getMisty().hit();
-            graphics.getMisty().playSoundHit();
+        if(heroInteractsWithPopup(graphics.getHero(), graphics.getBrownie())) {
+            graphics.getBrownie().hit();
+            graphics.getBrownie().playSoundHit();
         }
 
-        graphics.getMisty().update();
+        if(frameCounter >= 8 * FPS)
+            graphics.getBrownie().update();
     }
 
     private void updateChivaz() {
-        if((frameCounter % (10 * FPS)) == 0) {
+        if(frameCounter == 19 * FPS) {
             convertBoundaryPopup(graphics.getChivaz());
             graphics.getChivaz().playSound();
         }
@@ -247,42 +254,15 @@ class ModelUpdate implements Update {
             graphics.getChivaz().playSoundHit();
         }
 
-        graphics.getChivaz().update();
-    }
-
-    private void updateBrownie() {
-        if((frameCounter % (16 * FPS)) == 0) {
-            convertBrownie();
-            graphics.getBrownie().playSound();
-        }
-
-        if(heroInteractsWithPopup(graphics.getHero(), graphics.getBrownie())) {
-            graphics.getBrownie().hit();
-            graphics.getBrownie().playSoundHit();
-        }
-
-        graphics.getBrownie().update();
-    }
-
-    private void updateFrito() {
-        if((frameCounter % (16 * FPS)) == 0) {
-            convertFrito();
-            graphics.getFrito().playSound();
-        }
-
-        if(heroInteractsWithPopup(graphics.getHero(), graphics.getFrito())) {
-            graphics.getFrito().hit();
-            graphics.getFrito().playSoundHit();
-        }
-
-        graphics.getFrito().update();
+        if(frameCounter >= 19 * FPS)
+            graphics.getChivaz().update();
     }
 
     private void updateRocco() {
         if(GameState.getLevel() == Level.OCEAN || graphics.getRocco() == null)
             return;
 
-        if((frameCounter % (10 * FPS)) == 0) {
+        if((frameCounter == 33 * FPS)) {
             convertRocco();
             graphics.getRocco().playSound();
         }
@@ -292,9 +272,39 @@ class ModelUpdate implements Update {
             graphics.getRocco().playSoundHit();
         }
 
-        if(frameCounter >= 8 * FPS) {
+        if(frameCounter >= 33 * FPS) {
             graphics.getRocco().update();
         }
+    }
+
+    private void updateMisty() {
+        if(frameCounter == 52 * FPS) {
+            convertBoundaryPopup(graphics.getMisty());
+            graphics.getMisty().playSound();
+        }
+
+        if(heroInteractsWithPopup(graphics.getHero(), graphics.getMisty())) {
+            graphics.getMisty().hit();
+            graphics.getMisty().playSoundHit();
+        }
+
+        if(frameCounter >= 52 * FPS)
+            graphics.getMisty().update();
+    }
+
+    private void updateFrito() {
+        if(frameCounter == 60 * FPS) {
+            convertFrito();
+            graphics.getFrito().playSoundAppearing();
+        }
+
+        if(heroInteractsWithPopup(graphics.getHero(), graphics.getFrito())) {
+            graphics.getFrito().hit();
+            graphics.getFrito().playSoundHit();
+        }
+
+        if(frameCounter >= 60 * FPS)
+            graphics.getFrito().update();
     }
 
     private void updateSnack(Snack snack) {
@@ -432,7 +442,7 @@ class ModelUpdate implements Update {
     private void updateFrameCounter() {
         frameCounter++;
 
-        if(frameCounter >= Integer.MAX_VALUE - 100) {
+        if(frameCounter >= 76 * FPS) {
             frameCounter = 0;
         }
     }
@@ -458,6 +468,7 @@ class ModelUpdate implements Update {
             storage.saveGame().saveNumLives(graphics.getLives().size());
             storage.saveGame().saveCheckpoint(checkpoint);
             storage.saveGame().saveDifficulty(difficultyLevel);
+            storage.saveGame().saveModelFrameCounter(frameCounter);
         }
     }
 }

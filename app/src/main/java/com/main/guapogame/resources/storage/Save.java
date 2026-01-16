@@ -176,6 +176,12 @@ public class Save {
         }
     }
 
+    public void saveModelFrameCounter(int frameCounter) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putInt(getKey(getLevelId(), FRAME_COUNTER), frameCounter);
+        editor.apply();
+    }
+
     private int getHighScore(String levelId) {
         return getSharedPreferences().getInt(getKey(levelId, HIGH_SCORE), 0);
     }
