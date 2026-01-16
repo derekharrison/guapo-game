@@ -122,8 +122,8 @@ class HeroBuilder {
     private HeroAssets createMicaAssets() {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
-                    .assetId(R.drawable.mica_cropped_main)
-                    .hitAssetId(R.drawable.mica)
+                    .assetId(R.drawable.mica_scuba)
+                    .hitAssetId(R.drawable.mica_hit_scuba)
                     .build();
         }
 

@@ -91,6 +91,9 @@ public class Save {
     }
 
     public void saveRocco(CharacterPopup rocco) {
+        if(rocco == null)
+            return;
+
         savePosition(getKey(getLevelId(), ROCCO, POSITION_X), rocco.getPositionX());
         savePosition(getKey(getLevelId(), ROCCO, POSITION_Y), rocco.getPositionY());
         saveIsHit(getKey(getLevelId(), ROCCO, IS_HIT), rocco.getIsHit());

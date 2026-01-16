@@ -142,6 +142,9 @@ class ModelDraw implements Draw {
         graphics.getFrito().draw(canvas);
     }
     private void drawRocco(Canvas canvas) {
+        if(GameState.getLevel().equals(Level.OCEAN) || graphics.getRocco() == null)
+            return;
+
         graphics.getRocco().draw(canvas);
     }
 }

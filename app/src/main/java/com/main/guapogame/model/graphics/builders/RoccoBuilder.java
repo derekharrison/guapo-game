@@ -18,7 +18,10 @@ public class RoccoBuilder extends AbstractCharacterPopupBuilder {
 
     @Override
     public CharacterPopup build() {
-        return createRocco();
+        if(!GameState.getLevel().equals(Level.OCEAN))
+            return createRocco();
+
+        return null;
     }
 
     private CharacterPopup createRocco() {

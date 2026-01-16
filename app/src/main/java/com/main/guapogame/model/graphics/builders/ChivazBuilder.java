@@ -146,11 +146,11 @@ public class ChivazBuilder {
     }
 
     private int getWidth() {
-        return (int) (getScreenFactorX() * 3.0 / 2.0);
+        return (int) (getScreenFactorX() * 4.0 / 2.0);
     }
 
     private int getHeight() {
-        return (int) (getScreenFactorY() * 4.0 / 2.0);
+        return (int) (getScreenFactorY() * 5.0 / 2.0);
     }
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {

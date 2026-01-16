@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.converters.BrownieConverter;
 import com.main.guapogame.model.graphics.converters.BoundaryPopupConverter;
 import com.main.guapogame.model.graphics.converters.FritoConverter;
@@ -278,6 +279,9 @@ class ModelUpdate implements Update {
     }
 
     private void updateRocco() {
+        if(GameState.getLevel() == Level.OCEAN || graphics.getRocco() == null)
+            return;
+
         if((frameCounter % (10 * FPS)) == 0) {
             convertRocco();
             graphics.getRocco().playSound();

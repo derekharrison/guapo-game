@@ -20,19 +20,19 @@ public class ChivazAssets {
     }
 
     public static Integer getBottomOcean() {
-        return R.drawable.misty_withsnorkel_bitmap_cropped;
+        return R.drawable.chivaz_snorkel;
     }
 
     public static Integer getBottomHitOcean() {
-        return R.drawable.misty_withsnorkel_hit_bitmap_cropped;
+        return R.drawable.chivaz_hit_snorkel;
     }
 
     public static Integer getTopOcean() {
-        return R.drawable.misty_withsnorkel_bitmap_cropped_rotated;
+        return R.drawable.chivaz_rotated_snorkel;
     }
 
     public static Integer getTopHitOcean() {
-        return R.drawable.misty_withsnorkel_hit_bitmap_cropped_rotated;
+        return R.drawable.chivaz_hit_rotated_snorkel;
     }
 
     private ChivazAssets() {}
