@@ -41,7 +41,7 @@ import com.main.guapogame.state.GameState;
 import com.main.guapogame.resources.storage.Storage;
 
 class ModelUpdate implements Update {
-    private int difficultyLevel = 0;
+    private int difficultyLevel = 1;
     private final Graphics graphics;
     private final Storage storage;
     private final Context context;

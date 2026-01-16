@@ -151,7 +151,7 @@ public class MistyBuilder {
     }
 
     private int getHeight() {
-        return (int) (getScreenFactorY() * 3.0 / 2.0);
+        return (int) (getScreenFactorY() * 2.0);
     }
 
     private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
