@@ -35,7 +35,7 @@ public class BrownieBuilder extends AbstractCharacterPopupBuilder {
                 .isHit(getHit())
                 .velY((int) getVelY())
                 .context(context)
-                .duration(16 * FPS)
+                .duration(18 * FPS)
                 .build();
     }
 

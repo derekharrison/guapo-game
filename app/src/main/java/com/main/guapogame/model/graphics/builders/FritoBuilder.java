@@ -33,7 +33,7 @@ public class FritoBuilder extends AbstractCharacterPopupBuilder {
                 .velY(getVelocityY())
                 .frameCounter(getFrameCounter())
                 .context(context)
-                .duration(16 * FPS)
+                .duration(18 * FPS)
                 .build();
     }
 
