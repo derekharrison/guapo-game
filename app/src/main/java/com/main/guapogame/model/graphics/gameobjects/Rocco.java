@@ -67,7 +67,7 @@ public class Rocco extends CharacterPopup {
     @Override
     public void playSoundAppearing() {
         if(playSoundAppearing && isOnScreen()) {
-            Sounds.playSoundCatAppearing();
+            Sounds.playSoundBrownieAppearing();
             playSoundAppearing = false;
         }
     }

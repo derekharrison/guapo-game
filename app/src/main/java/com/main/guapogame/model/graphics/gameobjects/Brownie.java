@@ -11,6 +11,13 @@ public class Brownie extends CharacterPopup {
     }
 
     @Override
+    public void update() {
+        super.update();
+        updatePosition();
+        playSoundAppearing();
+    }
+
+    @Override
     public void playSoundHit() {
         if(playSoundHit) {
             Sounds.playSoundBarkBrownieHit();

@@ -191,7 +191,7 @@ class ModelUpdate implements Update {
     private boolean nextLevelIslocked() {
         if(levelCanBeUnlocked()) {
             return getHighScore(context.getSharedPreferences(GAME, MODE_PRIVATE), getLevelId())
-                    <= LEVEL_UNLOCK_SCORE;
+                    < LEVEL_UNLOCK_SCORE;
         }
 
         return false;
@@ -207,7 +207,7 @@ class ModelUpdate implements Update {
     }
 
     private Popup createCheckpointPopup() {
-        return new CheckpointPopupBuilder()
+    return new CheckpointPopupBuilder()
                 .resources(context.getResources())
                 .duration(2 * FPS)
                 .build();
@@ -224,7 +224,7 @@ class ModelUpdate implements Update {
         return checkpoint > 0;
     }
 
-    private void updateHero() {
+   private void updateHero() {
         graphics.getHero().update();
     }
 
@@ -264,7 +264,7 @@ class ModelUpdate implements Update {
 
         if((frameCounter == 33 * FPS)) {
             convertRocco();
-            graphics.getRocco().playSound();
+            graphics.getRocco().playSoundAppearing();
         }
 
         if(heroInteractsWithPopup(graphics.getHero(), graphics.getRocco())) {
@@ -442,7 +442,7 @@ class ModelUpdate implements Update {
     private void updateFrameCounter() {
         frameCounter++;
 
-        if(frameCounter >= 76 * FPS) {
+        if(frameCounter >= 78 * FPS) {
             frameCounter = 0;
         }
     }

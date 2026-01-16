@@ -11,6 +11,13 @@ public class Frito extends CharacterPopup {
     }
 
     @Override
+    public void update() {
+        super.update();
+        playSoundAppearing();
+        updatePosition();
+    }
+
+    @Override
     public void playSoundHit() {
         if(playSoundHit) {
             Sounds.playSoundBarkFritoHit();

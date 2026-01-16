@@ -26,22 +26,22 @@ public class CharacterPopup extends Popup {
     @Override
     public void update() {
         super.update();
-        updatePosition();
         reflect();
         updateBubbles();
-        playSoundAppearing();
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if(!isHit)
-            canvas.drawBitmap(image, getPositionX(), getPositionY(), null);
+        if(getFrameCounter() < duration) {
+            if (!isHit)
+                canvas.drawBitmap(image, getPositionX(), getPositionY(), null);
 
-        if(isHit)
-            canvas.drawBitmap(imageHit, getPositionX(), getPositionY(), null);
+            if (isHit)
+                canvas.drawBitmap(imageHit, getPositionX(), getPositionY(), null);
 
-        if(isOnScreen())
-            bubbles.drawBubbles(canvas);
+            if (isOnScreen())
+                bubbles.drawBubbles(canvas);
+        }
     }
 
     public void playSoundHit() {

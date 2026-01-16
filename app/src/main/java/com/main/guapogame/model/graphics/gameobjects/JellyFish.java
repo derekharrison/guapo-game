@@ -66,9 +66,4 @@ public class JellyFish extends Villain {
     protected boolean displayThirdImage() {
         return getFrameCounter() >= 2 * NUM_FRAMES && getFrameCounter() < 3 * NUM_FRAMES;
     }
-
-    @Override
-    protected int getY() {
-        return random.nextInt(getScreenHeight());
-    }
 }
