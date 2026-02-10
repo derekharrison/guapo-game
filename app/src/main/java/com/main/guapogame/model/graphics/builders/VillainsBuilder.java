@@ -4,6 +4,7 @@ import static com.main.guapogame.parameters.Keys.GAME;
 import static com.main.guapogame.parameters.Keys.GAMESTATE;
 import static com.main.guapogame.parameters.Keys.LEVEL;
 import static com.main.guapogame.parameters.Keys.getKey;
+import static com.main.guapogame.parameters.Parameters.MAX_VILLAINS;
 import static com.main.guapogame.parameters.Parameters.START_NUM_OF_VILLAINS;
 
 import android.content.Context;
@@ -35,8 +36,8 @@ class VillainsBuilder {
     private List<Villain> createVillains() {
         int numVillains = getNumVillains();
         List<Villain> villains1 = new ArrayList<>();
-        for(int villainId = 0; villainId < numVillains; villainId++) {
-            if(isActiveSession())
+        for(int villainId = 0; villainId < MAX_VILLAINS; villainId++) {
+            if(isActiveSession() && villainId < numVillains)
                 villains1.add(createVillain(String.valueOf(villainId)));
             else
                 villains1.add(createVillain());
@@ -57,7 +58,6 @@ class VillainsBuilder {
 
         return START_NUM_OF_VILLAINS;
     }
-
 
     private Villain createVillain() {
         return new VillainBuilder()

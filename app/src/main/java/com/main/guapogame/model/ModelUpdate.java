@@ -12,6 +12,7 @@ import static com.main.guapogame.parameters.Keys.getKey;
 import static com.main.guapogame.parameters.Parameters.CHECK_POINT_INTERVAL;
 import static com.main.guapogame.parameters.Parameters.FPS;
 import static com.main.guapogame.parameters.Parameters.LEVEL_UNLOCK_SCORE;
+import static com.main.guapogame.parameters.Parameters.START_NUM_OF_VILLAINS;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -32,7 +33,6 @@ import com.main.guapogame.model.graphics.gameobjects.Popup;
 import com.main.guapogame.model.graphics.gameobjects.Snack;
 import com.main.guapogame.model.graphics.builders.SunPopupBuilder;
 import com.main.guapogame.model.graphics.gameobjects.Villain;
-import com.main.guapogame.model.graphics.builders.VillainBuilder;
 import com.main.guapogame.model.interfaces.Update;
 import com.main.guapogame.parameters.Parameters;
 import com.main.guapogame.resources.assets.Sounds;
@@ -47,6 +47,7 @@ class ModelUpdate implements Update {
     private final Context context;
     private int checkpoint = 0;
     private int frameCounter = 0;
+    private int numVillains = START_NUM_OF_VILLAINS;
 
     protected ModelUpdate(Builder builder) {
         this.graphics = builder.graphics;
@@ -55,6 +56,7 @@ class ModelUpdate implements Update {
         
         createSounds();
         getCheckpoint();
+        getNumVillains();
         getFrameCounter();
         getDifficultyLevel();
         getScore();
@@ -118,6 +120,11 @@ class ModelUpdate implements Update {
     private void getFrameCounter() {
         if(isActiveSession())
             frameCounter = storage.loadGame().getModelFrameCounter();
+    }
+
+    private void getNumVillains() {
+        if(isActiveSession())
+            numVillains = storage.loadGame().getNumVillains();
     }
 
     private void getScore() {
@@ -320,19 +327,13 @@ class ModelUpdate implements Update {
         GameScore.setScore(GameScore.getScore() + snack.getPointsForSnack());
     }
 
-    private Villain createVillain() {
-        return new VillainBuilder()
-                .storage(storage)
-                .context(context)
-                .build();
-    }
-
     private void updateSnacks() {
         for(Snack snack : graphics.getSnacks())
             updateSnack(snack);
     }
     
     private void updateVillains() {
+        int villainIndex = 0;
         for(Villain villain : graphics.getVillains()) {
             villain.update();
             if(heroInteractsWithVillain(graphics.getHero(), villain)) {
@@ -340,6 +341,8 @@ class ModelUpdate implements Update {
                 setGameStateToGameOver();
                 storage.saveGame().saveNumLives(graphics.getLives().size() - 1);
             }
+            if(++villainIndex >= numVillains)
+                break;
         }
         updateNumberOfVillains();
     }
@@ -398,13 +401,13 @@ class ModelUpdate implements Update {
 
     private void updateNumberOfVillains() {
         if (timeToIncreaseVillains()) {
-            addVillain(createVillain());
+            addVillain();
             advanceDifficultyLevel();
         }
     }
 
-    private void addVillain(Villain villain) {
-        this.graphics.getVillains().add(villain);
+    private void addVillain() {
+        numVillains++;
     }
 
     private void advanceDifficultyLevel() {
@@ -412,7 +415,7 @@ class ModelUpdate implements Update {
     }
     
     private boolean lessThanMaxVillains() {
-        return graphics.getVillains().size() < Parameters.MAX_VILLAINS;
+        return numVillains < Parameters.MAX_VILLAINS;
     }
     
     private boolean timeToIncreaseVillains() {
@@ -462,7 +465,7 @@ class ModelUpdate implements Update {
             storage.saveGame().saveFrito(graphics.getFrito());
             storage.saveGame().saveRocco(graphics.getRocco());
             storage.saveGame().saveSnacks(graphics.getSnacks());
-            storage.saveGame().saveVillains(graphics.getVillains());
+            storage.saveGame().saveVillains(graphics.getVillains(), numVillains);
             storage.saveGame().saveBackgrounds(graphics.getBackgrounds());
             storage.saveGame().saveScore(GameScore.getScore());
             storage.saveGame().saveNumLives(graphics.getLives().size());

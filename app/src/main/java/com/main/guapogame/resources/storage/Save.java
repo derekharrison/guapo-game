@@ -113,13 +113,13 @@ public class Save {
         editor.apply();
     }
 
-    public void saveVillains(List<Villain> villains) {
+    public void saveVillains(List<Villain> villains, int numVillains) {
         int villainId = 0;
         for(Villain villain : villains) {
             saveVillain(villain, String.valueOf(villainId));
             villainId++;
         }
-        saveNum(getKey(getLevelId(), VILLAIN, NUM_VILLAINS), villains.size());
+        saveNum(getKey(getLevelId(), VILLAIN, NUM_VILLAINS), numVillains);
     }
 
     public void saveSnacks(List<Snack> snacks) {
