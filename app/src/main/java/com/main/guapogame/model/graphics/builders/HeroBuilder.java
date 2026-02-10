@@ -122,14 +122,14 @@ class HeroBuilder {
     private HeroAssets createMicaAssets() {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
-                    .assetId(R.drawable.mica_scuba)
-                    .hitAssetId(R.drawable.mica_hit_scuba)
+                    .assetId(R.drawable.mica_hit_scuba)
+                    .hitAssetId(R.drawable.mica_scuba)
                     .build();
         }
 
         return new HeroAssets.Builder()
-                .assetId(R.drawable.mica_cropped_main2)
-                .hitAssetId(R.drawable.mica)
+                .assetId(R.drawable.mica)
+                .hitAssetId(R.drawable.mica_cropped_main2)
                 .cape1AssetId(R.drawable.cape1_bitmap_cropped1_pink)
                 .cape2AssetId( R.drawable.cape2_bitmap_cropped1_pink)
                 .build();

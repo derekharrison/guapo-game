@@ -415,7 +415,7 @@ class ModelUpdate implements Update {
     }
     
     private boolean lessThanMaxVillains() {
-        return numVillains < Parameters.MAX_VILLAINS;
+        return numVillains < Parameters.MAX_VILLAINS - 1;
     }
     
     private boolean timeToIncreaseVillains() {
