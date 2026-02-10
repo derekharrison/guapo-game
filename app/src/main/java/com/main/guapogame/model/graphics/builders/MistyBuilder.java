@@ -1,5 +1,7 @@
 package com.main.guapogame.model.graphics.builders;
 
+import static com.main.guapogame.model.state.Random.getRandomBoolean;
+import static com.main.guapogame.model.state.Random.getRandomNumber;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
 import static com.main.guapogame.parameters.Keys.POSITION_Y;
 import static com.main.guapogame.parameters.Parameters.FPS;
@@ -13,12 +15,9 @@ import android.graphics.BitmapFactory;
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.BoundaryPopup;
 import com.main.guapogame.model.graphics.gameobjects.Misty;
-import com.main.guapogame.model.state.Random;
 import com.main.guapogame.resources.assets.MistyAssets;
 import com.main.guapogame.state.GameState;
 import com.main.guapogame.resources.storage.Storage;
-
-import java.security.SecureRandom;
 
 public class MistyBuilder {
     private Context context;
@@ -116,7 +115,7 @@ public class MistyBuilder {
     }
 
     private float getStartPositionX() {
-        int pos = Random.getRandomNumber(getScreenWidth() / 2);
+        int pos = getRandomNumber(getScreenWidth() / 2);
         return (float) getScreenWidth() / 4 + pos;
     }
 
@@ -131,7 +130,7 @@ public class MistyBuilder {
         if(isActiveSession())
             return storage.loadGame().getMistyIsTop();
 
-        return new SecureRandom().nextBoolean();
+        return getRandomBoolean();
     }
 
     private boolean isActiveSession() {
