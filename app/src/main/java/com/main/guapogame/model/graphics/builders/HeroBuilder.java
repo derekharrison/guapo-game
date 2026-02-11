@@ -76,8 +76,8 @@ class HeroBuilder {
         return new HeroAssets.Builder()
                 .assetId(R.drawable.guapo_main_image_bitmap_cropped)
                 .hitAssetId(R.drawable.guapo_main_image_hit_bitmap_cropped)
-                .cape1AssetId(R.drawable.cape1_bitmap_cropped1)
-                .cape2AssetId( R.drawable.cape2_bitmap_cropped1)
+                .cape1AssetId(R.drawable.cape1_bitmap_cropped1_green)
+                .cape2AssetId( R.drawable.cape2_bitmap_cropped1_green)
                 .build();
     }
 
