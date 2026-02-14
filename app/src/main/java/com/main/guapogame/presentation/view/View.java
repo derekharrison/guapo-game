@@ -35,7 +35,7 @@ public class View extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(isClickGesture(event) && heroUpdatesAllowed()) {
+        if(isClickGesture(event)) {
             handleClick(event);
             return true;
         }
@@ -152,14 +152,15 @@ public class View extends SurfaceView implements Runnable {
     }
 
     private void handleClick(MotionEvent event) {
-        handlePause(event);
-        handleUpdatePosition(event);
+        if(heroUpdatesAllowed()) {
+            handlePause(event);
+            handleUpdatePosition(event);
+        }
     }
 
     private void handleMove(MotionEvent event) {
         stopHeroUpdates();
         if(gameIsPlaying() && !touchInPauseArea(event)) {
-            updateVelocityHero(event);
             updatePositionHero(event);
         }
     }
@@ -200,16 +201,7 @@ public class View extends SurfaceView implements Runnable {
         model.getHero().setPositionX(event.getX() - model.getHero().getWidth() / 2);
         model.getHero().setPositionY(event.getY() - model.getHero().getHeight() / 2);
     }
-
-    private void updateVelocityHero(MotionEvent event) {
-        float velX = event.getX() - model.getHero().getWidth() / 2 - model.getHero().getPositionX();
-        float velY = event.getY() - model.getHero().getHeight() / 2 - model.getHero().getPositionY();
-        if(velX < MAX_VELOCITY && velY < MAX_VELOCITY) {
-            model.getHero().setVelX(velX);
-            model.getHero().setVelY(velY);
-        }
-    }
-
+    
     private void setVelocityHeroToZero() {
         model.getHero().setVelX(0);
         model.getHero().setVelY(0);
