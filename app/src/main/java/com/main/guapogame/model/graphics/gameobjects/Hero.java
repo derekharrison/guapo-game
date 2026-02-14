@@ -110,10 +110,6 @@ public class Hero extends Character {
             setPositionX(getPositionX() + getVelocityX());
             setPositionY(getPositionY() + getVelocityY());
         }
-        if(!allowUpdate) {
-            setPositionX(getPositionX());
-            setPositionY(getPositionY());
-        }
 
         updateTrajectory();
         updateBubbles();

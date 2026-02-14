@@ -152,8 +152,8 @@ public class View extends SurfaceView implements Runnable {
     }
 
     private void handleClick(MotionEvent event) {
+        handlePause(event);
         if(heroUpdatesAllowed()) {
-            handlePause(event);
             handleUpdatePosition(event);
         }
     }
@@ -176,6 +176,7 @@ public class View extends SurfaceView implements Runnable {
     private boolean heroUpdatesAllowed() {
         return model.getHero().getAllowUpdate();
     }
+
     private void handleRelease() {
         allowHeroUpdates();
     }
@@ -201,7 +202,7 @@ public class View extends SurfaceView implements Runnable {
         model.getHero().setPositionX(event.getX() - model.getHero().getWidth() / 2);
         model.getHero().setPositionY(event.getY() - model.getHero().getHeight() / 2);
     }
-    
+
     private void setVelocityHeroToZero() {
         model.getHero().setVelX(0);
         model.getHero().setVelY(0);
