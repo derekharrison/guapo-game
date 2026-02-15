@@ -112,9 +112,9 @@ public class Hero extends Character {
         }
 
         updateTrajectory();
-        updateBubbles();
-
         reflect();
+
+        updateBubbles();
     }
 
     @Override
@@ -141,8 +141,9 @@ public class Hero extends Character {
 
     @Override
     public float getVelocityX() {
-        if(Trajectory.getLast() == null || Trajectory.getSecondToLast() == null)
+        if(Trajectory.getLast() == null || Trajectory.getSecondToLast() == null) {
             return 0;
+        }
 
         return Trajectory.getLast().getPositionX() - Trajectory.getSecondToLast().getPositionX();
     }

@@ -49,13 +49,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private class BackPressedCallback extends OnBackPressedCallback {
-
         View view;
 
-        public BackPressedCallback(View view) {
-            this(true);
-            this.view = view;
-        }
         public BackPressedCallback(boolean enabled) {
             super(enabled);
         }

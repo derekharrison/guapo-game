@@ -4,7 +4,6 @@ import static com.main.guapogame.enums.State.GAME_OVER;
 import static com.main.guapogame.enums.State.PAUSED;
 import static com.main.guapogame.enums.State.PLAY;
 import static com.main.guapogame.parameters.Parameters.FPS;
-import static com.main.guapogame.parameters.Parameters.MAX_VELOCITY;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -104,8 +103,8 @@ public class View extends SurfaceView implements Runnable {
         }
     }
 
-    private Bitmap getBitmapScaled(int scaleX, int scaleY, int drawableIdentification) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableIdentification);
+    private Bitmap getPauseButton(int scaleX, int scaleY) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pause_button_bitmap_cropped);
         return Bitmap.createScaledBitmap(bitmap, scaleX, scaleY, false);
     }
 
@@ -124,10 +123,9 @@ public class View extends SurfaceView implements Runnable {
     private Bitmap getPauseButton() {
         int screenFactorX = (int) (screenWidth / 10.0);
         int screenFactorY = (int) (screenHeight / 5.0);
-        return getBitmapScaled(
+        return getPauseButton(
                 (int) (screenFactorX / 3.0),
-                (int) (screenFactorY / 3.0),
-                R.drawable.pause_button_bitmap_cropped
+                (int) (screenFactorY / 3.0)
         );
     }
 
@@ -153,16 +151,14 @@ public class View extends SurfaceView implements Runnable {
 
     private void handleClick(MotionEvent event) {
         handlePause(event);
-        if(heroUpdatesAllowed()) {
+        if(heroUpdatesAllowed())
             handleUpdatePosition(event);
-        }
     }
 
     private void handleMove(MotionEvent event) {
         stopHeroUpdates();
-        if(gameIsPlaying() && !touchInPauseArea(event)) {
+        if(gameIsPlaying() && !touchInPauseArea(event))
             updatePositionHero(event);
-        }
     }
 
     private void allowHeroUpdates() {
@@ -192,20 +188,13 @@ public class View extends SurfaceView implements Runnable {
     }
 
     private void handleUpdatePosition(MotionEvent event) {
-        if(!touchInPauseArea(event) && gameIsPlaying()){
+        if(!touchInPauseArea(event) && gameIsPlaying())
             updatePositionHero(event);
-            setVelocityHeroToZero();
-        }
     }
 
     private void updatePositionHero(MotionEvent event) {
         model.getHero().setPositionX(event.getX() - model.getHero().getWidth() / 2);
         model.getHero().setPositionY(event.getY() - model.getHero().getHeight() / 2);
-    }
-
-    private void setVelocityHeroToZero() {
-        model.getHero().setVelX(0);
-        model.getHero().setVelY(0);
     }
 
     private boolean touchInPauseArea(MotionEvent event) {
