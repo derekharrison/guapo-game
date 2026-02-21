@@ -157,8 +157,7 @@ public class View extends SurfaceView implements Runnable {
 
     private void handleMove(MotionEvent event) {
         stopHeroUpdates();
-        if(gameIsPlaying() && !touchInPauseArea(event))
-            updatePositionHero(event);
+        handleUpdatePosition(event);
     }
 
     private void allowHeroUpdates() {
