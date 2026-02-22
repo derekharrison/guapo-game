@@ -27,8 +27,8 @@ public class HeroFollowPopupBuilder extends AbstractCharacterPopupBuilder {
     }
 
     private CharacterPopup createRocco() {
-        int width = getRoccoWidth();
-        int height = getRoccoHeight();
+        int width = getPopupWidth();
+        int height = getPopupHeight();
         return new HeroFollowPopup.Builder()
                 .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, RoccoAssets.getCapeImage1()))
                 .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, RoccoAssets.getCapeImage2()))
@@ -43,11 +43,11 @@ public class HeroFollowPopupBuilder extends AbstractCharacterPopupBuilder {
                 .build();
     }
 
-    private int getRoccoWidth() {
+    private int getPopupWidth() {
         return  (int) (getScreenFactorX() * 3 / 2.0);
     }
 
-    private int getRoccoHeight() {
+    private int getPopupHeight() {
         return (int) (getScreenFactorY() * 3 / 2.0);
     }
 
