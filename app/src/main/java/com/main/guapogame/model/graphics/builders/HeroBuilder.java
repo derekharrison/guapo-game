@@ -160,7 +160,7 @@ class HeroBuilder {
 
         return new HeroAssets.Builder()
                 .assetId(R.drawable.rocco)
-                .hitAssetId(R.drawable.rocco)
+                .hitAssetId(R.drawable.rocco_hit_cropped)
                 .cape1AssetId(R.drawable.cape1_bitmap_cropped1_blue)
                 .cape2AssetId( R.drawable.cape2_bitmap_cropped1_blue)
                 .build();
