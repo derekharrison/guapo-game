@@ -27,9 +27,10 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
         setUpScreen();
         SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
 
-        setCharacterChoiceIsTuttiButton(prefs);
-        setCharacterChoiceIsGuapoButton(prefs);
-        setCharacterChoiceIsMiccaButton(prefs);
+        setCharacterChoiceButton(prefs, R.id.guapo_char_id, 0);
+        setCharacterChoiceButton(prefs, R.id.tutti_char_id, 1);
+        setCharacterChoiceButton(prefs, R.id.mica_char_id, 2);
+        setCharacterChoiceButton(prefs, R.id.rocco_char_id, 3);
 
         setButton(R.id.choose_level_id, LevelActivity.class);
         setButton(R.id.main_menu_button2, MainActivity.class);
@@ -53,47 +54,13 @@ public class ChooseCharacterActivity extends AppCompatActivity  {
         }
     }
 
-    private void setCharacterChoiceIsTuttiButton(SharedPreferences prefs) {
-        TextView guapoButton = findViewById(R.id.guapo_char_id);
-        TextView tuttiButton = findViewById(R.id.tutti_char_id);
-        TextView micaButton = findViewById(R.id.mica_char_id);
-        findViewById(R.id.tutti_char_id).setOnClickListener(_ -> {
+    private void setCharacterChoiceButton(SharedPreferences prefs, int buttonId, int characterId) {
+        TextView button = findViewById(buttonId);
+        findViewById(buttonId).setOnClickListener(_ -> {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(CHOOSE_CHARACTER, 1);
+            editor.putInt(CHOOSE_CHARACTER, characterId);
             editor.apply();
-            tuttiButton.setTextColor(Color.WHITE);
-            guapoButton.setTextColor(Color.BLACK);
-            micaButton.setTextColor(Color.BLACK);
-            startActivity(new Intent(ChooseCharacterActivity.this, LevelActivity.class));
-        });
-    }
-
-    private void setCharacterChoiceIsGuapoButton(SharedPreferences prefs) {
-        TextView guapoButton = findViewById(R.id.guapo_char_id);
-        TextView tuttiButton = findViewById(R.id.tutti_char_id);
-        TextView micaButton = findViewById(R.id.mica_char_id);
-        findViewById(R.id.guapo_char_id).setOnClickListener(_ -> {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(CHOOSE_CHARACTER, 0);
-            editor.apply();
-            guapoButton.setTextColor(Color.WHITE);
-            tuttiButton.setTextColor(Color.BLACK);
-            micaButton.setTextColor(Color.BLACK);
-            startActivity(new Intent(ChooseCharacterActivity.this, LevelActivity.class));
-        });
-    }
-
-    private void setCharacterChoiceIsMiccaButton(SharedPreferences prefs) {
-        TextView guapoButton = findViewById(R.id.guapo_char_id);
-        TextView tuttiButton = findViewById(R.id.tutti_char_id);
-        TextView micaButton = findViewById(R.id.mica_char_id);
-        findViewById(R.id.mica_char_id).setOnClickListener(_ -> {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(CHOOSE_CHARACTER, 2);
-            editor.apply();
-            micaButton.setTextColor(Color.WHITE);
-            tuttiButton.setTextColor(Color.BLACK);
-            guapoButton.setTextColor(Color.BLACK);
+            button.setTextColor(Color.WHITE);
             startActivity(new Intent(ChooseCharacterActivity.this, LevelActivity.class));
         });
     }

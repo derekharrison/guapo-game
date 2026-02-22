@@ -2,6 +2,7 @@ package com.main.guapogame.model.graphics.builders;
 
 import static com.main.guapogame.model.enums.HeroId.GUAPO;
 import static com.main.guapogame.model.enums.HeroId.MICA;
+import static com.main.guapogame.model.enums.HeroId.ROCCO;
 import static com.main.guapogame.model.enums.HeroId.TUTTI;
 import static com.main.guapogame.parameters.Keys.CHOOSE_CHARACTER;
 import static com.main.guapogame.parameters.Keys.GAME;
@@ -50,6 +51,9 @@ class HeroBuilder {
 
         if(getHeroId().equals(MICA))
             return createMica();
+
+        if(getHeroId().equals(ROCCO))
+            return createRocco();
 
         return createGuapo();
     }
@@ -103,6 +107,17 @@ class HeroBuilder {
         );
     }
 
+    private Hero createRocco() {
+        HeroAssets assets = createRoccoAssets();
+        return createHero(
+                ROCCO,
+                assets.getAssetId(),
+                assets.getHitAssetId(),
+                assets.getCape1AssetId(),
+                assets.getCape2AssetId()
+        );
+    }
+
     private HeroAssets createTuttiAssets() {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
@@ -132,6 +147,22 @@ class HeroBuilder {
                 .hitAssetId(R.drawable.mica_cropped_main2)
                 .cape1AssetId(R.drawable.cape1_bitmap_cropped1_pink)
                 .cape2AssetId( R.drawable.cape2_bitmap_cropped1_pink)
+                .build();
+    }
+
+    private HeroAssets createRoccoAssets() {
+        if(GameState.getLevel().equals(Level.OCEAN)) {
+            return new HeroAssets.Builder()
+                    .assetId(R.drawable.rocco)
+                    .hitAssetId(R.drawable.rocco)
+                    .build();
+        }
+
+        return new HeroAssets.Builder()
+                .assetId(R.drawable.rocco)
+                .hitAssetId(R.drawable.rocco)
+                .cape1AssetId(R.drawable.cape1_bitmap_cropped1_blue)
+                .cape2AssetId( R.drawable.cape2_bitmap_cropped1_blue)
                 .build();
     }
 
@@ -211,10 +242,13 @@ class HeroBuilder {
         int heroId = getSharedPreferences().getInt(CHOOSE_CHARACTER, 0);
 
         if(heroId == 1)
-            return HeroId.TUTTI;
+            return TUTTI;
 
         if(heroId == 2)
             return MICA;
+
+        if(heroId == 3)
+            return ROCCO;
 
         return HeroId.GUAPO;
     }
