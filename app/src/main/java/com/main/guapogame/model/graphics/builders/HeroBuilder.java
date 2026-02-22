@@ -153,14 +153,14 @@ class HeroBuilder {
     private HeroAssets createRoccoAssets() {
         if(GameState.getLevel().equals(Level.OCEAN)) {
             return new HeroAssets.Builder()
-                    .assetId(R.drawable.rocco)
-                    .hitAssetId(R.drawable.rocco)
+                    .assetId(R.drawable.rocco_scuba)
+                    .hitAssetId(R.drawable.rocco_scuba_hit)
                     .build();
         }
 
         return new HeroAssets.Builder()
-                .assetId(R.drawable.rocco)
-                .hitAssetId(R.drawable.rocco_hit_cropped)
+                .assetId(R.drawable.rocco_hit_cropped)
+                .hitAssetId(R.drawable.rocco)
                 .cape1AssetId(R.drawable.cape1_bitmap_cropped1_blue)
                 .cape2AssetId( R.drawable.cape2_bitmap_cropped1_blue)
                 .build();
