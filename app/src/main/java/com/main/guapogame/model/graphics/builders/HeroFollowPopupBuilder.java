@@ -16,7 +16,7 @@ import com.main.guapogame.resources.assets.GuapoAssets;
 import com.main.guapogame.resources.assets.RoccoAssets;
 import com.main.guapogame.state.GameState;
 
-public class RoccoBuilder extends AbstractCharacterPopupBuilder {
+public class HeroFollowPopupBuilder extends AbstractCharacterPopupBuilder {
 
     @Override
     public CharacterPopup build() {

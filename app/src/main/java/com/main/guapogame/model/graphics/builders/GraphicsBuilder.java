@@ -84,7 +84,7 @@ public class GraphicsBuilder {
     }
 
     private CharacterPopup createRocco() {
-        return new RoccoBuilder()
+        return new HeroFollowPopupBuilder()
                 .context(context)
                 .storage(storage)
                 .build();
