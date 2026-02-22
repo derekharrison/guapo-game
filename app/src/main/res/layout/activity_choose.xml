@@ -99,7 +99,7 @@
         android:adjustViewBounds="true"
         android:maxWidth="44dp"
         android:maxHeight="44dp"
-        android:src="@drawable/mica_head_cropped_resized" />
+        android:src="@drawable/rocco_head_cropped" />
 
     <Button
         android:id="@+id/choose_level_id"
