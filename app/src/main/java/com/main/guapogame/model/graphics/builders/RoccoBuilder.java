@@ -1,5 +1,6 @@
 package com.main.guapogame.model.graphics.builders;
 
+import static com.main.guapogame.model.enums.HeroId.ROCCO;
 import static com.main.guapogame.model.state.ScreenDimensions.getScreenHeight;
 import static com.main.guapogame.model.state.ScreenDimensions.getScreenWidth;
 import static com.main.guapogame.parameters.Keys.POSITION_X;
@@ -11,6 +12,7 @@ import android.graphics.Bitmap;
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
 import com.main.guapogame.model.graphics.gameobjects.Rocco;
+import com.main.guapogame.resources.assets.GuapoAssets;
 import com.main.guapogame.resources.assets.RoccoAssets;
 import com.main.guapogame.state.GameState;
 
@@ -86,6 +88,9 @@ public class RoccoBuilder extends AbstractCharacterPopupBuilder {
         if(GameState.getLevel().equals(Level.OCEAN))
             return getBitmapScaled(width, height, RoccoAssets.getImageOcean());
 
+        if(GameState.getHero().equals(ROCCO))
+            return getBitmapScaled(width, height, GuapoAssets.getImage());
+
         return getBitmapScaled(width, height, RoccoAssets.getImage());
     }
 
@@ -95,6 +100,9 @@ public class RoccoBuilder extends AbstractCharacterPopupBuilder {
 
         if(GameState.getLevel().equals(Level.OCEAN))
             return getBitmapScaled(width, height, RoccoAssets.getImageHitOcean());
+
+        if(GameState.getHero().equals(ROCCO))
+            return getBitmapScaled(width, height, GuapoAssets.getImageHit());
 
         return getBitmapScaled(width, height, RoccoAssets.getImageHit());
     }
