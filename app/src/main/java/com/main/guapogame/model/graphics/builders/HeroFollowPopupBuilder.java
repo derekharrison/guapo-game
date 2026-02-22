@@ -11,7 +11,7 @@ import android.graphics.Bitmap;
 
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.model.graphics.gameobjects.CharacterPopup;
-import com.main.guapogame.model.graphics.gameobjects.Rocco;
+import com.main.guapogame.model.graphics.gameobjects.HeroFollowPopup;
 import com.main.guapogame.resources.assets.GuapoAssets;
 import com.main.guapogame.resources.assets.RoccoAssets;
 import com.main.guapogame.state.GameState;
@@ -29,7 +29,7 @@ public class HeroFollowPopupBuilder extends AbstractCharacterPopupBuilder {
     private CharacterPopup createRocco() {
         int width = getRoccoWidth();
         int height = getRoccoHeight();
-        return new Rocco.Builder()
+        return new HeroFollowPopup.Builder()
                 .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, RoccoAssets.getCapeImage1()))
                 .capes(getBitmapScaled((2 * width) / 3, (2 * height) / 3, RoccoAssets.getCapeImage2()))
                 .image(getImage())

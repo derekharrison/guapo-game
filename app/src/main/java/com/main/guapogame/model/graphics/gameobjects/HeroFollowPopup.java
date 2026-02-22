@@ -10,13 +10,13 @@ import com.main.guapogame.resources.assets.Sounds;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rocco extends CharacterPopup {
+public class HeroFollowPopup extends CharacterPopup {
 
     private final List<Bitmap> capes;
     private int capeCounter = 0;
     private float departureAngle;
 
-    protected Rocco(Builder builder) {
+    protected HeroFollowPopup(Builder builder) {
         super(builder);
         this.capes = builder.capes;
     }
@@ -88,7 +88,7 @@ public class Rocco extends CharacterPopup {
 
         @Override
         public CharacterPopup build() {
-            return new Rocco(this);
+            return new HeroFollowPopup(this);
         }
     }
 
