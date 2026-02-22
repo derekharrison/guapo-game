@@ -1,11 +1,15 @@
 package com.main.guapogame.state;
 
+import static com.main.guapogame.model.enums.HeroId.GUAPO;
+
 import com.main.guapogame.enums.Level;
 import com.main.guapogame.enums.State;
+import com.main.guapogame.model.enums.HeroId;
 
 public class GameState {
     private static State state = State.PLAY;
     private static Level level;
+    private static HeroId hero = GUAPO;
     private static boolean isMute;
 
     public static void setMute(boolean isMute1) {
@@ -22,6 +26,14 @@ public class GameState {
 
     public static Level getLevel() {
         return level;
+    }
+
+    public static void setHero(HeroId hero1) {
+        hero = hero1;
+    }
+
+    public static HeroId getHero() {
+        return hero;
     }
     
     public static void setGameStateToPlay() {
