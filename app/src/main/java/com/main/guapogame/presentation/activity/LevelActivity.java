@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LevelActivity extends AppCompatActivity {
-    private boolean isMute;
     private final Map<Integer, Level> levels = new HashMap<>();
     private final Map<Level, String> levelKeys = new EnumMap<>(Level.class);
     private final Map<Level, Level> previousLevels = new EnumMap<>(Level.class);
@@ -181,8 +180,11 @@ public class LevelActivity extends AppCompatActivity {
         GameScore.setScore(0);
     }
 
-    private void setMute(boolean isMute) {
+    private void setMute(SharedPreferences prefs, boolean isMute) {
         GameState.setMute(isMute);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("is_mute", isMute);
+        editor.apply();
     }
 
     private void setLevelId(SharedPreferences prefs, String levelId) {
@@ -204,16 +206,20 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     private void setMuteButton(SharedPreferences prefs) {
-        isMute = prefs.getBoolean("is_mute", false);
-        showMuteButton();
+        showMuteButton(prefs);
+        setMute(prefs, gameIsMute(prefs));
     }
 
-    private void showMuteButton() {
+    private boolean gameIsMute(SharedPreferences prefs) {
+        return prefs.getBoolean("is_mute", false);
+    }
+
+    private void showMuteButton(SharedPreferences prefs) {
         final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
 
-        if (isMute)
+        if (gameIsMute(prefs))
             volumeCtrl.setImageResource(R.drawable.volume_off);
-        if(!isMute)
+        else
             volumeCtrl.setImageResource(R.drawable.volume_on);
     }
 
@@ -221,16 +227,12 @@ public class LevelActivity extends AppCompatActivity {
         final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
         volumeCtrl.setOnClickListener(_ -> {
             mute(prefs);
-            showMuteButton();
+            showMuteButton(prefs);
         });
     }
 
     private void mute(SharedPreferences prefs) {
-        isMute = !isMute;
-        setMute(isMute);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("is_mute", isMute);
-        editor.apply();
+        setMute(prefs, !gameIsMute(prefs));
     }
 
     private void setSessionIsNotActive() {
